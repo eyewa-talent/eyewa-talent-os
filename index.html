@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eyewa Talent OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c10;
+  --surface: #13141a;
+  --card: #1a1c24;
+  --border: #252830;
+  --border2: #2e3140;
+  --accent: #e8c547;
+  --accent2: #4f8ef7;
+  --green: #3ecf8e;
+  --red: #f75c5c;
+  --orange: #f7923a;
+  --purple: #a855f7;
+  --pink: #ec4899;
+  --teal: #14b8a6;
+  --text: #eeeef0;
+  --mid: #9395a0;
+  --muted: #5a5c6a;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'Outfit', sans-serif;
+  --sidebar-w: 220px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 14px; min-height: 100vh; display: flex; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; height: 100vh; flex-shrink: 0; position: fixed; left: 0; top: 0; z-index: 100; overflow-y: auto; }
+.sidebar-brand { padding: 22px 20px 18px; border-bottom: 1px solid var(--border); }
+.brand-logo { font-family: var(--display); font-size: 28px; letter-spacing: 0.04em; color: var(--text); line-height: 1; }
+.brand-logo span { color: var(--accent); }
+.brand-tag { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.sidebar-section { padding: 16px 12px 8px; }
+.sidebar-section-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 0 8px; margin-bottom: 6px; font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 7px; cursor: pointer; transition: all 0.15s; color: var(--mid); font-size: 13.5px; font-weight: 500; margin-bottom: 2px; border: 1px solid transparent; position: relative; }
+.nav-item:hover { background: var(--card); color: var(--text); }
+.nav-item.active { background: rgba(232,197,71,0.1); color: var(--accent); border-color: rgba(232,197,71,0.15); }
+.nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--accent); color: var(--bg); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center; }
+.sidebar-bottom { margin-top: auto; padding: 16px; border-top: 1px solid var(--border); }
+.user-chip { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--orange)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--bg); flex-shrink: 0; }
+.user-name { font-size: 12px; font-weight: 600; }
+.user-role { font-size: 10px; color: var(--muted); }
+
+/* ── CONTENT ── */
+.content { margin-left: var(--sidebar-w); flex: 1; height: 100vh; overflow-y: auto; position: relative; }
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+.topbar-title { font-family: var(--display); font-size: 22px; letter-spacing: 0.06em; color: var(--text); }
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.btn { font-family: var(--body); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em; }
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover { background: #d4b03a; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--mid); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+.btn-danger { background: rgba(247,92,92,0.12); color: var(--red); border: 1px solid rgba(247,92,92,0.2); }
+.btn-danger:hover { background: rgba(247,92,92,0.2); }
+.btn-green { background: rgba(62,207,142,0.12); color: var(--green); border: 1px solid rgba(62,207,142,0.2); }
+.btn-green:hover { background: rgba(62,207,142,0.2); }
+.btn-sm { padding: 5px 12px; font-size: 11px; }
+
+.page { display: none; padding: 28px 32px; animation: fadeIn 0.25s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── DASHBOARD ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; position: relative; overflow: hidden; }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.stat-card.yellow::before { background: var(--accent); }
+.stat-card.blue::before { background: var(--accent2); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.red::before { background: var(--red); }
+.stat-card.purple::before { background: var(--purple); }
+.stat-card.orange::before { background: var(--orange); }
+.stat-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+.stat-num { font-family: var(--display); font-size: 42px; letter-spacing: 0.04em; line-height: 1; margin-bottom: 4px; }
+.stat-card.yellow .stat-num { color: var(--accent); }
+.stat-card.blue .stat-num { color: var(--accent2); }
+.stat-card.green .stat-num { color: var(--green); }
+.stat-card.red .stat-num { color: var(--red); }
+.stat-card.purple .stat-num { color: var(--purple); }
+.stat-card.orange .stat-num { color: var(--orange); }
+.stat-sub { font-size: 11px; color: var(--muted); }
+
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.dash-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.dash-card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.dash-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.dash-card-body { padding: 16px 20px; }
+
+/* ── TABLES ── */
+.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.table-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.table-title { font-size: 14px; font-weight: 600; }
+.search-input { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; padding: 7px 12px; font-family: var(--body); font-size: 12px; color: var(--text); outline: none; width: 220px; transition: border-color 0.15s; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 10px 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: left; border-bottom: 1px solid var(--border); font-weight: 600; background: var(--surface); }
+tbody td { padding: 13px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { transition: background 0.12s; cursor: pointer; }
+tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── BADGES ── */
+.badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; white-space: nowrap; }
+.badge-pending { background: rgba(232,197,71,0.12); color: var(--accent); border: 1px solid rgba(232,197,71,0.2); }
+.badge-open { background: rgba(62,207,142,0.12); color: var(--green); border: 1px solid rgba(62,207,142,0.2); }
+.badge-draft { background: rgba(147,149,160,0.12); color: var(--mid); border: 1px solid var(--border2); }
+.badge-hold { background: rgba(247,146,58,0.12); color: var(--orange); border: 1px solid rgba(247,146,58,0.2); }
+.badge-closed-hired { background: rgba(20,184,166,0.12); color: var(--teal); border: 1px solid rgba(20,184,166,0.2); }
+.badge-closed-cancelled { background: rgba(147,149,160,0.12); color: var(--mid); border: 1px solid var(--border2); }
+.badge-active { background: rgba(79,142,247,0.12); color: var(--accent2); border: 1px solid rgba(79,142,247,0.2); }
+.badge-hired { background: rgba(62,207,142,0.12); color: var(--green); border: 1px solid rgba(62,207,142,0.2); }
+.badge-rejected { background: rgba(247,92,92,0.12); color: var(--red); border: 1px solid rgba(247,92,92,0.2); }
+.badge-offer { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.2); }
+.badge-screen { background: rgba(232,197,71,0.12); color: var(--accent); border: 1px solid rgba(232,197,71,0.2); }
+
+.priority-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.p-critical { background: var(--red); }
+.p-high { background: var(--orange); }
+.p-normal { background: var(--green); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(11,12,16,0.85); z-index: 500; align-items: flex-start; justify-content: center; padding: 32px 20px; overflow-y: auto; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; width: 100%; max-width: 620px; margin: auto; animation: modalIn 0.2s ease; overflow: hidden; }
+.modal-lg { max-width: 820px; }
+@keyframes modalIn { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 16px; font-weight: 700; }
+.modal-close { background: var(--card); border: 1px solid var(--border); color: var(--mid); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s; }
+.modal-close:hover { color: var(--text); border-color: var(--border2); }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ── FORMS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.req { color: var(--accent); margin-left: 2px; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], input[type="file"], select, textarea { background: var(--card); border: 1px solid var(--border2); border-radius: 6px; padding: 9px 12px; font-family: var(--body); font-size: 13px; color: var(--text); outline: none; width: 100%; transition: border-color 0.15s, box-shadow 0.15s; appearance: none; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,197,71,0.1); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+select option { background: var(--card); }
+
+/* ── DETAIL VIEW ── */
+.detail-header { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.detail-back { font-size: 12px; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; transition: color 0.15s; }
+.detail-back:hover { color: var(--text); }
+.detail-name { font-family: var(--display); font-size: 32px; letter-spacing: 0.04em; margin-bottom: 8px; }
+.detail-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--mid); }
+
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; overflow-x: auto; }
+.tab { padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; white-space: nowrap; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+
+/* ── KANBAN ── */
+.kanban { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 16px; }
+.kanban-col { background: var(--card); border: 1px solid var(--border); border-radius: 10px; min-width: 230px; max-width: 230px; flex-shrink: 0; overflow: hidden; }
+.kanban-col-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.kanban-col-name { font-size: 12px; font-weight: 600; }
+.kanban-col-count { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-size: 10px; font-weight: 700; padding: 1px 8px; color: var(--mid); }
+.kanban-cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 80px; }
+.kanban-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.15s; }
+.kanban-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.kc-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.kc-role { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.kc-meta { display: flex; justify-content: space-between; align-items: center; }
+.kc-days { font-size: 10px; color: var(--muted); }
+.kc-actions { display: flex; gap: 4px; margin-top: 8px; }
+.kc-act-btn { font-size: 9px; padding: 3px 8px; background: var(--bg); border: 1px solid var(--border2); border-radius: 4px; color: var(--mid); cursor: pointer; transition: all 0.15s; }
+.kc-act-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ── ACTIVITY FEED ── */
+.activity-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.activity-item:last-child { border-bottom: none; }
+.activity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; }
+.activity-text { color: var(--mid); line-height: 1.5; }
+.activity-text strong { color: var(--text); }
+.activity-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ── COMMS LOG ── */
+.comms-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+.comms-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.comms-type { font-size: 11px; font-weight: 600; color: var(--accent2); }
+.comms-date { font-size: 10px; color: var(--muted); }
+.comms-subject { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.comms-preview { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+/* ── INTERVIEW SCHEDULE ── */
+.interview-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.interview-info { flex: 1; }
+.interview-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.interview-meta { font-size: 11px; color: var(--muted); }
+
+/* ── REFERENCE / GENERIC CARD ── */
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.ref-card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.ref-card-sub { font-size: 11px; color: var(--muted); }
+
+/* ── GEN OUTPUT ── */
+.gen-output { background: var(--card); border: 1px solid var(--border2); border-radius: 8px; padding: 18px; margin-top: 14px; font-size: 13px; line-height: 1.75; color: var(--text); white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+.gen-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+
+/* ── LOADING ── */
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(11,12,16,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+.loading-overlay.on { display: flex; }
+.loading-spinner { width: 40px; height: 40px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-family: var(--display); font-size: 20px; letter-spacing: 0.08em; color: var(--text); }
+.loading-sub { font-size: 12px; color: var(--muted); text-align: center; max-width: 280px; line-height: 1.7; }
+
+/* ── EMPTY ── */
+.empty { padding: 48px; text-align: center; color: var(--muted); }
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.empty-title { font-size: 15px; font-weight: 600; color: var(--mid); margin-bottom: 6px; }
+.empty-sub { font-size: 12px; line-height: 1.7; max-width: 300px; margin: 0 auto; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--card); border: 1px solid var(--border2); border-left: 3px solid var(--green); border-radius: 8px; padding: 12px 18px; font-size: 13px; font-weight: 500; z-index: 2000; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-left-color: var(--red); }
+
+/* ── MISC ── */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.text-muted { color: var(--muted); }
+.text-sm { font-size: 11px; }
+.mt-12 { margin-top: 12px; }
+.mt-20 { margin-top: 20px; }
+.gap-8 { gap: 8px; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.info-val { font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* ── METRICS / CHARTS ── */
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.chart-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.chart-sub { font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 12px; }
+.bar-label { width: 130px; flex-shrink: 0; color: var(--mid); font-size: 11px; }
+.bar-track { flex: 1; height: 18px; background: var(--surface); border-radius: 4px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.bar-value { font-size: 11px; font-weight: 700; color: var(--text); min-width: 28px; text-align: right; }
+
+.donut-wrap { display: flex; align-items: center; gap: 20px; }
+.donut { width: 110px; height: 110px; flex-shrink: 0; }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 11px; }
+.donut-legend-item { display: flex; align-items: center; gap: 8px; }
+.donut-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-text { flex: 1; color: var(--mid); }
+.donut-legend-val { color: var(--text); font-weight: 700; }
+
+.metric-big { font-family: var(--display); font-size: 38px; line-height: 1; letter-spacing: 0.04em; margin-bottom: 4px; }
+.metric-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+.metric-trend { font-size: 11px; color: var(--mid); }
+
+/* file upload */
+.file-upload-zone { padding: 16px; border: 1px dashed var(--border2); border-radius: 6px; background: var(--surface); cursor: pointer; transition: all 0.15s; text-align: center; font-size: 12px; color: var(--mid); }
+.file-upload-zone:hover { border-color: var(--accent); color: var(--text); }
+.file-uploaded { background: rgba(62,207,142,0.08); border-color: var(--green); color: var(--green); }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .content { margin-left: 0; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">Eyewa<span>.</span></div>
+    <div class="brand-tag">Talent OS</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <div class="nav-item active" onclick="nav('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div class="nav-item" onclick="nav('reporting')"><span class="nav-icon">▥</span> Reporting</div>
+    <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon">⬡</span> Pipeline <span class="nav-badge" id="nb-pipeline">0</span></div>
+    <div class="nav-item" onclick="nav('roles')"><span class="nav-icon">◻</span> Roles <span class="nav-badge" id="nb-roles">0</span></div>
+    <div class="nav-item" onclick="nav('candidates')"><span class="nav-icon">◯</span> Candidates <span class="nav-badge" id="nb-candidates">0</span></div>
+    <div class="nav-item" onclick="nav('interviews')"><span class="nav-icon">▣</span> Interviews <span class="nav-badge" id="nb-interviews">0</span></div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Tools</div>
+    <div class="nav-item" onclick="nav('tool-jd')"><span class="nav-icon">✦</span> JD Generator</div>
+    <div class="nav-item" onclick="nav('tool-interview')"><span class="nav-icon">◈</span> Interview Pack</div>
+    <div class="nav-item" onclick="nav('tool-comms')"><span class="nav-icon">✉</span> Candidate Comms</div>
+    <div class="nav-item" onclick="nav('tool-scorecard')"><span class="nav-icon">◉</span> Scorecards</div>
+    <div class="nav-item" onclick="nav('tool-refcheck')"><span class="nav-icon">◎</span> Reference Check</div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">HP</div>
+      <div>
+        <div class="user-name">Humairaa</div>
+        <div class="user-role">TA Manager</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="content">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">DASHBOARD</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-role')">+ New Role</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-candidate')">+ Add Candidate</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-grid">
+      <div class="stat-card yellow"><div class="stat-label">Open Roles</div><div class="stat-num" id="stat-open">0</div><div class="stat-sub">Active requisitions</div></div>
+      <div class="stat-card blue"><div class="stat-label">Active Candidates</div><div class="stat-num" id="stat-candidates">0</div><div class="stat-sub">In process</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired This Month</div><div class="stat-num" id="stat-hired">0</div><div class="stat-sub">Offers accepted</div></div>
+      <div class="stat-card red"><div class="stat-label">Pending Feedback</div><div class="stat-num" id="stat-feedback">0</div><div class="stat-sub">Scorecards missing</div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-card-title">Open Roles</div><button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-role')">+ New</button></div>
+        <div class="dash-card-body" id="dash-roles-list"></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-card-title">Recent Activity</div></div>
+        <div class="dash-card-body" id="activity-feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTING -->
+  <div class="page" id="page-reporting">
+    <div class="stats-grid">
+      <div class="stat-card yellow"><div class="stat-label">Avg Time-to-Hire</div><div class="stat-num" id="m-tth">—</div><div class="stat-sub">Days from open to hired</div></div>
+      <div class="stat-card blue"><div class="stat-label">Total Vacancies</div><div class="stat-num" id="m-vacancies">0</div><div class="stat-sub">All time</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired</div><div class="stat-num" id="m-hired-total">0</div><div class="stat-sub">Total filled</div></div>
+      <div class="stat-card purple"><div class="stat-label">Offer Accept Rate</div><div class="stat-num" id="m-accept-rate">—</div><div class="stat-sub">Offers accepted vs declined</div></div>
+    </div>
+    <div class="metrics-grid">
+      <div class="chart-card">
+        <div class="chart-title">Role Status Breakdown</div>
+        <div class="chart-sub">All roles by current status</div>
+        <div id="chart-role-status"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Pipeline Velocity</div>
+        <div class="chart-sub">Avg days candidates spend per stage</div>
+        <div id="chart-velocity"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Offer Outcomes</div>
+        <div class="chart-sub">What happens after offer</div>
+        <div id="chart-offers"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Source Effectiveness</div>
+        <div class="chart-sub">Candidates by source</div>
+        <div id="chart-sources"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Stage Conversion</div>
+        <div class="chart-sub">% of candidates progressing</div>
+        <div id="chart-conversion"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Role Aging</div>
+        <div class="chart-sub">Open roles by days open</div>
+        <div id="chart-aging"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIPELINE (global) -->
+  <div class="page" id="page-pipeline">
+    <div class="kanban" id="kanban-board"></div>
+  </div>
+
+  <!-- ROLES -->
+  <div class="page" id="page-roles">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Roles</div>
+        <div class="flex gap-8 items-center">
+          <input class="search-input" placeholder="Search roles..." oninput="filterTable('roles-table', this.value)">
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-role')">+ New Role</button>
+        </div>
+      </div>
+      <table id="roles-table">
+        <thead><tr><th>Role</th><th>Department</th><th>Priority</th><th>Status</th><th>Days Open</th><th>Candidates</th><th></th></tr></thead>
+        <tbody id="roles-tbody"></tbody>
+      </table>
+      <div class="empty" id="roles-empty" style="display:none">
+        <div class="empty-icon">◻</div>
+        <div class="empty-title">No roles yet</div>
+        <div class="empty-sub">Add your first role to start building your pipeline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROLE DETAIL -->
+  <div class="page" id="page-role-detail">
+    <div class="detail-back" onclick="nav('roles')">← Back to Roles</div>
+    <div class="detail-header">
+      <div>
+        <div class="detail-name" id="rd-title"></div>
+        <div class="detail-meta" id="rd-meta"></div>
+      </div>
+      <div class="flex gap-8 wrap" style="align-items:center">
+        <select id="rd-status-select" class="search-input" onchange="changeRoleStatus(this.value)" style="width:160px"></select>
+        <button class="btn btn-ghost btn-sm" onclick="openAddCandidateToRole()">+ Add Candidate</button>
+        <button class="btn btn-primary btn-sm" onclick="openRoleTools()">Generate Tools</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('role', 'overview', this)">Overview</div>
+      <div class="tab" onclick="switchTab('role', 'pipeline', this)">Pipeline</div>
+      <div class="tab" onclick="switchTab('role', 'jd', this)">Job Description</div>
+      <div class="tab" onclick="switchTab('role', 'interview', this)">Interview Pack</div>
+      <div class="tab" onclick="switchTab('role', 'metrics', this)">Metrics</div>
+      <div class="tab" onclick="switchTab('role', 'history', this)">History</div>
+    </div>
+    <div class="tab-panel active" id="role-tab-overview"><div class="form-grid" id="rd-overview-grid"></div></div>
+    <div class="tab-panel" id="role-tab-pipeline"><div id="rd-kanban"></div></div>
+    <div class="tab-panel" id="role-tab-jd"><div id="rd-jd-content"></div></div>
+    <div class="tab-panel" id="role-tab-interview"><div id="rd-interview-content"></div></div>
+    <div class="tab-panel" id="role-tab-metrics"><div id="rd-metrics-content"></div></div>
+    <div class="tab-panel" id="role-tab-history"><div id="rd-history-content"></div></div>
+  </div>
+
+  <!-- CANDIDATES -->
+  <div class="page" id="page-candidates">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Candidates</div>
+        <div class="flex gap-8 items-center">
+          <input class="search-input" placeholder="Search candidates..." oninput="filterTable('candidates-table', this.value)">
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-candidate')">+ Add Candidate</button>
+        </div>
+      </div>
+      <table id="candidates-table">
+        <thead><tr><th>Name</th><th>Current Role</th><th>Source</th><th>Applied To</th><th>Stage</th><th>CV</th><th>Added</th><th></th></tr></thead>
+        <tbody id="candidates-tbody"></tbody>
+      </table>
+      <div class="empty" id="candidates-empty" style="display:none">
+        <div class="empty-icon">◯</div>
+        <div class="empty-title">No candidates yet</div>
+        <div class="empty-sub">Add your first candidate and tag them to a role</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANDIDATE DETAIL -->
+  <div class="page" id="page-candidate-detail">
+    <div class="detail-back" onclick="nav('candidates')">← Back to Candidates</div>
+    <div class="detail-header">
+      <div>
+        <div class="detail-name" id="cd-name"></div>
+        <div class="detail-meta" id="cd-meta"></div>
+      </div>
+      <div class="flex gap-8 wrap">
+        <button class="btn btn-ghost btn-sm" onclick="openScheduleInterview()">📅 Schedule Interview</button>
+        <button class="btn btn-ghost btn-sm" onclick="openCandidateComms()">✉ Send Comms</button>
+        <button class="btn btn-ghost btn-sm" onclick="openScorecard()">◉ Scorecard</button>
+        <button class="btn btn-primary btn-sm" onclick="openRefCheck()">◎ Ref Check</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('candidate', 'overview', this)">Overview</div>
+      <div class="tab" onclick="switchTab('candidate', 'interviews', this)">Interviews</div>
+      <div class="tab" onclick="switchTab('candidate', 'comms', this)">Comms</div>
+      <div class="tab" onclick="switchTab('candidate', 'scorecards', this)">Scorecards</div>
+      <div class="tab" onclick="switchTab('candidate', 'refcheck', this)">Reference Check</div>
+    </div>
+    <div class="tab-panel active" id="candidate-tab-overview"><div class="form-grid" id="cd-overview-grid"></div></div>
+    <div class="tab-panel" id="candidate-tab-interviews"><div id="cd-interviews-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-comms"><div id="cd-comms-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-scorecards"><div id="cd-scorecards-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-refcheck"><div id="cd-refcheck-content"></div></div>
+  </div>
+
+  <!-- INTERVIEWS -->
+  <div class="page" id="page-interviews">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Interviews</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-schedule-interview')">+ Schedule Interview</button>
+      </div>
+      <table>
+        <thead><tr><th>Candidate</th><th>Role</th><th>Stage</th><th>Date & Time</th><th>Interviewer</th><th>Format</th><th>Scorecard</th></tr></thead>
+        <tbody id="interviews-tbody"></tbody>
+      </table>
+      <div class="empty" id="interviews-empty" style="display:none">
+        <div class="empty-icon">▣</div>
+        <div class="empty-title">No interviews scheduled</div>
+        <div class="empty-sub">Schedule your first interview from a candidate's profile</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: JD -->
+  <div class="page" id="page-tool-jd">
+    <div class="table-wrap" style="padding:24px">
+      <div class="section-title">JD Generator</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Job Title <span class="req">*</span></label><input type="text" id="t-jd-title"></div>
+        <div class="field"><label class="field-label">Department</label><input type="text" id="t-jd-dept"></div>
+        <div class="field"><label class="field-label">Reports To</label><input type="text" id="t-jd-reports"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="t-jd-level"><option>Mid-level</option><option>Senior</option><option>Manager</option><option>Head of</option><option>Director</option></select></div>
+        <div class="field full"><label class="field-label">Key Responsibilities <span class="req">*</span></label><textarea id="t-jd-resp"></textarea></div>
+        <div class="field full"><label class="field-label">Requirements <span class="req">*</span></label><textarea id="t-jd-req"></textarea></div>
+        <div class="field full"><label class="field-label">Tone</label><select id="t-jd-tone"><option value="energetic and direct">Energetic & Direct (Eyewa default)</option><option value="professional and formal">Professional</option><option value="warm and human">Warm & Human</option><option value="bold and ambitious">Bold & Ambitious</option></select></div>
+      </div>
+      <div class="flex gap-8 mt-20">
+        <button class="btn btn-primary" onclick="runJDGenerator()">Generate JD →</button>
+        <button class="btn btn-ghost" onclick="clearTool('jd')">Clear</button>
+      </div>
+      <div id="jd-tool-output" style="display:none">
+        <div class="gen-output" id="jd-output-text"></div>
+        <div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('jd-output-text')">Copy</button><button class="btn btn-ghost btn-sm" onclick="window.print()">Print / PDF</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: Interview Pack -->
+  <div class="page" id="page-tool-interview">
+    <div class="table-wrap" style="padding:24px">
+      <div class="section-title">Interview Pack Generator</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="t-ip-title"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="t-ip-level"><option>Mid-level</option><option>Senior</option><option>Manager</option><option>Head of</option><option>Director</option></select></div>
+        <div class="field full"><label class="field-label">Job Description / Role Context <span class="req">*</span></label><textarea id="t-ip-jd"></textarea></div>
+        <div class="field full"><label class="field-label">Stages (comma separated)</label><input type="text" id="t-ip-stages" value="Recruiter Screen, HM Interview"></div>
+        <div class="field full"><label class="field-label">Competencies to focus on</label><input type="text" id="t-ip-comps"></div>
+      </div>
+      <div class="flex gap-8 mt-20">
+        <button class="btn btn-primary" onclick="runInterviewPack()">Generate Pack →</button>
+        <button class="btn btn-ghost" onclick="clearTool('interview')">Clear</button>
+      </div>
+      <div id="interview-tool-output" style="display:none">
+        <div class="gen-output" id="interview-output-text"></div>
+        <div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('interview-output-text')">Copy</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: Comms -->
+  <div class="page" id="page-tool-comms">
+    <div class="table-wrap" style="padding:24px">
+      <div class="section-title">Candidate Comms</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate Name <span class="req">*</span></label><input type="text" id="t-cm-name"></div>
+        <div class="field"><label class="field-label">Candidate Email</label><input type="email" id="t-cm-email"></div>
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="t-cm-role"></div>
+        <div class="field"><label class="field-label">Email Type <span class="req">*</span></label>
+          <select id="t-cm-type">
+            <option value="interview confirmation">Interview Confirmation</option>
+            <option value="post-interview thank you with 5 working day update promise">Post-Interview Thank You</option>
+            <option value="application rejection (no interview)">Application Rejection</option>
+            <option value="post-interview rejection">Post-Interview Rejection</option>
+            <option value="verbal offer">Offer Email</option>
+            <option value="general process update">General Update</option>
+            <option value="reference check request to candidate">Reference Check Request</option>
+          </select>
+        </div>
+        <div class="field"><label class="field-label">Your Name</label><input type="text" id="t-cm-sender" value="Humairaa"></div>
+        <div class="field"><label class="field-label">Your Email</label><input type="email" id="t-cm-senderemail" value="humairaa.patel@eyewa.com"></div>
+        <div class="field full"><label class="field-label">Additional Context</label><textarea id="t-cm-context" style="min-height:70px"></textarea></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runCommsGenerator()">Generate Email →</button><button class="btn btn-ghost" onclick="clearTool('comms')">Clear</button></div>
+      <div id="comms-tool-output" style="display:none">
+        <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;margin-top:14px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SUBJECT</div>
+          <div id="comms-output-subject" style="font-weight:600;font-size:14px;margin-bottom:12px"></div>
+          <div class="gen-output" id="comms-output-body" style="margin-top:0;max-height:300px"></div>
+        </div>
+        <div class="gen-actions"><button class="btn btn-primary btn-sm" onclick="openMailFromComms()">✉ Open in Mail</button><button class="btn btn-ghost btn-sm" onclick="copyGen('comms-output-body')">Copy</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: Scorecard -->
+  <div class="page" id="page-tool-scorecard">
+    <div class="table-wrap" style="padding:24px">
+      <div class="section-title">Interview Scorecard</div>
+      <div id="sc-cv-banner" style="display:none;margin-bottom:18px;padding:14px 16px;background:var(--card);border:1px solid var(--border2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Candidate CV / Notes</div>
+        <div id="sc-cv-content" style="font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate Name <span class="req">*</span></label><input type="text" id="t-sc-cand"></div>
+        <div class="field"><label class="field-label">Role <span class="req">*</span></label><input type="text" id="t-sc-role"></div>
+        <div class="field"><label class="field-label">Interview Stage</label><input type="text" id="t-sc-stage"></div>
+        <div class="field"><label class="field-label">Interviewer Name</label><input type="text" id="t-sc-interviewer"></div>
+        <div class="field full"><label class="field-label">Competencies (one per line: Name: Score)</label><textarea id="t-sc-comps" style="min-height:120px" placeholder="Customer Obsession: 4&#10;Commercial Acumen: 3&#10;Leadership: 5"></textarea></div>
+        <div class="field full"><label class="field-label">Interview Notes</label><textarea id="t-sc-notes"></textarea></div>
+        <div class="field"><label class="field-label">Overall Recommendation</label>
+          <select id="t-sc-rec"><option>Strong Hire</option><option>Hire</option><option>No Hire</option><option>Strong No Hire</option></select>
+        </div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runScorecardSummary()">Generate AI Summary →</button><button class="btn btn-green btn-sm" onclick="saveScorecard()">Save Scorecard</button></div>
+      <div id="scorecard-tool-output" style="display:none">
+        <div class="gen-output" id="scorecard-output-text"></div>
+        <div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('scorecard-output-text')">Copy</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: Reference Check -->
+  <div class="page" id="page-tool-refcheck">
+    <div class="table-wrap" style="padding:24px">
+      <div class="section-title">Reference Check Generator</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.7">Generates two emails: one to the candidate requesting references, one to send to each referee.</p>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate Name <span class="req">*</span></label><input type="text" id="t-rc-cand"></div>
+        <div class="field"><label class="field-label">Candidate Email</label><input type="email" id="t-rc-cand-email"></div>
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="t-rc-role"></div>
+        <div class="field"><label class="field-label">Your Name</label><input type="text" id="t-rc-sender" value="Humairaa"></div>
+        <div class="field"><label class="field-label">Referee 1 Name</label><input type="text" id="t-rc-ref1-name"></div>
+        <div class="field"><label class="field-label">Referee 1 Email</label><input type="email" id="t-rc-ref1-email"></div>
+        <div class="field"><label class="field-label">Referee 2 Name</label><input type="text" id="t-rc-ref2-name"></div>
+        <div class="field"><label class="field-label">Referee 2 Email</label><input type="email" id="t-rc-ref2-email"></div>
+        <div class="field full"><label class="field-label">Key things to probe (optional)</label><textarea id="t-rc-probe" style="min-height:70px"></textarea></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runRefCheck()">Generate Reference Emails →</button></div>
+      <div id="refcheck-tool-output" style="display:none">
+        <div class="ref-card mt-20">
+          <div class="flex justify-between items-center" style="margin-bottom:10px">
+            <div><div class="ref-card-title">Email 1 — To Candidate</div><div class="ref-card-sub">Requesting two references</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="openMailRef('ref-cand-email','ref-cand-subject','ref-cand-body')">✉ Open in Mail</button>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SUBJECT</div>
+          <div id="ref-cand-subject" style="font-weight:600;font-size:13px;margin-bottom:10px"></div>
+          <div id="ref-cand-body" class="gen-output" style="margin-top:0;max-height:220px"></div>
+        </div>
+        <div class="ref-card">
+          <div class="flex justify-between items-center" style="margin-bottom:10px">
+            <div><div class="ref-card-title">Email 2 — To Each Referee</div><div class="ref-card-sub">Send to both referees</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="openMailRef('ref1-email-addr','ref-ref-subject','ref-ref-body')">✉ Open in Mail</button>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SUBJECT</div>
+          <div id="ref-ref-subject" style="font-weight:600;font-size:13px;margin-bottom:10px"></div>
+          <div id="ref-ref-body" class="gen-output" style="margin-top:0;max-height:220px"></div>
+        </div>
+        <div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyRefEmails()">Copy Both</button></div>
+      </div>
+      <input type="hidden" id="ref-cand-email"><input type="hidden" id="ref1-email-addr">
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- ── MODALS ── -->
+
+<!-- ADD ROLE -->
+<div class="modal-overlay" id="modal-add-role">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Role</div><div class="modal-close" onclick="closeModal('modal-add-role')">✕</div></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="m-role-title"></div>
+        <div class="field"><label class="field-label">Department <span class="req">*</span></label><input type="text" id="m-role-dept"></div>
+        <div class="field"><label class="field-label">Hiring Manager</label><input type="text" id="m-role-hm"></div>
+        <div class="field"><label class="field-label">Reports To</label><input type="text" id="m-role-reports"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="m-role-seniority"><option>Junior</option><option>Mid-level</option><option selected>Senior</option><option>Manager</option><option>Senior Manager</option><option>Head of</option><option>Director</option><option>VP / C-Suite</option></select></div>
+        <div class="field"><label class="field-label">Priority</label><select id="m-role-priority"><option>Normal</option><option>High</option><option>Critical</option></select></div>
+        <div class="field"><label class="field-label">Location</label><input type="text" id="m-role-location" value="Dubai, UAE"></div>
+        <div class="field"><label class="field-label">Salary Range</label><input type="text" id="m-role-salary"></div>
+        <div class="field"><label class="field-label">Status</label><select id="m-role-status"><option value="Pending Approval">Pending Approval</option><option value="Open" selected>Open</option><option value="Draft">Draft</option><option value="On Hold">On Hold</option></select></div>
+        <div class="field"><label class="field-label">Target Start Date</label><input type="text" id="m-role-start"></div>
+        <div class="field full"><label class="field-label">Notes</label><textarea id="m-role-notes" style="min-height:60px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-role')">Cancel</button><button class="btn btn-primary" onclick="saveRole()">Create Role</button></div>
+  </div>
+</div>
+
+<!-- ADD CANDIDATE -->
+<div class="modal-overlay" id="modal-add-candidate">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Candidate</div><div class="modal-close" onclick="closeModal('modal-add-candidate')">✕</div></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label class="field-label">First Name <span class="req">*</span></label><input type="text" id="m-cand-fname"></div>
+        <div class="field"><label class="field-label">Last Name <span class="req">*</span></label><input type="text" id="m-cand-lname"></div>
+        <div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" id="m-cand-email"></div>
+        <div class="field"><label class="field-label">Phone</label><input type="tel" id="m-cand-phone"></div>
+        <div class="field"><label class="field-label">Current Title</label><input type="text" id="m-cand-title"></div>
+        <div class="field"><label class="field-label">Current Company</label><input type="text" id="m-cand-company"></div>
+        <div class="field"><label class="field-label">LinkedIn URL</label><input type="text" id="m-cand-linkedin"></div>
+        <div class="field"><label class="field-label">Source</label><select id="m-cand-source"><option>LinkedIn</option><option>Referral</option><option>Agency</option><option>Direct Apply</option><option>Job Board</option><option>Talent Pool</option></select></div>
+        <div class="field"><label class="field-label">Apply to Role</label><select id="m-cand-role"><option value="">— No role yet —</option></select></div>
+        <div class="field"><label class="field-label">Starting Stage</label><select id="m-cand-stage"><option>New Applicant</option><option>Screening</option><option>Recruiter Screen</option><option>HM Interview</option><option>Task / Case Study</option><option>CXO Interview</option><option>Founder Interview</option><option>Offered</option></select></div>
+        <div class="field full">
+          <label class="field-label">CV Upload (PDF / DOCX)</label>
+          <div class="file-upload-zone" id="cv-upload-zone" onclick="document.getElementById('m-cand-cv').click()">
+            📄 Click to upload CV (text will be extracted)
+          </div>
+          <input type="file" id="m-cand-cv" accept=".pdf,.docx,.doc,.txt" style="display:none" onchange="handleCVUpload(event)">
+        </div>
+        <div class="field full"><label class="field-label">CV Summary / Notes</label><textarea id="m-cand-notes" placeholder="Paste CV summary or any notes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-candidate')">Cancel</button><button class="btn btn-primary" onclick="saveCandidate()">Add Candidate</button></div>
+  </div>
+</div>
+
+<!-- SCHEDULE INTERVIEW -->
+<div class="modal-overlay" id="modal-schedule-interview">
+  <div class="modal modal-lg">
+    <div class="modal-header"><div class="modal-title">Schedule Interview</div><div class="modal-close" onclick="closeModal('modal-schedule-interview')">✕</div></div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.7">Generates a calendar invite for candidate, interviewer, and recruiter (you). The interviewer + recruiter invite include a link to the scorecard with the candidate's CV attached.</p>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate <span class="req">*</span></label><select id="m-int-candidate"><option value="">Select candidate</option></select></div>
+        <div class="field"><label class="field-label">Stage <span class="req">*</span></label><select id="m-int-stage"><option>Recruiter Screen</option><option>HM Interview</option><option>Task / Case Study</option><option>Panel Interview</option><option>CXO Interview</option><option>Founder Interview</option></select></div>
+        <div class="field"><label class="field-label">Interviewer Name <span class="req">*</span></label><input type="text" id="m-int-int-name"></div>
+        <div class="field"><label class="field-label">Interviewer Email <span class="req">*</span></label><input type="email" id="m-int-int-email"></div>
+        <div class="field"><label class="field-label">Date <span class="req">*</span></label><input type="date" id="m-int-date"></div>
+        <div class="field"><label class="field-label">Time <span class="req">*</span></label><input type="time" id="m-int-time"></div>
+        <div class="field"><label class="field-label">Duration (mins)</label><input type="text" id="m-int-duration" value="45"></div>
+        <div class="field"><label class="field-label">Format</label><select id="m-int-format"><option>Google Meet</option><option>Zoom</option><option>In Person — Eyewa HQ</option><option>Phone</option></select></div>
+        <div class="field full"><label class="field-label">Meeting Link / Location</label><input type="text" id="m-int-link" placeholder="meet.google.com/abc-defg or office address"></div>
+        <div class="field full"><label class="field-label">Recruiter Email (you)</label><input type="email" id="m-int-recruiter" value="humairaa.patel@eyewa.com"></div>
+      </div>
+      <div style="margin-top:18px;padding:14px 16px;background:rgba(79,142,247,0.06);border:1px solid rgba(79,142,247,0.15);border-radius:8px;font-size:12px;color:var(--accent2);line-height:1.7">
+        <strong>📅 Google Calendar integration</strong> — UI built. Backend wiring required by AI team. On save: stub creates a 3-way invite with scorecard URL inside.
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-schedule-interview')">Cancel</button><button class="btn btn-primary" onclick="scheduleInterview()">Schedule & Send Invites</button></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">GENERATING...</div>
+  <div class="loading-sub" id="loading-sub">Claude is working on it</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA LAYER (localStorage — AI team replaces with real DB)
+// ═══════════════════════════════════════════════
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem(`eyewa_ats_${k}`) || '[]'),
+  set: (k, v) => localStorage.setItem(`eyewa_ats_${k}`, JSON.stringify(v)),
+  id: () => Date.now().toString(36) + Math.random().toString(36).slice(2),
+};
+
+const getRoles = () => DB.get('roles');
+const getCandidates = () => DB.get('candidates');
+const getApplications = () => DB.get('applications');
+const getScorecards = () => DB.get('scorecards');
+const getComms = () => DB.get('comms');
+const getInterviews = () => DB.get('interviews');
+const getActivity = () => DB.get('activity');
+
+const saveRoles = (d) => DB.set('roles', d);
+const saveCandidates = (d) => DB.set('candidates', d);
+const saveApplications = (d) => DB.set('applications', d);
+const saveScorecards = (d) => DB.set('scorecards', d);
+const saveComms = (d) => DB.set('comms', d);
+const saveInterviews = (d) => DB.set('interviews', d);
+
+function logActivity(text) {
+  const acts = getActivity();
+  acts.unshift({ text, time: new Date().toISOString() });
+  DB.set('activity', acts.slice(0, 30));
+}
+
+function logRoleStatusChange(roleId, fromStatus, toStatus) {
+  const roles = getRoles();
+  const role = roles.find(r => r.id === roleId);
+  if (!role) return;
+  role.statusHistory = role.statusHistory || [];
+  role.statusHistory.push({ from: fromStatus, to: toStatus, date: new Date().toISOString() });
+  saveRoles(roles);
+}
+
+// ═══════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════
+let currentPage = 'dashboard';
+let currentRoleId = null;
+let currentCandidateId = null;
+
+const pageTitles = {
+  dashboard: 'DASHBOARD', reporting: 'REPORTING', pipeline: 'PIPELINE',
+  roles: 'ROLES', candidates: 'CANDIDATES', interviews: 'INTERVIEWS',
+  'role-detail': 'ROLE', 'candidate-detail': 'CANDIDATE',
+  'tool-jd': 'JD GENERATOR', 'tool-interview': 'INTERVIEW PACK',
+  'tool-comms': 'CANDIDATE COMMS', 'tool-scorecard': 'SCORECARD',
+  'tool-refcheck': 'REFERENCE CHECK',
+};
+
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById(`page-${page}`);
+  if (el) el.classList.add('active');
+  document.querySelector(`[onclick="nav('${page}')"]`)?.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[page] || page.toUpperCase();
+  currentPage = page;
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'reporting') renderReporting();
+  if (page === 'roles') renderRolesTable();
+  if (page === 'candidates') renderCandidatesTable();
+  if (page === 'pipeline') renderKanban();
+  if (page === 'interviews') renderInterviewsTable();
+  updateBadges();
+}
+
+// ═══════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════
+function openModal(id) {
+  if (id === 'modal-add-candidate') populateCandidateRoleDropdown();
+  if (id === 'modal-schedule-interview') populateInterviewCandidates();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+function populateCandidateRoleDropdown() {
+  const sel = document.getElementById('m-cand-role');
+  const roles = getRoles().filter(r => r.status === 'Open' || r.status === 'Draft' || r.status === 'Pending Approval');
+  sel.innerHTML = '<option value="">— No role yet —</option>' + roles.map(r => `<option value="${r.id}">${r.title}</option>`).join('');
+}
+function populateInterviewCandidates() {
+  const sel = document.getElementById('m-int-candidate');
+  const cands = getCandidates();
+  sel.innerHTML = '<option value="">Select candidate</option>' + cands.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+  if (currentCandidateId) sel.value = currentCandidateId;
+}
+
+// ═══════════════════════════════════════════════
+// CV UPLOAD HANDLING
+// ═══════════════════════════════════════════════
+let pendingCV = null;
+async function handleCVUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const zone = document.getElementById('cv-upload-zone');
+  zone.textContent = `Reading ${file.name}...`;
+  const ext = file.name.split('.').pop().toLowerCase();
+  try {
+    let text = '';
+    if (ext === 'txt') {
+      text = await file.text();
+    } else if (ext === 'pdf') {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      const pdfjs = window['pdfjs-dist/build/pdf'];
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const c = await page.getTextContent();
+        text += c.items.map(s => s.str).join(' ') + '\n';
+      }
+    } else if (ext === 'docx' || ext === 'doc') {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
+      const result = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+      text = result.value;
+    }
+    pendingCV = { name: file.name, text };
+    zone.classList.add('file-uploaded');
+    zone.innerHTML = `✓ ${file.name} — ${text.length.toLocaleString()} characters extracted`;
+    document.getElementById('m-cand-notes').value = text.slice(0, 3000);
+  } catch (err) {
+    zone.textContent = `✕ Couldn't read file. Try .txt instead.`;
+  }
+}
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    if (document.querySelector(`script[src="${src}"]`)) return res();
+    const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// ROLES
+// ═══════════════════════════════════════════════
+const ROLE_STATUSES = ['Pending Approval', 'Open', 'Draft', 'On Hold', 'Closed - Hired', 'Closed - Cancelled'];
+
+function saveRole() {
+  const title = document.getElementById('m-role-title').value.trim();
+  const dept = document.getElementById('m-role-dept').value.trim();
+  if (!title || !dept) { showToast('Role title and department required', 'error'); return; }
+  const roles = getRoles();
+  const initialStatus = document.getElementById('m-role-status').value;
+  const role = {
+    id: DB.id(), title, dept,
+    hm: document.getElementById('m-role-hm').value.trim(),
+    reportsTo: document.getElementById('m-role-reports').value.trim(),
+    seniority: document.getElementById('m-role-seniority').value,
+    priority: document.getElementById('m-role-priority').value,
+    location: document.getElementById('m-role-location').value.trim(),
+    salary: document.getElementById('m-role-salary').value.trim(),
+    status: initialStatus,
+    targetStart: document.getElementById('m-role-start').value.trim(),
+    notes: document.getElementById('m-role-notes').value.trim(),
+    dateOpened: new Date().toISOString().split('T')[0],
+    dateOpenedISO: new Date().toISOString(),
+    statusHistory: [{ from: null, to: initialStatus, date: new Date().toISOString() }],
+    jd: '', interviewPack: '',
+  };
+  roles.push(role);
+  saveRoles(roles);
+  logActivity(`New role created: <strong>${title}</strong> (${initialStatus})`);
+  closeModal('modal-add-role');
+  clearModalFields('modal-add-role');
+  showToast(`Role "${title}" created`);
+  updateBadges();
+  if (currentPage === 'roles') renderRolesTable();
+  if (currentPage === 'dashboard') renderDashboard();
+}
+
+function changeRoleStatus(newStatus) {
+  const roles = getRoles();
+  const role = roles.find(r => r.id === currentRoleId);
+  if (!role || role.status === newStatus) return;
+  const oldStatus = role.status;
+  role.status = newStatus;
+  role.statusHistory = role.statusHistory || [];
+  role.statusHistory.push({ from: oldStatus, to: newStatus, date: new Date().toISOString() });
+  if (newStatus.startsWith('Closed')) role.dateClosedISO = new Date().toISOString();
+  saveRoles(roles);
+  logActivity(`Role <strong>${role.title}</strong>: ${oldStatus} → ${newStatus}`);
+  showToast(`Status changed to ${newStatus}`);
+  openRoleDetail(currentRoleId);
+}
+
+function calculateDaysOpen(role) {
+  const status = role.status;
+  if (!role.statusHistory || role.statusHistory.length === 0) return 0;
+  const opened = role.statusHistory.find(h => h.to === 'Open');
+  if (!opened) return 0;
+  const closed = role.statusHistory.find(h => h.to.startsWith('Closed'));
+  const end = closed ? new Date(closed.date) : new Date();
+  return Math.floor((end - new Date(opened.date)) / 86400000);
+}
+
+function calculateDaysOnHold(role) {
+  if (!role.statusHistory) return 0;
+  let total = 0;
+  let holdStart = null;
+  role.statusHistory.forEach(h => {
+    if (h.to === 'On Hold') holdStart = new Date(h.date);
+    else if (holdStart && h.from === 'On Hold') {
+      total += Math.floor((new Date(h.date) - holdStart) / 86400000);
+      holdStart = null;
+    }
+  });
+  if (holdStart) total += Math.floor((new Date() - holdStart) / 86400000);
+  return total;
+}
+
+function openRoleDetail(id) {
+  currentRoleId = id;
+  const role = getRoles().find(r => r.id === id);
+  if (!role) return;
+  document.getElementById('rd-title').textContent = role.title;
+  const sBadge = `badge-${role.status.toLowerCase().replace(/[^a-z]/g,'-').replace('--','-')}`;
+  document.getElementById('rd-meta').innerHTML = `
+    <span class="badge ${roleStatusClass(role.status)}">${role.status}</span>
+    <span>${role.dept}</span> · <span>${role.seniority}</span> · <span>${role.location || 'Dubai, UAE'}</span>
+    ${role.hm ? `· <span>HM: ${role.hm}</span>` : ''}
+    · <span>${calculateDaysOpen(role)}d open</span>
+  `;
+  // Status select
+  const sel = document.getElementById('rd-status-select');
+  sel.innerHTML = ROLE_STATUSES.map(s => `<option value="${s}" ${s === role.status ? 'selected' : ''}>${s}</option>`).join('');
+
+  // Overview
+  document.getElementById('rd-overview-grid').innerHTML = `
+    <div class="field"><div class="field-label">Department</div><div class="info-val">${role.dept}</div></div>
+    <div class="field"><div class="field-label">Hiring Manager</div><div class="info-val">${role.hm || '—'}</div></div>
+    <div class="field"><div class="field-label">Reports To</div><div class="info-val">${role.reportsTo || '—'}</div></div>
+    <div class="field"><div class="field-label">Seniority</div><div class="info-val">${role.seniority}</div></div>
+    <div class="field"><div class="field-label">Priority</div><div class="info-val">${role.priority}</div></div>
+    <div class="field"><div class="field-label">Location</div><div class="info-val">${role.location || 'Dubai, UAE'}</div></div>
+    <div class="field"><div class="field-label">Salary Range</div><div class="info-val">${role.salary || '—'}</div></div>
+    <div class="field"><div class="field-label">Target Start</div><div class="info-val">${role.targetStart || '—'}</div></div>
+    <div class="field"><div class="field-label">Date Created</div><div class="info-val">${role.dateOpened}</div></div>
+    <div class="field"><div class="field-label">Days Open</div><div class="info-val">${calculateDaysOpen(role)} days</div></div>
+    <div class="field"><div class="field-label">Days On Hold</div><div class="info-val">${calculateDaysOnHold(role)} days</div></div>
+    <div class="field"><div class="field-label">Status</div><div class="info-val">${role.status}</div></div>
+    ${role.notes ? `<div class="field" style="grid-column:1/-1"><div class="field-label">Notes</div><div class="info-val text-muted" style="font-size:13px;line-height:1.6">${role.notes}</div></div>` : ''}
+  `;
+
+  // Pipeline (per-role kanban)
+  renderRoleKanban(id);
+
+  // JD
+  document.getElementById('rd-jd-content').innerHTML = role.jd
+    ? `<div class="gen-output">${role.jd}</div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('rd-jd-raw')">Copy</button><button class="btn btn-primary btn-sm" onclick="prefillAndGoJD()">Regenerate</button></div><div id="rd-jd-raw" style="display:none">${role.jd}</div>`
+    : `<div class="empty"><div class="empty-icon">✦</div><div class="empty-title">No JD yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="prefillAndGoJD()">Generate JD →</button>`;
+
+  // Interview Pack
+  document.getElementById('rd-interview-content').innerHTML = role.interviewPack
+    ? `<div class="gen-output">${role.interviewPack}</div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('rd-ip-raw')">Copy</button><button class="btn btn-primary btn-sm" onclick="prefillAndGoInterview()">Regenerate</button></div><div id="rd-ip-raw" style="display:none">${role.interviewPack}</div>`
+    : `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No interview pack</div></div><button class="btn btn-primary btn-sm mt-12" onclick="prefillAndGoInterview()">Generate Interview Pack →</button>`;
+
+  // Metrics
+  renderRoleMetrics(role);
+
+  // History
+  renderRoleHistory(role);
+
+  // Reset tabs
+  document.querySelectorAll('#page-role-detail .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-role-detail .tab-panel').forEach(t => t.classList.remove('active'));
+  document.querySelector('#page-role-detail .tab').classList.add('active');
+  document.getElementById('role-tab-overview').classList.add('active');
+  nav('role-detail');
+}
+
+function roleStatusClass(s) {
+  if (s === 'Pending Approval') return 'badge-pending';
+  if (s === 'Open') return 'badge-open';
+  if (s === 'Draft') return 'badge-draft';
+  if (s === 'On Hold') return 'badge-hold';
+  if (s === 'Closed - Hired') return 'badge-closed-hired';
+  if (s === 'Closed - Cancelled') return 'badge-closed-cancelled';
+  return 'badge-draft';
+}
+
+// PER-ROLE KANBAN
+const PIPELINE_STAGES = ['New Applicant', 'Screening', 'Recruiter Screen', 'HM Interview', 'Task / Case Study', 'CXO Interview', 'Founder Interview', 'Offered', 'Hired', 'Rejected'];
+const STAGE_COLORS = { 'New Applicant':'var(--mid)','Screening':'var(--accent)','Recruiter Screen':'var(--accent)','HM Interview':'var(--accent2)','Task / Case Study':'var(--purple)','Panel':'var(--orange)','CXO Interview':'var(--red)','Founder Interview':'var(--pink)','Offered':'var(--orange)','Hired':'var(--green)','Rejected':'var(--muted)' };
+
+function renderRoleKanban(roleId) {
+  const apps = getApplications().filter(a => a.roleId === roleId);
+  const cands = getCandidates();
+  const el = document.getElementById('rd-kanban');
+  el.innerHTML = `<div class="kanban">${PIPELINE_STAGES.map(stage => {
+    const stageApps = apps.filter(a => a.stage === stage);
+    return `<div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="kanban-col-name" style="color:${STAGE_COLORS[stage]}">${stage}</div>
+        <div class="kanban-col-count">${stageApps.length}</div>
+      </div>
+      <div class="kanban-cards">${stageApps.map(app => {
+        const c = cands.find(x => x.id === app.candidateId);
+        if (!c) return '';
+        const days = Math.floor((Date.now() - new Date(app.stageUpdated)) / 86400000);
+        return `<div class="kanban-card" onclick="openCandidateDetail('${c.id}')">
+          <div class="kc-name">${c.firstName} ${c.lastName}</div>
+          <div class="kc-role text-sm">${c.currentTitle || c.source}</div>
+          <div class="kc-meta"><span class="kc-days">${days}d in stage</span></div>
+          <div class="kc-actions">
+            <button class="kc-act-btn" onclick="event.stopPropagation();moveStage('${app.id}',1)">Advance →</button>
+            <button class="kc-act-btn" onclick="event.stopPropagation();rejectApp('${app.id}')">Reject</button>
+          </div>
+        </div>`;
+      }).join('') || `<div class="text-muted text-sm" style="padding:8px;text-align:center">Empty</div>`}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function moveStage(appId, dir) {
+  const apps = getApplications();
+  const app = apps.find(a => a.id === appId);
+  if (!app) return;
+  const idx = PIPELINE_STAGES.indexOf(app.stage);
+  if (dir > 0 && idx < PIPELINE_STAGES.length - 2) {
+    app.stage = PIPELINE_STAGES[idx + 1];
+    app.stageUpdated = new Date().toISOString();
+    app.stageHistory = app.stageHistory || [];
+    app.stageHistory.push({ stage: app.stage, date: new Date().toISOString() });
+    saveApplications(apps);
+    const cand = getCandidates().find(c => c.id === app.candidateId);
+    logActivity(`<strong>${cand?.firstName} ${cand?.lastName}</strong> moved to <strong>${app.stage}</strong>`);
+    showToast(`Moved to ${app.stage}`);
+    if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+    if (currentPage === 'pipeline') renderKanban();
+  }
+}
+
+function rejectApp(appId) {
+  if (!confirm('Reject this candidate?')) return;
+  const apps = getApplications();
+  const app = apps.find(a => a.id === appId);
+  if (!app) return;
+  app.stage = 'Rejected';
+  app.status = 'Rejected';
+  app.stageUpdated = new Date().toISOString();
+  saveApplications(apps);
+  const cand = getCandidates().find(c => c.id === app.candidateId);
+  logActivity(`<strong>${cand?.firstName} ${cand?.lastName}</strong> rejected`);
+  if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+  if (currentPage === 'pipeline') renderKanban();
+}
+
+function renderRoleMetrics(role) {
+  const apps = getApplications().filter(a => a.roleId === role.id);
+  const total = apps.length;
+  const hired = apps.filter(a => a.stage === 'Hired').length;
+  const offered = apps.filter(a => ['Offered', 'Hired'].includes(a.stage)).length;
+  const rejected = apps.filter(a => a.stage === 'Rejected').length;
+  const inProcess = apps.filter(a => !['Hired', 'Rejected'].includes(a.stage)).length;
+  document.getElementById('rd-metrics-content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card yellow"><div class="stat-label">Total Applicants</div><div class="stat-num">${total}</div></div>
+      <div class="stat-card blue"><div class="stat-label">In Process</div><div class="stat-num">${inProcess}</div></div>
+      <div class="stat-card purple"><div class="stat-label">Offered</div><div class="stat-num">${offered}</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired</div><div class="stat-num">${hired}</div></div>
+    </div>
+    <div class="chart-card mt-20">
+      <div class="chart-title">Pipeline Funnel</div>
+      <div class="chart-sub">${role.title}</div>
+      ${PIPELINE_STAGES.filter(s => s !== 'Rejected').map(stage => {
+        const c = apps.filter(a => a.stage === stage).length;
+        const pct = total ? (c / total) * 100 : 0;
+        return `<div class="bar-row">
+          <div class="bar-label">${stage}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${STAGE_COLORS[stage] || 'var(--accent)'}"></div></div>
+          <div class="bar-value">${c}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderRoleHistory(role) {
+  const history = (role.statusHistory || []).map(h => ({ ...h, type: 'status' }));
+  history.sort((a, b) => new Date(b.date) - new Date(a.date));
+  document.getElementById('rd-history-content').innerHTML = history.length ? history.map(h => {
+    const dt = new Date(h.date);
+    return `<div class="activity-item">
+      <div class="activity-dot"></div>
+      <div>
+        <div class="activity-text">Status changed: <strong>${h.from || 'Created'}</strong> → <strong>${h.to}</strong></div>
+        <div class="activity-time">${dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+      </div>
+    </div>`;
+  }).join('') : `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No history yet</div></div>`;
+}
+
+function openAddCandidateToRole() {
+  openModal('modal-add-candidate');
+  if (currentRoleId) {
+    populateCandidateRoleDropdown();
+    setTimeout(() => { document.getElementById('m-cand-role').value = currentRoleId; }, 50);
+  }
+}
+
+function openRoleTools() { prefillAndGoJD(); }
+
+function prefillAndGoJD() {
+  const role = getRoles().find(r => r.id === currentRoleId);
+  if (!role) return;
+  document.getElementById('t-jd-title').value = role.title;
+  document.getElementById('t-jd-dept').value = role.dept;
+  document.getElementById('t-jd-reports').value = role.reportsTo || '';
+  nav('tool-jd');
+}
+
+function prefillAndGoInterview() {
+  const role = getRoles().find(r => r.id === currentRoleId);
+  if (!role) return;
+  document.getElementById('t-ip-title').value = role.title;
+  document.getElementById('t-ip-jd').value = role.jd || '';
+  nav('tool-interview');
+}
+
+// ═══════════════════════════════════════════════
+// CANDIDATES
+// ═══════════════════════════════════════════════
+function saveCandidate() {
+  const fn = document.getElementById('m-cand-fname').value.trim();
+  const ln = document.getElementById('m-cand-lname').value.trim();
+  const email = document.getElementById('m-cand-email').value.trim();
+  if (!fn || !ln || !email) { showToast('Name and email required', 'error'); return; }
+  const cands = getCandidates();
+  const cand = {
+    id: DB.id(), firstName: fn, lastName: ln, email,
+    phone: document.getElementById('m-cand-phone').value.trim(),
+    currentTitle: document.getElementById('m-cand-title').value.trim(),
+    currentCompany: document.getElementById('m-cand-company').value.trim(),
+    linkedin: document.getElementById('m-cand-linkedin').value.trim(),
+    source: document.getElementById('m-cand-source').value,
+    notes: document.getElementById('m-cand-notes').value.trim(),
+    cv: pendingCV,
+    dateAdded: new Date().toISOString().split('T')[0],
+  };
+  cands.push(cand);
+  saveCandidates(cands);
+  pendingCV = null;
+  // Application
+  const roleId = document.getElementById('m-cand-role').value;
+  const stage = document.getElementById('m-cand-stage').value;
+  if (roleId) {
+    const apps = getApplications();
+    apps.push({
+      id: DB.id(), candidateId: cand.id, roleId,
+      stage, stageUpdated: new Date().toISOString(),
+      stageHistory: [{ stage, date: new Date().toISOString() }],
+      status: 'Active', dateApplied: new Date().toISOString(),
+    });
+    saveApplications(apps);
+    const role = getRoles().find(r => r.id === roleId);
+    logActivity(`<strong>${fn} ${ln}</strong> added to <strong>${role?.title}</strong> — ${stage}`);
+  } else {
+    logActivity(`New candidate added: <strong>${fn} ${ln}</strong>`);
+  }
+  closeModal('modal-add-candidate');
+  clearModalFields('modal-add-candidate');
+  document.getElementById('cv-upload-zone').classList.remove('file-uploaded');
+  document.getElementById('cv-upload-zone').textContent = '📄 Click to upload CV (text will be extracted)';
+  showToast(`${fn} ${ln} added`);
+  updateBadges();
+  if (currentPage === 'candidates') renderCandidatesTable();
+  if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+  if (currentPage === 'dashboard') renderDashboard();
+}
+
+function openCandidateDetail(id) {
+  currentCandidateId = id;
+  const cand = getCandidates().find(c => c.id === id);
+  if (!cand) return;
+  const apps = getApplications().filter(a => a.candidateId === id);
+  const roles = getRoles();
+  document.getElementById('cd-name').textContent = `${cand.firstName} ${cand.lastName}`;
+  const lastApp = apps[apps.length - 1];
+  const appRole = lastApp ? roles.find(r => r.id === lastApp.roleId) : null;
+  document.getElementById('cd-meta').innerHTML = `
+    ${cand.currentTitle ? `<span>${cand.currentTitle}</span>` : ''}
+    ${cand.currentCompany ? `· <span>${cand.currentCompany}</span>` : ''}
+    · <span>${cand.email}</span>
+    ${appRole ? `· <span class="badge badge-active">${lastApp.stage}</span>` : ''}
+  `;
+  document.getElementById('cd-overview-grid').innerHTML = `
+    <div class="field"><div class="field-label">Email</div><div class="info-val">${cand.email}</div></div>
+    <div class="field"><div class="field-label">Phone</div><div class="info-val">${cand.phone || '—'}</div></div>
+    <div class="field"><div class="field-label">Current Title</div><div class="info-val">${cand.currentTitle || '—'}</div></div>
+    <div class="field"><div class="field-label">Current Company</div><div class="info-val">${cand.currentCompany || '—'}</div></div>
+    <div class="field"><div class="field-label">Source</div><div class="info-val">${cand.source}</div></div>
+    <div class="field"><div class="field-label">Date Added</div><div class="info-val">${cand.dateAdded}</div></div>
+    ${cand.linkedin ? `<div class="field" style="grid-column:1/-1"><div class="field-label">LinkedIn</div><div class="info-val"><a href="${cand.linkedin}" target="_blank" style="color:var(--accent2)">${cand.linkedin}</a></div></div>` : ''}
+    ${apps.length ? `<div class="field" style="grid-column:1/-1"><div class="field-label">Applied To</div><div class="info-val">${apps.map(a => roles.find(r => r.id === a.roleId)?.title).filter(Boolean).join(', ')}</div></div>` : ''}
+    ${cand.cv ? `<div class="field" style="grid-column:1/-1"><div class="field-label">CV</div><div class="info-val text-muted" style="font-size:12px">📄 ${cand.cv.name} — ${cand.cv.text.length.toLocaleString()} chars extracted</div></div>` : ''}
+    ${cand.notes ? `<div class="field" style="grid-column:1/-1"><div class="field-label">CV Summary / Notes</div><div class="info-val text-muted" style="font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:200px;overflow-y:auto">${cand.notes}</div></div>` : ''}
+  `;
+  renderCandidateInterviews(id);
+  renderCandidateComms(id);
+  renderCandidateScorecards(id);
+  // Reset tabs
+  document.querySelectorAll('#page-candidate-detail .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-candidate-detail .tab-panel').forEach(t => t.classList.remove('active'));
+  document.querySelector('#page-candidate-detail .tab').classList.add('active');
+  document.getElementById('candidate-tab-overview').classList.add('active');
+  nav('candidate-detail');
+}
+
+function renderCandidateInterviews(candidateId) {
+  const ints = getInterviews().filter(i => i.candidateId === candidateId);
+  const el = document.getElementById('cd-interviews-list');
+  if (!ints.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">▣</div><div class="empty-title">No interviews</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openScheduleInterview()">+ Schedule Interview</button>`;
+    return;
+  }
+  el.innerHTML = ints.map(i => `
+    <div class="interview-card">
+      <div class="interview-info">
+        <div class="interview-title">${i.stage} — ${i.interviewerName}</div>
+        <div class="interview-meta">${i.date} ${i.time} · ${i.format} · ${i.duration} min</div>
+      </div>
+      <span class="badge badge-active">Scheduled</span>
+    </div>
+  `).join('') + `<button class="btn btn-ghost btn-sm mt-12" onclick="openScheduleInterview()">+ Schedule Another</button>`;
+}
+
+function renderCandidateComms(candidateId) {
+  const comms = getComms().filter(c => c.candidateId === candidateId);
+  const el = document.getElementById('cd-comms-list');
+  if (!comms.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">✉</div><div class="empty-title">No comms yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openCandidateComms()">Send First Email →</button>`;
+    return;
+  }
+  el.innerHTML = comms.map(c => `
+    <div class="comms-item">
+      <div class="comms-item-header"><span class="comms-type">${c.type}</span><span class="comms-date">${c.date}</span></div>
+      <div class="comms-subject">${c.subject}</div>
+      <div class="comms-preview">${c.body?.slice(0,140)}...</div>
+    </div>
+  `).join('');
+}
+
+function renderCandidateScorecards(candidateId) {
+  const scs = getScorecards().filter(s => s.candidateId === candidateId);
+  const el = document.getElementById('cd-scorecards-list');
+  if (!scs.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">◉</div><div class="empty-title">No scorecards</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openScorecard()">Submit Scorecard →</button>`;
+    return;
+  }
+  el.innerHTML = scs.map(sc => `
+    <div class="ref-card">
+      <div class="flex justify-between items-center" style="margin-bottom:8px">
+        <div class="ref-card-title">${sc.stage} — ${sc.interviewer}</div>
+        <span class="badge ${['Strong Hire','Hire'].includes(sc.recommendation) ? 'badge-hired' : 'badge-rejected'}">${sc.recommendation}</span>
+      </div>
+      <div class="ref-card-sub" style="margin-bottom:10px">${sc.date}</div>
+      ${sc.aiSummary ? `<div class="text-muted" style="font-size:12px;line-height:1.6;white-space:pre-wrap">${sc.aiSummary}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function openCandidateComms() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) {
+    document.getElementById('t-cm-name').value = cand.firstName;
+    document.getElementById('t-cm-email').value = cand.email;
+    document.getElementById('t-cm-role').value = role?.title || '';
+  }
+  nav('tool-comms');
+}
+
+function openScorecard() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) {
+    document.getElementById('t-sc-cand').value = `${cand.firstName} ${cand.lastName}`;
+    document.getElementById('t-sc-role').value = role?.title || '';
+    if (cand.notes || cand.cv) {
+      document.getElementById('sc-cv-banner').style.display = 'block';
+      document.getElementById('sc-cv-content').textContent = cand.notes || cand.cv?.text?.slice(0,1500) || '';
+    }
+  }
+  nav('tool-scorecard');
+}
+
+function openRefCheck() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) {
+    document.getElementById('t-rc-cand').value = `${cand.firstName} ${cand.lastName}`;
+    document.getElementById('t-rc-cand-email').value = cand.email;
+    document.getElementById('t-rc-role').value = role?.title || '';
+  }
+  nav('tool-refcheck');
+}
+
+function openScheduleInterview() {
+  openModal('modal-schedule-interview');
+}
+
+// ═══════════════════════════════════════════════
+// INTERVIEW SCHEDULING
+// ═══════════════════════════════════════════════
+function scheduleInterview() {
+  const candId = document.getElementById('m-int-candidate').value;
+  const stage = document.getElementById('m-int-stage').value;
+  const intName = document.getElementById('m-int-int-name').value.trim();
+  const intEmail = document.getElementById('m-int-int-email').value.trim();
+  const date = document.getElementById('m-int-date').value;
+  const time = document.getElementById('m-int-time').value;
+  const recruiterEmail = document.getElementById('m-int-recruiter').value.trim();
+  if (!candId || !intName || !intEmail || !date || !time) { showToast('Fill all required fields', 'error'); return; }
+
+  const cand = getCandidates().find(c => c.id === candId);
+  const apps = getApplications().filter(a => a.candidateId === candId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+
+  const interview = {
+    id: DB.id(),
+    candidateId: candId,
+    candidateName: cand ? `${cand.firstName} ${cand.lastName}` : '',
+    candidateEmail: cand?.email,
+    applicationId: apps[apps.length-1]?.id,
+    roleId: role?.id,
+    roleTitle: role?.title || '',
+    stage,
+    interviewerName: intName,
+    interviewerEmail: intEmail,
+    recruiterEmail,
+    date, time,
+    duration: document.getElementById('m-int-duration').value || '45',
+    format: document.getElementById('m-int-format').value,
+    link: document.getElementById('m-int-link').value.trim(),
+    status: 'Scheduled',
+    scorecardUrl: `${window.location.origin}${window.location.pathname}#scorecard-${apps[apps.length-1]?.id || ''}`,
+    cvAttached: !!cand?.cv,
+    createdAt: new Date().toISOString(),
+  };
+
+  const ints = getInterviews();
+  ints.push(interview);
+  saveInterviews(ints);
+
+  // Generate Google Calendar link (this works! creates a calendar event when clicked)
+  const startISO = new Date(`${date}T${time}`).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+  const endISO = new Date(new Date(`${date}T${time}`).getTime() + parseInt(interview.duration) * 60000).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+
+  const candidateInviteText = `Interview for ${role?.title || 'role'} at Eyewa. Looking forward to meeting you!\n\n${interview.link}`;
+  const internalInviteText = `Interview with ${cand?.firstName} ${cand?.lastName} — ${role?.title || 'role'}\n\nStage: ${stage}\nFormat: ${interview.format}\n\n📋 Scorecard: ${interview.scorecardUrl}\n📄 Candidate CV is linked from the scorecard\n\n${interview.link}`;
+
+  // Create three Google Calendar URLs
+  const candidateGcalUrl = `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(`Interview with Eyewa — ${role?.title || ''}`)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(candidateInviteText)}&add=${encodeURIComponent(cand?.email || '')}&location=${encodeURIComponent(interview.link || interview.format)}`;
+  const interviewerGcalUrl = `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(`Interview: ${cand?.firstName} ${cand?.lastName} — ${role?.title || ''}`)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(internalInviteText)}&add=${encodeURIComponent(`${intEmail},${recruiterEmail}`)}&location=${encodeURIComponent(interview.link || interview.format)}`;
+
+  closeModal('modal-schedule-interview');
+  logActivity(`Interview scheduled: <strong>${cand?.firstName} ${cand?.lastName}</strong> — ${stage} on ${date}`);
+  showToast(`Interview scheduled — opening calendar`);
+  updateBadges();
+
+  // Open both calendar invites in new tabs (user will approve and send)
+  window.open(candidateGcalUrl, '_blank');
+  setTimeout(() => window.open(interviewerGcalUrl, '_blank'), 500);
+
+  if (currentPage === 'interviews') renderInterviewsTable();
+  if (currentPage === 'candidate-detail') renderCandidateInterviews(currentCandidateId);
+}
+
+function renderInterviewsTable() {
+  const ints = getInterviews();
+  const tbody = document.getElementById('interviews-tbody');
+  document.getElementById('interviews-empty').style.display = ints.length ? 'none' : 'block';
+  const scs = getScorecards();
+  tbody.innerHTML = ints.map(i => {
+    const sc = scs.find(s => s.applicationId === i.applicationId && s.stage === i.stage);
+    return `<tr onclick="openCandidateDetail('${i.candidateId}')">
+      <td><strong>${i.candidateName}</strong></td>
+      <td>${i.roleTitle}</td>
+      <td><span class="badge badge-active">${i.stage}</span></td>
+      <td>${i.date} ${i.time}</td>
+      <td>${i.interviewerName}</td>
+      <td class="text-muted text-sm">${i.format}</td>
+      <td>${sc ? `<span class="badge badge-hired">Submitted</span>` : `<span class="badge badge-pending">Pending</span>`}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// TABLES
+// ═══════════════════════════════════════════════
+function renderRolesTable() {
+  const roles = getRoles();
+  const tbody = document.getElementById('roles-tbody');
+  document.getElementById('roles-empty').style.display = roles.length ? 'none' : 'block';
+  const apps = getApplications();
+  tbody.innerHTML = roles.map(r => {
+    const count = apps.filter(a => a.roleId === r.id).length;
+    const pClass = r.priority === 'Critical' ? 'p-critical' : r.priority === 'High' ? 'p-high' : 'p-normal';
+    return `<tr onclick="openRoleDetail('${r.id}')">
+      <td><strong>${r.title}</strong></td>
+      <td>${r.dept}</td>
+      <td><span class="priority-dot ${pClass}"></span>${r.priority}</td>
+      <td><span class="badge ${roleStatusClass(r.status)}">${r.status}</span></td>
+      <td>${calculateDaysOpen(r)}d</td>
+      <td>${count}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openRoleDetail('${r.id}')">Open →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCandidatesTable() {
+  const cands = getCandidates();
+  const tbody = document.getElementById('candidates-tbody');
+  document.getElementById('candidates-empty').style.display = cands.length ? 'none' : 'block';
+  const apps = getApplications();
+  const roles = getRoles();
+  tbody.innerHTML = cands.map(c => {
+    const app = apps.filter(a => a.candidateId === c.id).pop();
+    const role = app ? roles.find(r => r.id === app.roleId) : null;
+    const stageClass = app ? (app.stage === 'Offered' ? 'badge-offer' : app.stage === 'Hired' ? 'badge-hired' : app.stage === 'Rejected' ? 'badge-rejected' : 'badge-active') : 'badge-draft';
+    return `<tr onclick="openCandidateDetail('${c.id}')">
+      <td><strong>${c.firstName} ${c.lastName}</strong><div class="text-muted text-sm">${c.email}</div></td>
+      <td>${c.currentTitle ? `${c.currentTitle}${c.currentCompany ? ' · ' + c.currentCompany : ''}` : '—'}</td>
+      <td class="text-muted text-sm">${c.source}</td>
+      <td>${role ? role.title : '<span class="text-muted">—</span>'}</td>
+      <td>${app ? `<span class="badge ${stageClass}">${app.stage}</span>` : '—'}</td>
+      <td>${c.cv ? '📄' : '—'}</td>
+      <td class="text-muted text-sm">${c.dateAdded}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openCandidateDetail('${c.id}')">View →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// GLOBAL KANBAN
+// ═══════════════════════════════════════════════
+function renderKanban() {
+  const apps = getApplications();
+  const cands = getCandidates();
+  const roles = getRoles();
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = PIPELINE_STAGES.filter(s => s !== 'Rejected').map(stage => {
+    const stageApps = apps.filter(a => a.stage === stage);
+    const cards = stageApps.map(app => {
+      const c = cands.find(x => x.id === app.candidateId);
+      const r = roles.find(x => x.id === app.roleId);
+      if (!c) return '';
+      const days = Math.floor((Date.now() - new Date(app.stageUpdated)) / 86400000);
+      return `<div class="kanban-card" onclick="openCandidateDetail('${c.id}')">
+        <div class="kc-name">${c.firstName} ${c.lastName}</div>
+        <div class="kc-role">${r?.title || '—'}</div>
+        <div class="kc-meta"><span class="kc-days">${days}d in stage</span></div>
+      </div>`;
+    }).join('');
+    return `<div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="kanban-col-name" style="color:${STAGE_COLORS[stage]}">${stage}</div>
+        <div class="kanban-col-count">${stageApps.length}</div>
+      </div>
+      <div class="kanban-cards">${cards || `<div class="text-muted text-sm" style="padding:8px;text-align:center">Empty</div>`}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════
+function renderDashboard() {
+  const roles = getRoles();
+  const apps = getApplications();
+  const scs = getScorecards();
+  const open = roles.filter(r => r.status === 'Open').length;
+  const active = apps.filter(a => !['Hired','Rejected'].includes(a.stage)).length;
+  const hired = apps.filter(a => a.stage === 'Hired').length;
+  const pendingFeedback = apps.filter(a => a.stage.includes('Interview') && !scs.find(s => s.applicationId === a.id)).length;
+  document.getElementById('stat-open').textContent = open;
+  document.getElementById('stat-candidates').textContent = active;
+  document.getElementById('stat-hired').textContent = hired;
+  document.getElementById('stat-feedback').textContent = pendingFeedback;
+  const el = document.getElementById('dash-roles-list');
+  const openRoles = roles.filter(r => r.status === 'Open').slice(0, 6);
+  el.innerHTML = openRoles.length ? openRoles.map(r => {
+    const count = apps.filter(a => a.roleId === r.id).length;
+    const pClass = r.priority === 'Critical' ? 'p-critical' : r.priority === 'High' ? 'p-high' : 'p-normal';
+    return `<div class="activity-item" style="cursor:pointer" onclick="openRoleDetail('${r.id}')">
+      <div class="priority-dot ${pClass}"></div>
+      <div><div style="font-size:13px;font-weight:600">${r.title}</div><div class="text-muted text-sm">${r.dept} · ${count} candidate${count !== 1 ? 's' : ''} · ${calculateDaysOpen(r)}d open</div></div>
+    </div>`;
+  }).join('') : `<div class="empty"><div class="empty-icon">◻</div><div class="empty-title">No open roles</div></div>`;
+  const acts = getActivity();
+  document.getElementById('activity-feed').innerHTML = acts.length ? acts.slice(0, 8).map(a => `
+    <div class="activity-item">
+      <div class="activity-dot"></div>
+      <div><div class="activity-text">${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div></div>
+    </div>
+  `).join('') : `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No activity yet</div></div>`;
+}
+
+// ═══════════════════════════════════════════════
+// REPORTING
+// ═══════════════════════════════════════════════
+function renderReporting() {
+  const roles = getRoles();
+  const apps = getApplications();
+  const cands = getCandidates();
+
+  // Big metrics
+  const closed = roles.filter(r => r.status.startsWith('Closed'));
+  const tthValues = closed.map(r => calculateDaysOpen(r)).filter(d => d > 0);
+  const avgTTH = tthValues.length ? Math.round(tthValues.reduce((a, b) => a + b, 0) / tthValues.length) : '—';
+  document.getElementById('m-tth').textContent = avgTTH;
+  document.getElementById('m-vacancies').textContent = roles.length;
+  document.getElementById('m-hired-total').textContent = apps.filter(a => a.stage === 'Hired').length;
+  const offers = apps.filter(a => ['Offered','Hired'].includes(a.stage)).length;
+  const accepts = apps.filter(a => a.stage === 'Hired').length;
+  const rate = offers > 0 ? Math.round((accepts / offers) * 100) + '%' : '—';
+  document.getElementById('m-accept-rate').textContent = rate;
+
+  // Role status chart
+  const statusCounts = {};
+  ROLE_STATUSES.forEach(s => statusCounts[s] = roles.filter(r => r.status === s).length);
+  const maxStatus = Math.max(1, ...Object.values(statusCounts));
+  document.getElementById('chart-role-status').innerHTML = ROLE_STATUSES.map(s => {
+    const c = statusCounts[s];
+    const pct = (c / maxStatus) * 100;
+    const colorMap = { 'Pending Approval':'var(--accent)','Open':'var(--green)','Draft':'var(--mid)','On Hold':'var(--orange)','Closed - Hired':'var(--teal)','Closed - Cancelled':'var(--muted)' };
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${colorMap[s]}"></div></div><div class="bar-value">${c}</div></div>`;
+  }).join('');
+
+  // Pipeline velocity (avg days per stage)
+  const stageDays = {};
+  PIPELINE_STAGES.forEach(s => {
+    const stageApps = apps.filter(a => a.stageHistory?.some(h => h.stage === s));
+    const days = stageApps.map(a => {
+      const h = a.stageHistory.find(x => x.stage === s);
+      const next = a.stageHistory[a.stageHistory.indexOf(h) + 1];
+      if (!next) return 0;
+      return Math.floor((new Date(next.date) - new Date(h.date)) / 86400000);
+    }).filter(d => d > 0);
+    stageDays[s] = days.length ? Math.round(days.reduce((a,b)=>a+b,0) / days.length) : 0;
+  });
+  const maxDays = Math.max(1, ...Object.values(stageDays));
+  document.getElementById('chart-velocity').innerHTML = PIPELINE_STAGES.filter(s => stageDays[s] > 0).map(s => {
+    const d = stageDays[s];
+    const pct = (d / maxDays) * 100;
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${STAGE_COLORS[s]}"></div></div><div class="bar-value">${d}d</div></div>`;
+  }).join('') || '<div class="text-muted text-sm">No data yet</div>';
+
+  // Offer outcomes
+  const offered = apps.filter(a => ['Offered','Hired'].includes(a.stage)).length;
+  const acceptedC = apps.filter(a => a.stage === 'Hired').length;
+  const declinedC = apps.filter(a => a.rejectReason === 'declined offer').length;
+  const droppedC = apps.filter(a => a.rejectReason === 'dropped out').length;
+  const pendingC = offered - acceptedC - declinedC - droppedC;
+  document.getElementById('chart-offers').innerHTML = `
+    <div class="bar-row"><div class="bar-label">Accepted</div><div class="bar-track"><div class="bar-fill" style="width:${offered ? acceptedC/offered*100 : 0}%;background:var(--green)"></div></div><div class="bar-value">${acceptedC}</div></div>
+    <div class="bar-row"><div class="bar-label">Pending</div><div class="bar-track"><div class="bar-fill" style="width:${offered ? Math.max(0,pendingC)/offered*100 : 0}%;background:var(--accent2)"></div></div><div class="bar-value">${Math.max(0,pendingC)}</div></div>
+    <div class="bar-row"><div class="bar-label">Declined</div><div class="bar-track"><div class="bar-fill" style="width:${offered ? declinedC/offered*100 : 0}%;background:var(--red)"></div></div><div class="bar-value">${declinedC}</div></div>
+    <div class="bar-row"><div class="bar-label">Dropped Out</div><div class="bar-track"><div class="bar-fill" style="width:${offered ? droppedC/offered*100 : 0}%;background:var(--orange)"></div></div><div class="bar-value">${droppedC}</div></div>
+  `;
+
+  // Sources
+  const sourceCounts = {};
+  cands.forEach(c => sourceCounts[c.source] = (sourceCounts[c.source] || 0) + 1);
+  const maxSrc = Math.max(1, ...Object.values(sourceCounts));
+  document.getElementById('chart-sources').innerHTML = Object.entries(sourceCounts).map(([k,v]) => {
+    const pct = (v / maxSrc) * 100;
+    return `<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--accent2)"></div></div><div class="bar-value">${v}</div></div>`;
+  }).join('') || '<div class="text-muted text-sm">No data yet</div>';
+
+  // Stage conversion
+  const stageReached = {};
+  PIPELINE_STAGES.forEach(s => stageReached[s] = apps.filter(a => a.stageHistory?.some(h => h.stage === s)).length);
+  const totalApps = apps.length || 1;
+  document.getElementById('chart-conversion').innerHTML = PIPELINE_STAGES.filter(s => s !== 'Rejected').map(s => {
+    const c = stageReached[s] || 0;
+    const pct = (c / totalApps) * 100;
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${STAGE_COLORS[s]}"></div></div><div class="bar-value">${c}</div></div>`;
+  }).join('') || '<div class="text-muted text-sm">No data yet</div>';
+
+  // Aging
+  const openRoles = roles.filter(r => r.status === 'Open').sort((a,b) => calculateDaysOpen(b) - calculateDaysOpen(a)).slice(0, 8);
+  const maxAge = Math.max(1, ...openRoles.map(r => calculateDaysOpen(r)));
+  document.getElementById('chart-aging').innerHTML = openRoles.length ? openRoles.map(r => {
+    const d = calculateDaysOpen(r);
+    const pct = (d / maxAge) * 100;
+    const color = d > 45 ? 'var(--red)' : d > 21 ? 'var(--orange)' : 'var(--green)';
+    return `<div class="bar-row"><div class="bar-label" style="font-size:11px">${r.title.slice(0,18)}${r.title.length > 18 ? '…' : ''}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div><div class="bar-value">${d}d</div></div>`;
+  }).join('') : '<div class="text-muted text-sm">No open roles</div>';
+}
+
+function updateBadges() {
+  document.getElementById('nb-roles').textContent = getRoles().filter(r => r.status === 'Open').length;
+  document.getElementById('nb-candidates').textContent = getCandidates().length;
+  document.getElementById('nb-pipeline').textContent = getApplications().filter(a => !['Hired','Rejected'].includes(a.stage)).length;
+  document.getElementById('nb-interviews').textContent = getInterviews().filter(i => new Date(i.date) >= new Date(new Date().toDateString())).length;
+}
+
+// ═══════════════════════════════════════════════
+// AI GENERATORS
+// ═══════════════════════════════════════════════
+const PROXY = 'https://api.anthropic.com/v1/messages';
+
+async function callClaude(prompt, maxTokens = 2000) {
+  const res = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': '', 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: maxTokens, messages: [{ role: 'user', content: prompt }] })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(b => b.text || '').join('');
+}
+
+async function runJDGenerator() {
+  const title = document.getElementById('t-jd-title').value.trim();
+  const resp = document.getElementById('t-jd-resp').value.trim();
+  const req = document.getElementById('t-jd-req').value.trim();
+  if (!title || !resp || !req) { showToast('Fill title, responsibilities, requirements', 'error'); return; }
+  showLoading('Writing JD...');
+  try {
+    const text = await callClaude(`You are an Eyewa employer brand copywriter. Write a complete JD.
+ROLE: ${title} | DEPT: ${document.getElementById('t-jd-dept').value} | REPORTS TO: ${document.getElementById('t-jd-reports').value} | LEVEL: ${document.getElementById('t-jd-level').value} | TONE: ${document.getElementById('t-jd-tone').value}
+RESPONSIBILITIES: ${resp}
+REQUIREMENTS: ${req}
+
+Write in this format:
+ABOUT EYEWA
+[Use: "Eyewa is the Middle East's leading eyewear destination, offering the widest selection of eyeglasses, sunglasses, and contact lenses across the GCC. Founded in 2017, we've grown from a digital-first startup to a multi-channel retailer with over 100 stores and millions of customers served."]
+
+OVERVIEW
+[2-3 compelling sentences]
+
+WHAT YOU'LL DO
+[7-8 bullets]
+
+WHAT WE'RE LOOKING FOR
+[6-7 bullets]
+
+WHAT WE OFFER
+[5-6 bullets]`);
+    document.getElementById('jd-output-text').textContent = text;
+    document.getElementById('jd-tool-output').style.display = 'block';
+    if (currentRoleId) {
+      const roles = getRoles();
+      const role = roles.find(r => r.id === currentRoleId);
+      if (role) { role.jd = text; saveRoles(roles); }
+    }
+    logActivity(`JD generated: <strong>${title}</strong>`);
+  } catch(e) { showToast(e.message, 'error'); }
+  hideLoading();
+}
+
+async function runInterviewPack() {
+  const title = document.getElementById('t-ip-title').value.trim();
+  const jd = document.getElementById('t-ip-jd').value.trim();
+  if (!title || !jd) { showToast('Fill role and JD', 'error'); return; }
+  showLoading('Building interview pack...');
+  try {
+    const text = await callClaude(`Generate complete interview pack for Eyewa.
+ROLE: ${title} | LEVEL: ${document.getElementById('t-ip-level').value}
+STAGES: ${document.getElementById('t-ip-stages').value}
+COMPETENCIES: ${document.getElementById('t-ip-comps').value || 'Derive from JD'}
+JD: ${jd}
+
+For each stage: stage name, purpose, 3-4 competency sections each with main question (behavioural), follow-up probe, red flag. Include scorecard template at the end with competencies and 1-5 scale plus "what great looks like" for each.`, 3000);
+    document.getElementById('interview-output-text').textContent = text;
+    document.getElementById('interview-tool-output').style.display = 'block';
+    if (currentRoleId) {
+      const roles = getRoles();
+      const role = roles.find(r => r.id === currentRoleId);
+      if (role) { role.interviewPack = text; saveRoles(roles); }
+    }
+    logActivity(`Interview pack: <strong>${title}</strong>`);
+  } catch(e) { showToast(e.message, 'error'); }
+  hideLoading();
+}
+
+async function runCommsGenerator() {
+  const name = document.getElementById('t-cm-name').value.trim();
+  const role = document.getElementById('t-cm-role').value.trim();
+  const type = document.getElementById('t-cm-type').value;
+  const sender = document.getElementById('t-cm-sender').value.trim();
+  if (!name || !role) { showToast('Name and role required', 'error'); return; }
+  showLoading('Writing email...');
+  try {
+    const text = await callClaude(`You are ${sender}, TA at Eyewa. Warm professional candidate email. Never "I hope this email finds you well".
+EMAIL TYPE: ${type} | CANDIDATE: ${name} | ROLE: ${role}
+CONTEXT: ${document.getElementById('t-cm-context').value || 'None'}
+SENDER: ${sender}, Talent Acquisition, Eyewa
+Return ONLY JSON: {"subject":"...","body":"..."}`, 800);
+    const clean = text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    const parsed = JSON.parse(clean);
+    document.getElementById('comms-output-subject').textContent = parsed.subject;
+    document.getElementById('comms-output-body').textContent = parsed.body;
+    document.getElementById('comms-tool-output').style.display = 'block';
+    if (currentCandidateId) {
+      const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+      const comms = getComms();
+      comms.push({ id: DB.id(), candidateId: currentCandidateId, applicationId: apps[apps.length-1]?.id, type, subject: parsed.subject, body: parsed.body, date: new Date().toLocaleDateString('en-GB'), sender });
+      saveComms(comms);
+      logActivity(`Email to <strong>${name}</strong>: ${type}`);
+    }
+  } catch(e) { showToast(e.message, 'error'); }
+  hideLoading();
+}
+
+function openMailFromComms() {
+  const to = document.getElementById('t-cm-email').value.trim();
+  const subject = document.getElementById('comms-output-subject').textContent;
+  const body = document.getElementById('comms-output-body').textContent;
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+async function runScorecardSummary() {
+  const cand = document.getElementById('t-sc-cand').value.trim();
+  const role = document.getElementById('t-sc-role').value.trim();
+  const comps = document.getElementById('t-sc-comps').value.trim();
+  if (!cand || !role || !comps) { showToast('Fill candidate, role, scores', 'error'); return; }
+  showLoading('Generating summary...');
+  try {
+    const text = await callClaude(`Senior TA at Eyewa. Summarise scorecard.
+CANDIDATE: ${cand} | ROLE: ${role} | STAGE: ${document.getElementById('t-sc-stage').value} | INTERVIEWER: ${document.getElementById('t-sc-interviewer').value}
+RECOMMENDATION: ${document.getElementById('t-sc-rec').value}
+SCORES: ${comps}
+NOTES: ${document.getElementById('t-sc-notes').value || 'None'}
+
+Output:
+1. HEADLINE verdict (1 sentence)
+2. STRENGTHS (2-3 specific)
+3. RISKS / GAPS (1-2 honest concerns or "None")
+4. RECOMMENDATION rationale (2-3 sentences)`);
+    document.getElementById('scorecard-output-text').textContent = text;
+    document.getElementById('scorecard-tool-output').style.display = 'block';
+    logActivity(`Scorecard: <strong>${cand}</strong>`);
+  } catch(e) { showToast(e.message, 'error'); }
+  hideLoading();
+}
+
+function saveScorecard() {
+  const cand = document.getElementById('t-sc-cand').value.trim();
+  const role = document.getElementById('t-sc-role').value.trim();
+  if (!cand || !role) { showToast('Fill candidate and role', 'error'); return; }
+  const apps = currentCandidateId ? getApplications().filter(a => a.candidateId === currentCandidateId) : [];
+  const scs = getScorecards();
+  scs.push({
+    id: DB.id(), candidateId: currentCandidateId, applicationId: apps[apps.length-1]?.id,
+    stage: document.getElementById('t-sc-stage').value,
+    interviewer: document.getElementById('t-sc-interviewer').value,
+    competencies: document.getElementById('t-sc-comps').value,
+    notes: document.getElementById('t-sc-notes').value,
+    recommendation: document.getElementById('t-sc-rec').value,
+    aiSummary: document.getElementById('scorecard-output-text').textContent,
+    date: new Date().toLocaleDateString('en-GB'),
+  });
+  saveScorecards(scs);
+  showToast('Scorecard saved');
+  logActivity(`Scorecard saved: <strong>${cand}</strong>`);
+}
+
+async function runRefCheck() {
+  const cand = document.getElementById('t-rc-cand').value.trim();
+  const role = document.getElementById('t-rc-role').value.trim();
+  const sender = document.getElementById('t-rc-sender').value.trim();
+  if (!cand || !role) { showToast('Candidate and role required', 'error'); return; }
+  showLoading('Generating reference emails...');
+  try {
+    const text = await callClaude(`Eyewa TA. Generate two reference emails.
+CANDIDATE: ${cand} | ROLE: ${role}
+REFEREE 1: ${document.getElementById('t-rc-ref1-name').value || 'Reference 1'}
+REFEREE 2: ${document.getElementById('t-rc-ref2-name').value || 'Reference 2'}
+PROBE: ${document.getElementById('t-rc-probe').value || 'General performance, working style, strengths and dev areas'}
+SENDER: ${sender}, TA, Eyewa
+
+Return ONLY JSON: {"candEmail":{"subject":"...","body":"To candidate asking for 2 references with full name, title, company, relationship, email"},"refEmail":{"subject":"...","body":"To referee with 5-6 specific questions about ${cand}'s performance for ${role}"}}`, 1200);
+    const clean = text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+    const parsed = JSON.parse(clean);
+    document.getElementById('ref-cand-subject').textContent = parsed.candEmail.subject;
+    document.getElementById('ref-cand-body').textContent = parsed.candEmail.body;
+    document.getElementById('ref-ref-subject').textContent = parsed.refEmail.subject;
+    document.getElementById('ref-ref-body').textContent = parsed.refEmail.body;
+    document.getElementById('ref-cand-email').value = document.getElementById('t-rc-cand-email').value.trim();
+    document.getElementById('ref1-email-addr').value = document.getElementById('t-rc-ref1-email').value.trim();
+    document.getElementById('refcheck-tool-output').style.display = 'block';
+  } catch(e) { showToast(e.message, 'error'); }
+  hideLoading();
+}
+
+function openMailRef(emailField, subjectId, bodyId) {
+  const to = document.getElementById(emailField)?.value || '';
+  const subject = document.getElementById(subjectId).textContent;
+  const body = document.getElementById(bodyId).textContent;
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function copyRefEmails() {
+  const s1 = document.getElementById('ref-cand-subject').textContent;
+  const b1 = document.getElementById('ref-cand-body').textContent;
+  const s2 = document.getElementById('ref-ref-subject').textContent;
+  const b2 = document.getElementById('ref-ref-body').textContent;
+  navigator.clipboard.writeText(`EMAIL 1\nSubject: ${s1}\n\n${b1}\n\n---\n\nEMAIL 2\nSubject: ${s2}\n\n${b2}`);
+  showToast('Both emails copied');
+}
+
+// ═══════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════
+function switchTab(context, tab, el) {
+  const prefix = context === 'role' ? 'role-tab-' : 'candidate-tab-';
+  const pageId = `page-${context}-detail`;
+  document.querySelectorAll(`#${pageId} .tab`).forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`#${pageId} .tab-panel`).forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`${prefix}${tab}`)?.classList.add('active');
+}
+
+function filterTable(tableId, query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll(`#${tableId} tbody tr`).forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function copyGen(id) { navigator.clipboard.writeText(document.getElementById(id).textContent); showToast('Copied'); }
+
+function clearTool(tool) {
+  document.querySelectorAll(`#page-tool-${tool} input, #page-tool-${tool} textarea`).forEach(el => { if (el.id !== 't-cm-sender' && el.id !== 't-cm-senderemail' && el.id !== 't-rc-sender') el.value = ''; });
+}
+
+function clearModalFields(modalId) {
+  document.querySelectorAll(`#${modalId} input, #${modalId} textarea`).forEach(el => { if (el.type !== 'submit' && el.id !== 'm-role-location') el.value = ''; });
+}
+
+function showLoading(sub) { document.getElementById('loading').classList.add('on'); document.getElementById('loading-sub').textContent = sub || ''; }
+function hideLoading() { document.getElementById('loading').classList.remove('on'); }
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast${type === 'error' ? ' error' : ''}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// INIT
+renderDashboard();
+updateBadges();
+</script>
+</body>
+</html>
