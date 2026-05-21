@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eyewa Talent OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --border: #e8e5de;
+  --border2: #d4cfc6;
+  --accent: #c9a227;
+  --accent-dark: #9a7a10;
+  --accent-bg: #fef8e7;
+  --ink: #1a1916;
+  --mid: #5a5750;
+  --muted: #9a9690;
+  --green: #1e6b47;
+  --green-bg: #edf7f2;
+  --red: #b83232;
+  --red-bg: #fdf0f0;
+  --blue: #1a3f7a;
+  --blue-bg: #eef3fb;
+  --orange: #b85a1a;
+  --orange-bg: #fdf3ec;
+  --purple: #5a2878;
+  --teal: #0d6b6b;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'DM Sans', sans-serif;
+  --sidebar-w: 228px;
+  --topbar-h: 56px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 14px; min-height: 100vh; display: flex; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); background: var(--ink); display: flex; flex-direction: column;
+  height: 100vh; flex-shrink: 0; position: fixed; left: 0; top: 0; z-index: 100; overflow-y: auto;
+}
+.sidebar-brand { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.brand-logo { font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; color: #fff; line-height: 1; }
+.brand-logo span { color: var(--accent); }
+.brand-tag { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 3px; }
+.sidebar-section { padding: 18px 12px 6px; }
+.sidebar-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); padding: 0 8px; margin-bottom: 6px; font-weight: 600; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 7px;
+  cursor: pointer; transition: all 0.15s; color: rgba(255,255,255,0.5); font-size: 13px;
+  font-weight: 500; margin-bottom: 2px; border: 1px solid transparent;
+}
+.nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+.nav-item.active { background: rgba(201,162,39,0.15); color: var(--accent); border-color: rgba(201,162,39,0.2); }
+.nav-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--accent); color: var(--ink); font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center; }
+.sidebar-bottom { margin-top: auto; padding: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+.user-chip { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--orange)); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.user-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+.user-role { font-size: 10px; color: rgba(255,255,255,0.35); }
+
+/* ── CONTENT ── */
+.content { margin-left: var(--sidebar-w); flex: 1; height: 100vh; overflow-y: auto; }
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px;
+  height: var(--topbar-h); display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-title { font-family: var(--display); font-size: 22px; letter-spacing: 0.06em; color: var(--ink); }
+.topbar-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ── BUTTONS ── */
+.btn { font-family: var(--body); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s; letter-spacing: 0.01em; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,162,39,0.3); }
+.btn-ghost { background: transparent; color: var(--mid); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: #333; }
+.btn-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(30,107,71,0.2); }
+.btn-green:hover { background: rgba(30,107,71,0.15); }
+.btn-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(184,50,50,0.2); }
+.btn-sm { padding: 5px 12px; font-size: 11px; }
+
+/* ── PAGES ── */
+.page { display: none; padding: 28px 32px; animation: fadeIn 0.2s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── REFERRAL PAGE (public — no sidebar) ── */
+.referral-page { display: none; flex-direction: column; min-height: 100vh; background: var(--bg); }
+.referral-page.active { display: flex; }
+.ref-hero { background: var(--ink); padding: 40px; }
+.ref-hero-logo { font-family: var(--display); font-size: 36px; letter-spacing: 0.04em; color: #fff; margin-bottom: 8px; }
+.ref-hero-logo span { color: var(--accent); }
+.ref-hero-title { font-family: var(--display); font-size: 52px; letter-spacing: 0.04em; color: #fff; line-height: 1.05; margin-bottom: 12px; }
+.ref-hero-sub { font-size: 15px; color: rgba(255,255,255,0.55); max-width: 500px; line-height: 1.7; }
+.ref-body { max-width: 1100px; margin: 0 auto; padding: 40px; width: 100%; }
+.ref-roles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 48px; }
+.ref-role-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 22px 24px; cursor: pointer; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.ref-role-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: var(--accent); transform: scaleX(0); transition: transform 0.2s; transform-origin: left; }
+.ref-role-card:hover { border-color: var(--accent); box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.ref-role-card:hover::before { transform: scaleX(1); }
+.ref-role-dept { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.ref-role-title { font-family: var(--display); font-size: 22px; letter-spacing: 0.03em; color: var(--ink); margin-bottom: 10px; }
+.ref-role-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--mid); margin-bottom: 14px; }
+.ref-refer-btn { font-family: var(--body); font-size: 11px; font-weight: 700; padding: 7px 16px; background: var(--accent-bg); color: var(--accent-dark); border: 1px solid rgba(201,162,39,0.3); border-radius: 5px; cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.15s; }
+.ref-refer-btn:hover { background: var(--accent); color: #fff; }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; position: relative; overflow: hidden; }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.stat-card.gold::before { background: var(--accent); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.blue::before { background: var(--blue); }
+.stat-card.red::before { background: var(--red); }
+.stat-label { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+.stat-num { font-family: var(--display); font-size: 44px; letter-spacing: 0.03em; line-height: 1; margin-bottom: 4px; }
+.stat-card.gold .stat-num { color: var(--accent-dark); }
+.stat-card.green .stat-num { color: var(--green); }
+.stat-card.blue .stat-num { color: var(--blue); }
+.stat-card.red .stat-num { color: var(--red); }
+.stat-sub { font-size: 11px; color: var(--muted); }
+
+/* ── CARDS / GRIDS ── */
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.dash-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.dash-card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.dash-card-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.dash-card-body { padding: 16px 20px; }
+
+/* ── FUNCTION SEGMENTATION ── */
+.fn-bar {
+  display: flex; align-items: center; gap: 4px;
+  padding: 6px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); overflow-x: auto; margin-bottom: 14px;
+}
+.fn-tab {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 14px; border-radius: 7px; cursor: pointer;
+  color: var(--mid); font-size: 13px; font-weight: 600;
+  white-space: nowrap; transition: background 0.15s, color 0.15s; border: 1px solid transparent;
+}
+.fn-tab:hover { background: var(--bg); color: var(--ink); }
+.fn-tab.active { background: var(--accent-bg); color: var(--accent-dark); border-color: rgba(201,162,39,0.25); }
+.fn-tab .fn-count {
+  font-family: var(--body); font-size: 11px; font-weight: 700;
+  padding: 2px 7px; border-radius: 99px;
+  background: var(--bg); color: var(--muted);
+}
+.fn-tab.active .fn-count { background: rgba(201,162,39,0.2); color: var(--accent-dark); }
+.fn-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fn-hq { background: var(--teal); }
+.fn-warehouse { background: var(--orange); }
+.fn-lab { background: var(--purple); }
+.fn-retail_gcc { background: var(--blue); }
+.fn-retail_ksa { background: var(--green); }
+.fn-customer_service { background: var(--red); }
+
+.sub-bar {
+  display: none; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 10px 14px; margin-bottom: 14px;
+  background: var(--bg); border: 1px dashed var(--border2); border-radius: 10px;
+}
+.sub-bar.visible { display: flex; }
+.sub-bar-label {
+  font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+  padding-right: 8px; border-right: 1px solid var(--border2); margin-right: 2px;
+}
+.sub-chip {
+  padding: 5px 11px; border-radius: 6px; cursor: pointer;
+  font-size: 12px; font-weight: 500; color: var(--mid);
+  background: var(--surface); border: 1px solid var(--border2);
+  transition: all 0.15s;
+}
+.sub-chip:hover { border-color: var(--accent); color: var(--ink); }
+.sub-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.sub-chip .sub-n { font-size: 10px; margin-left: 5px; opacity: 0.7; }
+
+.fn-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: 600;
+  background: var(--bg); color: var(--mid); border: 1px solid var(--border2);
+}
+.fn-tag .fn-tag-sub { color: var(--ink); }
+.fn-tag .fn-tag-slash { color: var(--muted); }
+
+.fn-breakdown-row {
+  display: grid; grid-template-columns: 150px 1fr 96px; gap: 16px; align-items: center;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+}
+.fn-breakdown-row:last-child { border-bottom: none; }
+.fn-breakdown-name { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.fn-breakdown-name .fn-cadence { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-left: auto; font-weight: 600; }
+.fn-stack { display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: var(--bg); border: 1px solid var(--border); }
+.fn-stack span { display: block; height: 100%; }
+.fn-stack .s-open { background: var(--accent); }
+.fn-stack .s-hired { background: var(--green); }
+.fn-stack .s-hold { background: var(--orange); }
+.fn-breakdown-stats { font-size: 11px; color: var(--mid); text-align: right; font-weight: 600; }
+.fn-breakdown-stats b { color: var(--ink); }
+.fn-expand { cursor: pointer; background: transparent; border: none; color: var(--muted); font-size: 11px; padding: 2px 5px; transition: transform 0.2s, color 0.15s; }
+.fn-expand:hover { color: var(--accent-dark); }
+.fn-expand.open { transform: rotate(90deg); color: var(--accent-dark); }
+.fn-sub-rows { display: none; padding: 4px 0 6px 22px; margin-left: 6px; border-left: 2px solid var(--accent-bg); }
+.fn-sub-rows.open { display: block; }
+.fn-sub-row { display: grid; grid-template-columns: 130px 1fr 96px; gap: 16px; align-items: center; padding: 4px 0; }
+.fn-sub-row .fn-sub-name { font-size: 11px; color: var(--mid); font-weight: 500; }
+.fn-sub-row .fn-stack { height: 12px; }
+.fn-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); }
+.fn-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.fn-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+/* ── TABLES ── */
+.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.table-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.table-title { font-size: 14px; font-weight: 700; }
+.search-input { background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 7px 12px; font-family: var(--body); font-size: 12px; color: var(--ink); outline: none; width: 210px; transition: border-color 0.15s; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 10px 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: left; border-bottom: 1px solid var(--border); font-weight: 600; background: var(--bg); }
+tbody td { padding: 13px 16px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { cursor: pointer; transition: background 0.1s; }
+tbody tr:hover td { background: var(--bg); }
+
+/* ── BADGES ── */
+.badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; white-space: nowrap; }
+.badge-pending { background: var(--accent-bg); color: var(--accent-dark); border: 1px solid rgba(201,162,39,0.25); }
+.badge-open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(30,107,71,0.2); }
+.badge-draft { background: var(--bg); color: var(--muted); border: 1px solid var(--border2); }
+.badge-hold { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(184,90,26,0.2); }
+.badge-closed-h { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(26,63,122,0.2); }
+.badge-closed-c { background: var(--bg); color: var(--muted); border: 1px solid var(--border2); }
+.badge-active { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(26,63,122,0.2); }
+.badge-hired { background: var(--green-bg); color: var(--green); border: 1px solid rgba(30,107,71,0.2); }
+.badge-rejected { background: var(--red-bg); color: var(--red); border: 1px solid rgba(184,50,50,0.2); }
+.badge-offer { background: rgba(90,40,120,0.08); color: var(--purple); border: 1px solid rgba(90,40,120,0.2); }
+.badge-published { background: var(--green-bg); color: var(--green); border: 1px solid rgba(30,107,71,0.2); }
+.p-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+.p-critical { background: var(--red); }
+.p-high { background: var(--orange); }
+.p-normal { background: var(--green); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,25,22,0.6); z-index: 500; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; backdrop-filter: blur(4px); }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 620px; margin: auto; animation: modalIn 0.2s ease; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.12); }
+.modal-lg { max-width: 820px; }
+@keyframes modalIn { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 16px; font-weight: 700; }
+.modal-close { background: var(--bg); border: 1px solid var(--border); color: var(--mid); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.15s; }
+.modal-close:hover { color: var(--ink); border-color: var(--border2); }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--bg); }
+
+/* ── FORMS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1/-1; }
+.field-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.req { color: var(--accent-dark); margin-left: 2px; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], select, textarea {
+  background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 9px 12px;
+  font-family: var(--body); font-size: 13px; color: var(--ink); outline: none; width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,162,39,0.12); }
+textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+select option { background: #fff; }
+
+/* ── DETAIL ── */
+.detail-back { font-size: 12px; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 14px; transition: color 0.15s; font-weight: 500; }
+.detail-back:hover { color: var(--ink); }
+.detail-header { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.detail-name { font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; margin-bottom: 10px; }
+.detail-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--mid); }
+
+/* ── TABS ── */
+.tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; overflow-x: auto; }
+.tab { padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; margin-bottom: -1px; white-space: nowrap; }
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+
+/* ── KANBAN ── */
+.kanban { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; }
+.kanban-col { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; min-width: 220px; max-width: 220px; flex-shrink: 0; overflow: hidden; }
+.kanban-col-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface); }
+.kanban-col-name { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+.kanban-col-count { background: var(--ink); color: #fff; border-radius: 10px; font-size: 10px; font-weight: 700; padding: 2px 8px; }
+.kanban-cards { padding: 8px; display: flex; flex-direction: column; gap: 7px; min-height: 60px; }
+.kanban-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 11px 12px; cursor: pointer; transition: all 0.15s; }
+.kanban-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.kc-name { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.kc-role { font-size: 10px; color: var(--muted); margin-bottom: 7px; }
+.kc-meta { display: flex; justify-content: space-between; align-items: center; }
+.kc-days { font-size: 10px; color: var(--muted); }
+.kc-actions { display: flex; gap: 4px; margin-top: 7px; }
+.kc-btn { font-size: 9px; padding: 3px 8px; background: var(--bg); border: 1px solid var(--border2); border-radius: 4px; color: var(--mid); cursor: pointer; transition: all 0.15s; font-family: var(--body); font-weight: 600; }
+.kc-btn:hover { background: var(--accent-bg); color: var(--accent-dark); border-color: rgba(201,162,39,0.3); }
+.kc-btn.reject:hover { background: var(--red-bg); color: var(--red); border-color: rgba(184,50,50,0.3); }
+
+/* ── ACTIVITY ── */
+.activity-item { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.activity-item:last-child { border-bottom: none; }
+.act-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; }
+.act-text { color: var(--mid); line-height: 1.5; }
+.act-text strong { color: var(--ink); }
+.act-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ── RECRUITER ASSIGN ── */
+.recruiter-assign-wrap { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--accent-bg); border: 1px solid rgba(201,162,39,0.2); border-radius: 8px; margin-bottom: 20px; }
+.recruiter-assign-label { font-size: 12px; font-weight: 600; color: var(--accent-dark); flex: 1; }
+.recruiter-select { background: #fff; border: 1px solid rgba(201,162,39,0.3); border-radius: 6px; padding: 6px 10px; font-family: var(--body); font-size: 12px; color: var(--ink); outline: none; appearance: none; cursor: pointer; }
+
+/* ── GEN OUTPUT ── */
+.gen-output { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 18px; margin-top: 14px; font-size: 13px; line-height: 1.75; color: var(--ink); white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+.gen-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+
+/* ── FILE UPLOAD ── */
+.file-zone { padding: 16px; border: 1.5px dashed var(--border2); border-radius: 8px; background: var(--bg); cursor: pointer; text-align: center; font-size: 12px; color: var(--mid); transition: all 0.15s; }
+.file-zone:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--accent-bg); }
+.file-zone.uploaded { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+
+/* ── SCORECARDS ── */
+.scorecard-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 10px; }
+.scorecard-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+
+/* ── COMMS LOG ── */
+.comms-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+.comms-type { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+.comms-subject { font-size: 13px; font-weight: 600; margin: 4px 0; }
+.comms-preview { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+/* ── INTERVIEW CARDS ── */
+.interview-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.interview-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.interview-meta { font-size: 11px; color: var(--muted); }
+
+/* ── CV BANNER ── */
+.cv-banner { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 14px 16px; margin-bottom: 18px; }
+.cv-banner-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+.cv-banner-content { font-size: 12px; color: var(--mid); line-height: 1.7; white-space: pre-wrap; max-height: 180px; overflow-y: auto; }
+
+/* ── CHART BARS ── */
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bar-label { font-size: 11px; color: var(--mid); min-width: 140px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 20px; background: var(--bg); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.bar-val { font-size: 11px; font-weight: 700; color: var(--ink); min-width: 28px; text-align: right; }
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
+.chart-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.chart-sub { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+
+/* ── PUBLISH TOGGLE ── */
+.publish-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; }
+.publish-label { font-size: 13px; font-weight: 600; flex: 1; }
+.toggle { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--border2); border-radius: 24px; cursor: pointer; transition: 0.2s; }
+.toggle-slider::before { content:''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+input:checked + .toggle-slider { background: var(--green); }
+input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+/* ── LOADING ── */
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(247,246,243,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; gap: 16px; backdrop-filter: blur(4px); }
+.loading-overlay.on { display: flex; }
+.loading-spinner { width: 40px; height: 40px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-family: var(--display); font-size: 22px; letter-spacing: 0.08em; color: var(--ink); }
+.loading-sub { font-size: 12px; color: var(--muted); text-align: center; max-width: 260px; line-height: 1.7; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff; border-radius: 8px; padding: 12px 18px; font-size: 13px; font-weight: 500; z-index: 2000; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: var(--red); }
+
+/* ── EMPTY ── */
+.empty { padding: 48px; text-align: center; }
+.empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.3; }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--mid); margin-bottom: 6px; }
+.empty-sub { font-size: 12px; color: var(--muted); line-height: 1.7; max-width: 280px; margin: 0 auto; }
+
+/* ── MISC ── */
+.section-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content:''; flex:1; height:1px; background: var(--border); }
+.text-muted { color: var(--muted); }
+.text-sm { font-size: 11px; }
+.mt-12 { margin-top: 12px; }
+.mt-20 { margin-top: 20px; }
+.flex { display: flex; }
+.gap-8 { gap: 8px; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.info-val { font-size: 13px; font-weight: 500; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     INTERNAL REFERRAL PAGE (public, no login)
+══════════════════════════════════════════ -->
+<div class="referral-page" id="referral-page">
+  <div class="ref-hero">
+    <div class="ref-hero-logo">Eyewa<span>.</span></div>
+    <div class="ref-hero-title">Know someone<br>great? Refer them.</div>
+    <div class="ref-hero-sub">Help us build the team. Browse open roles below and submit a referral — we'll take it from there.</div>
+  </div>
+  <div class="ref-body">
+    <div style="font-family:var(--display);font-size:26px;letter-spacing:0.04em;margin-bottom:20px;color:var(--ink)">OPEN ROLES</div>
+    <div class="ref-roles-grid" id="ref-roles-grid">
+      <div class="empty"><div class="empty-icon">◻</div><div class="empty-title">No roles published yet</div><div class="empty-sub">Check back soon</div></div>
+    </div>
+    <button class="btn btn-ghost" onclick="closeReferralPage()" style="margin-top:12px">← Back to Platform</button>
+  </div>
+</div>
+
+<!-- REFERRAL SUBMIT MODAL -->
+<div class="modal-overlay" id="modal-referral">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Refer a Candidate</div>
+      <div class="modal-close" onclick="closeModal('modal-referral')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--accent-bg);border:1px solid rgba(201,162,39,0.2);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:var(--accent-dark)">
+        Referring for: <strong id="ref-role-name-display"></strong>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Your Name <span class="req">*</span></label><input type="text" id="ref-your-name" placeholder="Your full name"></div>
+        <div class="field"><label class="field-label">Your Email <span class="req">*</span></label><input type="email" id="ref-your-email" placeholder="you@eyewa.com"></div>
+        <div class="field"><label class="field-label">Candidate First Name <span class="req">*</span></label><input type="text" id="ref-cand-fname" placeholder="Sara"></div>
+        <div class="field"><label class="field-label">Candidate Last Name <span class="req">*</span></label><input type="text" id="ref-cand-lname" placeholder="Ahmed"></div>
+        <div class="field"><label class="field-label">Candidate Email <span class="req">*</span></label><input type="email" id="ref-cand-email-input" placeholder="sara@gmail.com"></div>
+        <div class="field"><label class="field-label">Candidate Phone</label><input type="tel" id="ref-cand-phone" placeholder="+971 50 000 0000"></div>
+        <div class="field full"><label class="field-label">How do you know them?</label><textarea id="ref-relationship" placeholder="e.g. Former colleague at Chalhoub, worked together for 3 years..." style="min-height:60px"></textarea></div>
+        <div class="field full">
+          <label class="field-label">Upload their CV (PDF / DOCX / TXT)</label>
+          <div class="file-zone" id="ref-cv-zone" onclick="document.getElementById('ref-cv-file').click()">📄 Click to upload CV</div>
+          <input type="file" id="ref-cv-file" accept=".pdf,.docx,.doc,.txt" style="display:none" onchange="handleRefCVUpload(event)">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-referral')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitReferral()">Submit Referral →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN PLATFORM
+══════════════════════════════════════════ -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">Eyewa<span>.</span></div>
+    <div class="brand-tag">Talent OS</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Main</div>
+    <div class="nav-item active" onclick="nav('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div class="nav-item" onclick="nav('reporting')"><span class="nav-icon">▥</span> Reporting</div>
+    <div class="nav-item" onclick="nav('pipeline')"><span class="nav-icon">⬡</span> Pipeline <span class="nav-badge" id="nb-pipeline">0</span></div>
+    <div class="nav-item" onclick="nav('roles')"><span class="nav-icon">◻</span> Roles <span class="nav-badge" id="nb-roles">0</span></div>
+    <div class="nav-item" onclick="nav('candidates')"><span class="nav-icon">◯</span> Candidates <span class="nav-badge" id="nb-candidates">0</span></div>
+    <div class="nav-item" onclick="nav('interviews')"><span class="nav-icon">▣</span> Interviews <span class="nav-badge" id="nb-interviews">0</span></div>
+    <div class="nav-item" onclick="openReferralPage()"><span class="nav-icon">⟡</span> Internal Referrals <span class="nav-badge" id="nb-referrals">0</span></div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools</div>
+    <div class="nav-item" onclick="nav('tool-jd')"><span class="nav-icon">✦</span> JD Generator</div>
+    <div class="nav-item" onclick="nav('tool-interview')"><span class="nav-icon">◈</span> Interview Pack</div>
+    <div class="nav-item" onclick="nav('tool-comms')"><span class="nav-icon">✉</span> Candidate Comms</div>
+    <div class="nav-item" onclick="nav('tool-scorecard')"><span class="nav-icon">◉</span> Scorecards</div>
+    <div class="nav-item" onclick="nav('tool-refcheck')"><span class="nav-icon">◎</span> Reference Check</div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="user-avatar">HP</div>
+      <div>
+        <div class="user-name">Humairaa Patel</div>
+        <div class="user-role">TA Manager</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content" id="main-content">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">DASHBOARD</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openReferralPage()">⟡ Referral Page</button>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-role')">+ New Role</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-candidate')">+ Add Candidate</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-grid">
+      <div class="stat-card gold"><div class="stat-label">Open Roles</div><div class="stat-num" id="stat-open">0</div><div class="stat-sub">Active requisitions</div></div>
+      <div class="stat-card blue"><div class="stat-label">Active Candidates</div><div class="stat-num" id="stat-candidates">0</div><div class="stat-sub">In process</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired</div><div class="stat-num" id="stat-hired">0</div><div class="stat-sub">Offers accepted</div></div>
+      <div class="stat-card red"><div class="stat-label">Pending Scorecards</div><div class="stat-num" id="stat-feedback">0</div><div class="stat-sub">Missing feedback</div></div>
+    </div>
+    <div class="dash-card" style="margin-bottom:20px">
+      <div class="dash-card-header">
+        <div class="dash-card-title">By Function</div>
+        <div class="fn-legend">
+          <span><i style="background:var(--accent)"></i> Open</span>
+          <span><i style="background:var(--green)"></i> Hired</span>
+          <span><i style="background:var(--orange)"></i> On Hold</span>
+        </div>
+      </div>
+      <div class="dash-card-body" id="dash-function-breakdown"></div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-card-title">Open Roles</div><button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-role')">+ New</button></div>
+        <div class="dash-card-body" id="dash-roles-list"></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-header"><div class="dash-card-title">Recent Activity</div></div>
+        <div class="dash-card-body" id="activity-feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTING -->
+  <div class="page" id="page-reporting">
+    <div class="stats-grid">
+      <div class="stat-card gold"><div class="stat-label">Avg Time-to-Hire</div><div class="stat-num" id="m-tth">—</div><div class="stat-sub">Days open → hired</div></div>
+      <div class="stat-card blue"><div class="stat-label">Total Vacancies</div><div class="stat-num" id="m-vacancies">0</div><div class="stat-sub">All roles</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired</div><div class="stat-num" id="m-hired">0</div><div class="stat-sub">Total filled</div></div>
+      <div class="stat-card red"><div class="stat-label">Offer Accept Rate</div><div class="stat-num" id="m-oar">—</div><div class="stat-sub">Offers accepted</div></div>
+    </div>
+    <div class="fn-bar" id="report-fn-bar"></div>
+    <div class="chart-card" style="margin-bottom:18px">
+      <div class="chart-title">Time-to-Hire by Function</div>
+      <div class="chart-sub">Average days from open to hired — closed roles only</div>
+      <div id="chart-tth-function"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+      <div class="chart-card"><div class="chart-title">Retail · KSA by Region</div><div class="chart-sub">Open roles by region</div><div id="chart-ksa-region"></div></div>
+      <div class="chart-card"><div class="chart-title">Retail · GCC by Country</div><div class="chart-sub">Open roles by country</div><div id="chart-gcc-country"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;">
+      <div class="chart-card"><div class="chart-title">Role Status</div><div class="chart-sub">Breakdown of all roles</div><div id="chart-status"></div></div>
+      <div class="chart-card"><div class="chart-title">Source of Hire</div><div class="chart-sub">Candidates → Hired by source</div><div id="chart-sources"></div></div>
+      <div class="chart-card"><div class="chart-title">Pipeline Funnel</div><div class="chart-sub">Total candidates per stage</div><div id="chart-funnel"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;">
+      <div class="chart-card"><div class="chart-title">Offer Outcomes</div><div class="chart-sub">What happens after an offer</div><div id="chart-offers"></div></div>
+      <div class="chart-card"><div class="chart-title">Role Aging</div><div class="chart-sub">Open roles by days open (red = 45+ days)</div><div id="chart-aging"></div></div>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="page" id="page-pipeline">
+    <div class="kanban" id="kanban-board"></div>
+  </div>
+
+  <!-- ROLES -->
+  <div class="page" id="page-roles">
+    <div class="fn-bar" id="roles-fn-bar"></div>
+    <div class="sub-bar" id="roles-sub-bar"></div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Roles</div>
+        <div class="flex gap-8 items-center wrap">
+          <input class="search-input" placeholder="Search roles..." oninput="filterTable('roles-table',this.value)">
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-role')">+ New Role</button>
+        </div>
+      </div>
+      <table id="roles-table">
+        <thead><tr><th>Role</th><th>Function</th><th>Department</th><th>Recruiter</th><th>Priority</th><th>Status</th><th>Published</th><th>Days Open</th><th>Candidates</th><th></th></tr></thead>
+        <tbody id="roles-tbody"></tbody>
+      </table>
+      <div class="empty" id="roles-empty" style="display:none"><div class="empty-icon">◻</div><div class="empty-title">No roles yet</div><div class="empty-sub">Create your first role to get started</div></div>
+    </div>
+  </div>
+
+  <!-- ROLE DETAIL -->
+  <div class="page" id="page-role-detail">
+    <div class="detail-back" onclick="nav('roles')">← Back to Roles</div>
+    <div class="detail-header">
+      <div>
+        <div class="detail-name" id="rd-title"></div>
+        <div class="detail-meta" id="rd-meta"></div>
+      </div>
+      <div class="flex gap-8 wrap items-center">
+        <select id="rd-status-select" onchange="changeRoleStatus(this.value)" style="background:var(--bg);border:1px solid var(--border2);border-radius:6px;padding:7px 12px;font-family:var(--body);font-size:12px;font-weight:600;color:var(--ink);outline:none;appearance:none;cursor:pointer;"></select>
+        <button class="btn btn-ghost btn-sm" onclick="openAddCandidateToRole()">+ Candidate</button>
+        <button class="btn btn-primary btn-sm" onclick="openRoleTools()">Generate Tools</button>
+      </div>
+    </div>
+    <!-- Recruiter assignment (TA Manager only) -->
+    <div class="recruiter-assign-wrap" id="recruiter-assign-wrap">
+      <div class="recruiter-assign-label">⟡ Assign Recruiter</div>
+      <select class="recruiter-select" id="recruiter-assign-select" onchange="assignRecruiter(this.value)">
+        <option value="">Unassigned</option>
+      </select>
+    </div>
+    <!-- Publish toggle -->
+    <div class="publish-row">
+      <div>
+        <div class="publish-label">Publish to Internal Referral Page</div>
+        <div class="text-sm text-muted">When on, staff can see this role and refer candidates</div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="publish-toggle" onchange="togglePublish(this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('role','overview',this)">Overview</div>
+      <div class="tab" onclick="switchTab('role','pipeline',this)">Pipeline</div>
+      <div class="tab" onclick="switchTab('role','jd',this)">Job Description</div>
+      <div class="tab" onclick="switchTab('role','interview',this)">Interview Pack</div>
+      <div class="tab" onclick="switchTab('role','metrics',this)">Metrics</div>
+      <div class="tab" onclick="switchTab('role','history',this)">History</div>
+    </div>
+    <div class="tab-panel active" id="role-tab-overview"><div class="form-grid" id="rd-overview-grid"></div></div>
+    <div class="tab-panel" id="role-tab-pipeline"><div id="rd-kanban"></div></div>
+    <div class="tab-panel" id="role-tab-jd"><div id="rd-jd-content"></div></div>
+    <div class="tab-panel" id="role-tab-interview"><div id="rd-interview-content"></div></div>
+    <div class="tab-panel" id="role-tab-metrics"><div id="rd-metrics-content"></div></div>
+    <div class="tab-panel" id="role-tab-history"><div id="rd-history-content"></div></div>
+  </div>
+
+  <!-- CANDIDATES -->
+  <div class="page" id="page-candidates">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Candidates</div>
+        <div class="flex gap-8 items-center">
+          <input class="search-input" placeholder="Search candidates..." oninput="filterTable('candidates-table',this.value)">
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-candidate')">+ Add Candidate</button>
+        </div>
+      </div>
+      <table id="candidates-table">
+        <thead><tr><th>Name</th><th>Current Role</th><th>Source</th><th>Applied To</th><th>Stage</th><th>CV</th><th>Added</th><th></th></tr></thead>
+        <tbody id="candidates-tbody"></tbody>
+      </table>
+      <div class="empty" id="candidates-empty" style="display:none"><div class="empty-icon">◯</div><div class="empty-title">No candidates yet</div></div>
+    </div>
+  </div>
+
+  <!-- CANDIDATE DETAIL -->
+  <div class="page" id="page-candidate-detail">
+    <div class="detail-back" onclick="nav('candidates')">← Back to Candidates</div>
+    <div class="detail-header">
+      <div>
+        <div class="detail-name" id="cd-name"></div>
+        <div class="detail-meta" id="cd-meta"></div>
+      </div>
+      <div class="flex gap-8 wrap">
+        <button class="btn btn-ghost btn-sm" onclick="openScheduleInterview()">📅 Schedule</button>
+        <button class="btn btn-ghost btn-sm" onclick="openCandidateComms()">✉ Comms</button>
+        <button class="btn btn-ghost btn-sm" onclick="openScorecard()">◉ Scorecard</button>
+        <button class="btn btn-primary btn-sm" onclick="openRefCheck()">◎ Ref Check</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('candidate','overview',this)">Overview</div>
+      <div class="tab" onclick="switchTab('candidate','interviews',this)">Interviews</div>
+      <div class="tab" onclick="switchTab('candidate','comms',this)">Comms</div>
+      <div class="tab" onclick="switchTab('candidate','scorecards',this)">Scorecards</div>
+      <div class="tab" onclick="switchTab('candidate','refcheck',this)">Reference Check</div>
+    </div>
+    <div class="tab-panel active" id="candidate-tab-overview"><div class="form-grid" id="cd-overview-grid"></div></div>
+    <div class="tab-panel" id="candidate-tab-interviews"><div id="cd-interviews-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-comms"><div id="cd-comms-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-scorecards"><div id="cd-scorecards-list"></div></div>
+    <div class="tab-panel" id="candidate-tab-refcheck"><div id="cd-refcheck-content"></div></div>
+  </div>
+
+  <!-- INTERVIEWS -->
+  <div class="page" id="page-interviews">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">Interviews</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-schedule-interview')">+ Schedule</button>
+      </div>
+      <table>
+        <thead><tr><th>Candidate</th><th>Role</th><th>Stage</th><th>Date & Time</th><th>Interviewer</th><th>Format</th><th>Scorecard</th></tr></thead>
+        <tbody id="interviews-tbody"></tbody>
+      </table>
+      <div class="empty" id="interviews-empty" style="display:none"><div class="empty-icon">▣</div><div class="empty-title">No interviews scheduled</div></div>
+    </div>
+  </div>
+
+  <!-- REFERRALS (inside platform view) -->
+  <div class="page" id="page-referrals">
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">Internal Referrals</div>
+      </div>
+      <table>
+        <thead><tr><th>Candidate</th><th>Role</th><th>Referred By</th><th>Date</th><th>CV</th><th>Action</th></tr></thead>
+        <tbody id="referrals-tbody"></tbody>
+      </table>
+      <div class="empty" id="referrals-empty" style="display:none"><div class="empty-icon">⟡</div><div class="empty-title">No referrals yet</div><div class="empty-sub">Share the referral page with your team</div></div>
+    </div>
+  </div>
+
+  <!-- TOOL: JD -->
+  <div class="page" id="page-tool-jd">
+    <div class="table-wrap" style="padding:28px">
+      <div class="section-title">JD Generator</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Job Title <span class="req">*</span></label><input type="text" id="t-jd-title" placeholder="e.g. Marketing Manager"></div>
+        <div class="field"><label class="field-label">Department</label><input type="text" id="t-jd-dept" placeholder="e.g. Marketing"></div>
+        <div class="field"><label class="field-label">Reports To</label><input type="text" id="t-jd-reports" placeholder="e.g. CMO"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="t-jd-level"><option>Mid-level</option><option>Senior</option><option>Manager</option><option>Head of</option><option>Director</option></select></div>
+        <div class="field full"><label class="field-label">Key Responsibilities <span class="req">*</span></label><textarea id="t-jd-resp" placeholder="What will this person own?"></textarea></div>
+        <div class="field full"><label class="field-label">Requirements <span class="req">*</span></label><textarea id="t-jd-req" placeholder="What are we looking for?"></textarea></div>
+        <div class="field full"><label class="field-label">Tone</label><select id="t-jd-tone"><option value="energetic and direct">Energetic & Direct (Eyewa default)</option><option value="professional and formal">Professional</option><option value="warm and human">Warm & Human</option><option value="bold and ambitious">Bold & Ambitious</option></select></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runJDGenerator()">Generate JD →</button><button class="btn btn-ghost" onclick="clearTool('jd')">Clear</button></div>
+      <div id="jd-tool-output" style="display:none"><div class="gen-output" id="jd-output-text"></div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('jd-output-text')">Copy</button></div></div>
+    </div>
+  </div>
+
+  <!-- TOOL: Interview Pack -->
+  <div class="page" id="page-tool-interview">
+    <div class="table-wrap" style="padding:28px">
+      <div class="section-title">Interview Pack Generator</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="t-ip-title"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="t-ip-level"><option>Mid-level</option><option>Senior</option><option>Manager</option><option>Head of</option><option>Director</option></select></div>
+        <div class="field full"><label class="field-label">JD / Role Context <span class="req">*</span></label><textarea id="t-ip-jd"></textarea></div>
+        <div class="field full"><label class="field-label">Stages (comma separated)</label><input type="text" id="t-ip-stages" value="Recruiter Screen, HM Interview"></div>
+        <div class="field full"><label class="field-label">Competencies to focus on</label><input type="text" id="t-ip-comps"></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runInterviewPack()">Generate Pack →</button></div>
+      <div id="interview-tool-output" style="display:none"><div class="gen-output" id="interview-output-text"></div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('interview-output-text')">Copy</button></div></div>
+    </div>
+  </div>
+
+  <!-- TOOL: Comms -->
+  <div class="page" id="page-tool-comms">
+    <div class="table-wrap" style="padding:28px">
+      <div class="section-title">Candidate Comms</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate Name <span class="req">*</span></label><input type="text" id="t-cm-name"></div>
+        <div class="field"><label class="field-label">Candidate Email</label><input type="email" id="t-cm-email"></div>
+        <div class="field"><label class="field-label">Role <span class="req">*</span></label><input type="text" id="t-cm-role"></div>
+        <div class="field"><label class="field-label">Email Type</label>
+          <select id="t-cm-type">
+            <option value="interview confirmation">Interview Confirmation</option>
+            <option value="post-interview thank you with 5 working day update promise">Post-Interview Thank You</option>
+            <option value="application rejection (before interview)">Application Rejection</option>
+            <option value="post-interview rejection">Post-Interview Rejection</option>
+            <option value="verbal offer">Offer Email</option>
+            <option value="general process update">General Update</option>
+            <option value="reference check request">Reference Check Request</option>
+          </select>
+        </div>
+        <div class="field"><label class="field-label">Your Name</label><input type="text" id="t-cm-sender" value="Humairaa"></div>
+        <div class="field"><label class="field-label">Your Email</label><input type="email" id="t-cm-senderemail" value="humairaa.patel@eyewa.com"></div>
+        <div class="field full"><label class="field-label">Additional Context</label><textarea id="t-cm-context" style="min-height:60px"></textarea></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runCommsGenerator()">Generate Email →</button></div>
+      <div id="comms-tool-output" style="display:none">
+        <div style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;margin-top:14px">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px">Subject</div>
+          <div id="comms-output-subject" style="font-weight:700;font-size:14px;margin-bottom:12px;color:var(--ink)"></div>
+          <div class="gen-output" id="comms-output-body" style="margin-top:0;max-height:280px"></div>
+        </div>
+        <div class="gen-actions"><button class="btn btn-primary btn-sm" onclick="openMailFromComms()">✉ Open in Mail</button><button class="btn btn-ghost btn-sm" onclick="copyGen('comms-output-body')">Copy</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL: Scorecard -->
+  <div class="page" id="page-tool-scorecard">
+    <div class="table-wrap" style="padding:28px">
+      <div class="section-title">Interview Scorecard</div>
+      <div id="sc-cv-banner" class="cv-banner" style="display:none">
+        <div class="cv-banner-label">Candidate CV / Notes</div>
+        <div id="sc-cv-content" class="cv-banner-content"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate <span class="req">*</span></label><input type="text" id="t-sc-cand"></div>
+        <div class="field"><label class="field-label">Role <span class="req">*</span></label><input type="text" id="t-sc-role"></div>
+        <div class="field"><label class="field-label">Stage</label><input type="text" id="t-sc-stage"></div>
+        <div class="field"><label class="field-label">Interviewer</label><input type="text" id="t-sc-interviewer"></div>
+        <div class="field full"><label class="field-label">Competency Scores (Name: Score per line)</label><textarea id="t-sc-comps" style="min-height:120px" placeholder="Customer Obsession: 4&#10;Commercial Acumen: 3&#10;Communication: 5"></textarea></div>
+        <div class="field full"><label class="field-label">Interview Notes</label><textarea id="t-sc-notes" placeholder="Key observations, examples given, concerns..."></textarea></div>
+        <div class="field"><label class="field-label">Recommendation</label><select id="t-sc-rec"><option>Strong Hire</option><option>Hire</option><option>No Hire</option><option>Strong No Hire</option></select></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runScorecardSummary()">Generate AI Summary →</button><button class="btn btn-green btn-sm" onclick="saveScorecard()">Save Scorecard</button></div>
+      <div id="scorecard-tool-output" style="display:none"><div class="gen-output" id="scorecard-output-text"></div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyGen('scorecard-output-text')">Copy</button></div></div>
+    </div>
+  </div>
+
+  <!-- TOOL: Ref Check -->
+  <div class="page" id="page-tool-refcheck">
+    <div class="table-wrap" style="padding:28px">
+      <div class="section-title">Reference Check Generator</div>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate Name <span class="req">*</span></label><input type="text" id="t-rc-cand"></div>
+        <div class="field"><label class="field-label">Candidate Email</label><input type="email" id="t-rc-cand-email"></div>
+        <div class="field"><label class="field-label">Role <span class="req">*</span></label><input type="text" id="t-rc-role"></div>
+        <div class="field"><label class="field-label">Your Name</label><input type="text" id="t-rc-sender" value="Humairaa"></div>
+        <div class="field"><label class="field-label">Referee 1 Name</label><input type="text" id="t-rc-ref1-name"></div>
+        <div class="field"><label class="field-label">Referee 1 Email</label><input type="email" id="t-rc-ref1-email"></div>
+        <div class="field"><label class="field-label">Referee 2 Name</label><input type="text" id="t-rc-ref2-name"></div>
+        <div class="field"><label class="field-label">Referee 2 Email</label><input type="email" id="t-rc-ref2-email"></div>
+        <div class="field full"><label class="field-label">Areas to probe</label><textarea id="t-rc-probe" style="min-height:60px"></textarea></div>
+      </div>
+      <div class="flex gap-8 mt-20"><button class="btn btn-primary" onclick="runRefCheck()">Generate Reference Emails →</button></div>
+      <div id="refcheck-tool-output" style="display:none">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:14px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px">Email 1 — To Candidate</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:3px">SUBJECT</div>
+          <div id="ref-cand-subject" style="font-weight:600;margin-bottom:8px"></div>
+          <div id="ref-cand-body" class="gen-output" style="margin-top:0;max-height:200px"></div>
+          <button class="btn btn-ghost btn-sm mt-12" onclick="openMailRef('ref-cand-email-val','ref-cand-subject','ref-cand-body')">✉ Open in Mail</button>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:10px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px">Email 2 — To Each Referee</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:3px">SUBJECT</div>
+          <div id="ref-ref-subject" style="font-weight:600;margin-bottom:8px"></div>
+          <div id="ref-ref-body" class="gen-output" style="margin-top:0;max-height:200px"></div>
+          <button class="btn btn-ghost btn-sm mt-12" onclick="openMailRef('ref1-email-val','ref-ref-subject','ref-ref-body')">✉ Open in Mail</button>
+        </div>
+        <div class="gen-actions mt-12"><button class="btn btn-ghost btn-sm" onclick="copyRefEmails()">Copy Both Emails</button></div>
+      </div>
+      <input type="hidden" id="ref-cand-email-val">
+      <input type="hidden" id="ref1-email-val">
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- ══ MODALS ══ -->
+
+<!-- ADD ROLE -->
+<div class="modal-overlay" id="modal-add-role">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">New Role</div><div class="modal-close" onclick="closeModal('modal-add-role')">✕</div></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Role Title <span class="req">*</span></label><input type="text" id="m-role-title"></div>
+        <div class="field"><label class="field-label">Function <span class="req">*</span></label>
+          <select id="m-role-function" onchange="onModalFunctionChange()">
+            <option value="">Select function</option>
+            <option value="hq">HQ</option>
+            <option value="warehouse">Warehouse</option>
+            <option value="lab">Lab</option>
+            <option value="retail_gcc">Retail · GCC</option>
+            <option value="retail_ksa">Retail · KSA</option>
+            <option value="customer_service">Customer Service</option>
+          </select>
+        </div>
+        <div class="field" id="m-role-subfn-field" style="display:none"><label class="field-label">Sub-function <span class="req">*</span></label>
+          <select id="m-role-subfunction"></select>
+        </div>
+        <div class="field" id="m-role-dept-field"><label class="field-label">Department <span class="req">*</span></label>
+          <select id="m-role-dept">
+            <option value="">Select department</option>
+            <option>People</option><option>Finance</option><option>Commercial</option><option>Retail</option>
+            <option>Optical</option><option>Product / Tech / Data</option><option>Marketing</option><option>Strategy</option>
+          </select>
+        </div>
+        <div class="field"><label class="field-label">Hiring Manager</label><input type="text" id="m-role-hm"></div>
+        <div class="field"><label class="field-label">Reports To</label><input type="text" id="m-role-reports"></div>
+        <div class="field"><label class="field-label">Seniority</label><select id="m-role-seniority"><option>Junior</option><option>Mid-level</option><option selected>Senior</option><option>Manager</option><option>Senior Manager</option><option>Head of</option><option>Director</option><option>VP / C-Suite</option></select></div>
+        <div class="field"><label class="field-label">Priority</label><select id="m-role-priority"><option>Normal</option><option>High</option><option>Critical</option></select></div>
+        <div class="field"><label class="field-label">Location</label><input type="text" id="m-role-location" value="Dubai, UAE"></div>
+        <div class="field"><label class="field-label">Salary Range</label><input type="text" id="m-role-salary"></div>
+        <div class="field"><label class="field-label">Status</label><select id="m-role-status"><option value="Pending Approval">Pending Approval</option><option value="Open" selected>Open</option><option value="Draft">Draft</option></select></div>
+        <div class="field"><label class="field-label">Target Start Date</label><input type="text" id="m-role-start"></div>
+        <div class="field full"><label class="field-label">Notes</label><textarea id="m-role-notes" style="min-height:60px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-role')">Cancel</button><button class="btn btn-primary" onclick="saveRole()">Create Role</button></div>
+  </div>
+</div>
+
+<!-- ADD CANDIDATE -->
+<div class="modal-overlay" id="modal-add-candidate">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Candidate</div><div class="modal-close" onclick="closeModal('modal-add-candidate')">✕</div></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label class="field-label">First Name <span class="req">*</span></label><input type="text" id="m-cand-fname"></div>
+        <div class="field"><label class="field-label">Last Name <span class="req">*</span></label><input type="text" id="m-cand-lname"></div>
+        <div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" id="m-cand-email"></div>
+        <div class="field"><label class="field-label">Phone</label><input type="tel" id="m-cand-phone"></div>
+        <div class="field"><label class="field-label">Current Title</label><input type="text" id="m-cand-title"></div>
+        <div class="field"><label class="field-label">Current Company</label><input type="text" id="m-cand-company"></div>
+        <div class="field"><label class="field-label">LinkedIn</label><input type="text" id="m-cand-linkedin"></div>
+        <div class="field"><label class="field-label">Source</label><select id="m-cand-source"><option>LinkedIn</option><option>Referral</option><option>Agency</option><option>Direct Apply</option><option>Job Board</option><option>Talent Pool</option></select></div>
+        <div class="field"><label class="field-label">Apply to Role</label><select id="m-cand-role"><option value="">— No role yet —</option></select></div>
+        <div class="field"><label class="field-label">Starting Stage</label><select id="m-cand-stage"><option>New Applicant</option><option>Screening</option><option>Recruiter Screen</option><option>HM Interview</option><option>Task / Case Study</option><option>CXO Interview</option><option>Founder Interview</option><option>Offered</option></select></div>
+        <div class="field full">
+          <label class="field-label">CV Upload</label>
+          <div class="file-zone" id="cv-upload-zone" onclick="document.getElementById('m-cand-cv').click()">📄 Click to upload CV (PDF / DOCX / TXT)</div>
+          <input type="file" id="m-cand-cv" accept=".pdf,.docx,.doc,.txt" style="display:none" onchange="handleCVUpload(event)">
+        </div>
+        <div class="field full"><label class="field-label">CV Summary / Notes</label><textarea id="m-cand-notes" placeholder="Paste CV highlights or notes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-add-candidate')">Cancel</button><button class="btn btn-primary" onclick="saveCandidate()">Add Candidate</button></div>
+  </div>
+</div>
+
+<!-- SCHEDULE INTERVIEW -->
+<div class="modal-overlay" id="modal-schedule-interview">
+  <div class="modal modal-lg">
+    <div class="modal-header"><div class="modal-title">Schedule Interview</div><div class="modal-close" onclick="closeModal('modal-schedule-interview')">✕</div></div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.7">Opens three Google Calendar invites: candidate, interviewer, and recruiter. The interviewer + recruiter invite includes a scorecard link and the candidate's CV.</p>
+      <div class="form-grid">
+        <div class="field"><label class="field-label">Candidate <span class="req">*</span></label><select id="m-int-candidate"></select></div>
+        <div class="field"><label class="field-label">Stage <span class="req">*</span></label><select id="m-int-stage"><option>Recruiter Screen</option><option>HM Interview</option><option>Task / Case Study</option><option>Panel Interview</option><option>CXO Interview</option><option>Founder Interview</option></select></div>
+        <div class="field"><label class="field-label">Interviewer Name <span class="req">*</span></label><input type="text" id="m-int-int-name"></div>
+        <div class="field"><label class="field-label">Interviewer Email <span class="req">*</span></label><input type="email" id="m-int-int-email"></div>
+        <div class="field"><label class="field-label">Date <span class="req">*</span></label><input type="date" id="m-int-date"></div>
+        <div class="field"><label class="field-label">Time <span class="req">*</span></label><input type="time" id="m-int-time"></div>
+        <div class="field"><label class="field-label">Duration (mins)</label><input type="text" id="m-int-duration" value="45"></div>
+        <div class="field"><label class="field-label">Format</label><select id="m-int-format"><option>Google Meet</option><option>Zoom</option><option>In Person — Eyewa HQ</option><option>Phone</option></select></div>
+        <div class="field full"><label class="field-label">Meeting Link / Location</label><input type="text" id="m-int-link"></div>
+        <div class="field full"><label class="field-label">Recruiter Email</label><input type="email" id="m-int-recruiter" value="humairaa.patel@eyewa.com"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('modal-schedule-interview')">Cancel</button><button class="btn btn-primary" onclick="scheduleInterview()">Schedule & Open Calendar</button></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">GENERATING...</div>
+  <div class="loading-sub" id="loading-sub"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA LAYER
+// ══════════════════════════════════════════════
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem(`eyewa_ats_${k}`) || '[]'),
+  set: (k, v) => localStorage.setItem(`eyewa_ats_${k}`, JSON.stringify(v)),
+  id: () => Date.now().toString(36) + Math.random().toString(36).slice(2),
+};
+const getRoles = () => DB.get('roles');
+const getCandidates = () => DB.get('candidates');
+const getApplications = () => DB.get('applications');
+const getScorecards = () => DB.get('scorecards');
+const getComms = () => DB.get('comms');
+const getInterviews = () => DB.get('interviews');
+const getActivity = () => DB.get('activity');
+const getReferrals = () => DB.get('referrals');
+const getRecruiters = () => DB.get('recruiters');
+
+const saveRoles = d => DB.set('roles', d);
+const saveCandidates = d => DB.set('candidates', d);
+const saveApplications = d => DB.set('applications', d);
+const saveScorecards = d => DB.set('scorecards', d);
+const saveComms = d => DB.set('comms', d);
+const saveInterviews = d => DB.set('interviews', d);
+const saveReferrals = d => DB.set('referrals', d);
+const saveRecruiters = d => DB.set('recruiters', d);
+
+function logActivity(text) {
+  const acts = getActivity();
+  acts.unshift({ text, time: new Date().toISOString() });
+  DB.set('activity', acts.slice(0, 30));
+}
+
+// Seed default recruiters if none exist
+function seedRecruiters() {
+  if (getRecruiters().length === 0) {
+    saveRecruiters([
+      { id: DB.id(), name: 'Humairaa Patel', email: 'humairaa.patel@eyewa.com', role: 'ta-manager' },
+      { id: DB.id(), name: 'Recruiter A', email: 'recruiter.a@eyewa.com', role: 'recruiter' },
+      { id: DB.id(), name: 'Recruiter B', email: 'recruiter.b@eyewa.com', role: 'recruiter' },
+    ]);
+  }
+}
+
+// ══════════════════════════════════════════════
+// FUNCTION SEGMENTATION
+// ══════════════════════════════════════════════
+const FUNCTIONS = [
+  { id: 'hq',               label: 'HQ',               cls: 'fn-hq',               cadence: 'Months', subs: null },
+  { id: 'warehouse',        label: 'Warehouse',        cls: 'fn-warehouse',        cadence: 'Days',   subs: null },
+  { id: 'lab',              label: 'Lab',              cls: 'fn-lab',              cadence: 'Weeks',  subs: null },
+  { id: 'retail_gcc',       label: 'Retail · GCC',     cls: 'fn-retail_gcc',       cadence: 'Weeks',  subs: ['UAE','Kuwait','Bahrain','Qatar','Oman'] },
+  { id: 'retail_ksa',       label: 'Retail · KSA',     cls: 'fn-retail_ksa',       cadence: 'Weeks',  subs: ['Eastern','Central','Western'] },
+  { id: 'customer_service', label: 'Customer Service', cls: 'fn-customer_service', cadence: 'Weeks',  subs: null },
+];
+function fnById(id) { return FUNCTIONS.find(f => f.id === id) || null; }
+function fnLabel(id) { return fnById(id)?.label || '—'; }
+
+// Roles-page filter state
+let rolesFnFilter = 'all';
+let rolesSubFilter = null;
+// Reporting-page filter state
+let reportFnFilter = 'all';
+
+// Infer function for legacy roles created before this field existed
+function inferFunction(role) {
+  const t = ((role.title||'') + ' ' + (role.location||'')).toLowerCase();
+  if (/warehouse|fulfil|dwc/.test(t)) return { fn:'warehouse', sub:null };
+  if (/optical lab|lab tech|edger|fitter/.test(t)) return { fn:'lab', sub:null };
+  if (/customer service|cs agent|support agent|wa agent/.test(t)) return { fn:'customer_service', sub:null };
+  const loc = (role.location||'').toLowerCase();
+  if (role.dept === 'Retail' || /store|optician|optometrist/.test(t)) {
+    if (/riyadh/.test(loc)) return { fn:'retail_ksa', sub:'Central' };
+    if (/dammam|khobar|jubail|dhahran/.test(loc)) return { fn:'retail_ksa', sub:'Eastern' };
+    if (/jeddah|makkah|mecca|medina/.test(loc)) return { fn:'retail_ksa', sub:'Western' };
+    if (/dubai|abu dhabi|sharjah|ajman/.test(loc)) return { fn:'retail_gcc', sub:'UAE' };
+    if (/kuwait/.test(loc)) return { fn:'retail_gcc', sub:'Kuwait' };
+    if (/bahrain|manama/.test(loc)) return { fn:'retail_gcc', sub:'Bahrain' };
+    if (/qatar|doha/.test(loc)) return { fn:'retail_gcc', sub:'Qatar' };
+    if (/oman|muscat/.test(loc)) return { fn:'retail_gcc', sub:'Oman' };
+  }
+  return { fn:'hq', sub:null };
+}
+// One-time backfill so existing roles get a function
+function backfillFunctions() {
+  const roles = getRoles();
+  let changed = false;
+  roles.forEach(r => {
+    if (!r.function) { const g = inferFunction(r); r.function = g.fn; r.subFunction = g.sub; changed = true; }
+  });
+  if (changed) saveRoles(roles);
+}
+
+// Modal: show sub-function / department fields based on chosen function
+function onModalFunctionChange() {
+  const fnId = document.getElementById('m-role-function').value;
+  const fn = fnById(fnId);
+  const subField = document.getElementById('m-role-subfn-field');
+  const subSel = document.getElementById('m-role-subfunction');
+  const deptField = document.getElementById('m-role-dept-field');
+  if (fn && fn.subs) {
+    subField.style.display = '';
+    subSel.innerHTML = '<option value="">Select…</option>' + fn.subs.map(s => `<option value="${s}">${s}</option>`).join('');
+  } else {
+    subField.style.display = 'none';
+    subSel.innerHTML = '';
+  }
+  // Department only meaningful for HQ
+  deptField.style.display = (fnId === 'hq' || fnId === '') ? '' : 'none';
+}
+
+// Render the function tab bar (used on Roles + Reporting)
+function renderFnBar(containerId, activeFn, onClick) {
+  const roles = getRoles();
+  const total = roles.length;
+  let html = `<div class="fn-tab ${activeFn==='all'?'active':''}" data-fn="all">All <span class="fn-count">${total}</span></div>`;
+  FUNCTIONS.forEach(f => {
+    const n = roles.filter(r => r.function === f.id).length;
+    html += `<div class="fn-tab ${activeFn===f.id?'active':''}" data-fn="${f.id}">
+      <span class="fn-dot ${f.cls}"></span>${f.label} <span class="fn-count">${n}</span>
+    </div>`;
+  });
+  const bar = document.getElementById(containerId);
+  bar.innerHTML = html;
+  bar.querySelectorAll('.fn-tab').forEach(tab => {
+    tab.addEventListener('click', () => onClick(tab.dataset.fn));
+  });
+}
+
+// Render the sub-function chip bar for Roles page
+function renderRolesSubBar() {
+  const bar = document.getElementById('roles-sub-bar');
+  const fn = fnById(rolesFnFilter);
+  if (!fn || !fn.subs) { bar.classList.remove('visible'); bar.innerHTML = ''; return; }
+  const roles = getRoles().filter(r => r.function === fn.id);
+  let html = `<span class="sub-bar-label">${fn.id==='retail_ksa'?'Region':'Country'}</span>`;
+  html += `<div class="sub-chip ${rolesSubFilter===null?'active':''}" data-sub="">All <span class="sub-n">${roles.length}</span></div>`;
+  fn.subs.forEach(s => {
+    const n = roles.filter(r => r.subFunction === s).length;
+    html += `<div class="sub-chip ${rolesSubFilter===s?'active':''}" data-sub="${s}">${s} <span class="sub-n">${n}</span></div>`;
+  });
+  bar.innerHTML = html;
+  bar.classList.add('visible');
+  bar.querySelectorAll('.sub-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      rolesSubFilter = chip.dataset.sub || null;
+      renderRolesSubBar();
+      renderRolesTable();
+    });
+  });
+}
+
+// Dashboard: By Function breakdown
+function renderFunctionBreakdown() {
+  const roles = getRoles();
+  const data = FUNCTIONS.map(f => {
+    const inFn = roles.filter(r => r.function === f.id);
+    return {
+      ...f,
+      open:  inFn.filter(r => r.status === 'Open').length,
+      hired: inFn.filter(r => r.status === 'Closed - Hired').length,
+      hold:  inFn.filter(r => r.status === 'On Hold').length,
+    };
+  });
+  const max = Math.max(1, ...data.map(d => d.open + d.hired + d.hold));
+  let html = '';
+  data.forEach(f => {
+    const hasSubs = !!f.subs;
+    html += `<div class="fn-breakdown-row">
+      <div class="fn-breakdown-name">
+        <span class="fn-dot ${f.cls}"></span>${f.label}
+        ${hasSubs ? `<button class="fn-expand" data-target="fnsub-${f.id}">▶</button>` : ''}
+        <span class="fn-cadence">${f.cadence}</span>
+      </div>
+      <div class="fn-stack">
+        <span class="s-open" style="width:${f.open/max*100}%"></span>
+        <span class="s-hired" style="width:${f.hired/max*100}%"></span>
+        <span class="s-hold" style="width:${f.hold/max*100}%"></span>
+      </div>
+      <div class="fn-breakdown-stats"><b>${f.open}</b> · ${f.hired} · ${f.hold}</div>
+    </div>`;
+    if (hasSubs) {
+      html += `<div class="fn-sub-rows" id="fnsub-${f.id}">`;
+      f.subs.forEach(s => {
+        const inSub = roles.filter(r => r.function === f.id && r.subFunction === s);
+        const o = inSub.filter(r => r.status === 'Open').length;
+        const h = inSub.filter(r => r.status === 'Closed - Hired').length;
+        const hd = inSub.filter(r => r.status === 'On Hold').length;
+        html += `<div class="fn-sub-row">
+          <div class="fn-sub-name">${s}</div>
+          <div class="fn-stack">
+            <span class="s-open" style="width:${o/max*100}%"></span>
+            <span class="s-hired" style="width:${h/max*100}%"></span>
+            <span class="s-hold" style="width:${hd/max*100}%"></span>
+          </div>
+          <div class="fn-breakdown-stats"><b>${o}</b> · ${h} · ${hd}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+  });
+  const el = document.getElementById('dash-function-breakdown');
+  el.innerHTML = html || '<div class="text-muted text-sm" style="padding:8px">No roles yet</div>';
+  el.querySelectorAll('.fn-expand').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById(btn.dataset.target)?.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════
+let currentPage = 'dashboard';
+let currentRoleId = null;
+let currentCandidateId = null;
+
+const pageTitles = {
+  dashboard:'DASHBOARD', reporting:'REPORTING', pipeline:'PIPELINE', roles:'ROLES',
+  candidates:'CANDIDATES', interviews:'INTERVIEWS', referrals:'REFERRALS',
+  'role-detail':'ROLE', 'candidate-detail':'CANDIDATE',
+  'tool-jd':'JD GENERATOR', 'tool-interview':'INTERVIEW PACK',
+  'tool-comms':'CANDIDATE COMMS', 'tool-scorecard':'SCORECARD', 'tool-refcheck':'REFERENCE CHECK',
+};
+
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${page}`)?.classList.add('active');
+  document.querySelector(`[onclick="nav('${page}')"]`)?.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[page] || page.toUpperCase();
+  currentPage = page;
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'reporting') renderReporting();
+  if (page === 'roles') renderRolesPage();
+  if (page === 'candidates') renderCandidatesTable();
+  if (page === 'pipeline') renderKanban();
+  if (page === 'interviews') renderInterviewsTable();
+  if (page === 'referrals') renderReferralsTable();
+  updateBadges();
+}
+
+// ══════════════════════════════════════════════
+// REFERRAL PAGE
+// ══════════════════════════════════════════════
+let refRoleId = null;
+let refCVData = null;
+
+function openReferralPage() {
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('referral-page').classList.add('active');
+  renderReferralRoles();
+}
+
+function closeReferralPage() {
+  document.getElementById('sidebar').style.display = '';
+  document.getElementById('main-content').style.display = '';
+  document.getElementById('referral-page').classList.remove('active');
+}
+
+function renderReferralRoles() {
+  const roles = getRoles().filter(r => r.status === 'Open' && r.publishedInternal);
+  const grid = document.getElementById('ref-roles-grid');
+  if (!roles.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">◻</div><div class="empty-title">No roles published yet</div><div class="empty-sub">Check back soon — new roles coming</div></div>`;
+    return;
+  }
+  grid.innerHTML = roles.map(r => `
+    <div class="ref-role-card">
+      <div class="ref-role-dept">${fnLabel(r.function)}${r.subFunction?' · '+r.subFunction:''}</div>
+      <div class="ref-role-title">${r.title}</div>
+      <div class="ref-role-meta">
+        <span>📍 ${r.location || 'Dubai, UAE'}</span>
+        <span>· ${r.seniority}</span>
+        ${r.salary ? `<span>· ${r.salary}</span>` : ''}
+      </div>
+      <button class="ref-refer-btn" onclick="openReferModal('${r.id}','${r.title}')">Refer Someone →</button>
+    </div>
+  `).join('');
+}
+
+function openReferModal(roleId, roleTitle) {
+  refRoleId = roleId;
+  document.getElementById('ref-role-name-display').textContent = roleTitle;
+  document.getElementById('ref-cv-zone').textContent = '📄 Click to upload CV';
+  document.getElementById('ref-cv-zone').classList.remove('uploaded');
+  refCVData = null;
+  openModal('modal-referral');
+}
+
+async function handleRefCVUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const zone = document.getElementById('ref-cv-zone');
+  zone.textContent = `Reading ${file.name}...`;
+  try {
+    let text = '';
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'txt') text = await file.text();
+    else if (ext === 'pdf') {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      const pdfjs = window['pdfjs-dist/build/pdf'];
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+      for (let i = 1; i <= pdf.numPages; i++) { const p = await pdf.getPage(i); const c = await p.getTextContent(); text += c.items.map(s => s.str).join(' ') + '\n'; }
+    } else if (['docx','doc'].includes(ext)) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
+      const r = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+      text = r.value;
+    }
+    refCVData = { name: file.name, text };
+    zone.classList.add('uploaded');
+    zone.textContent = `✓ ${file.name} uploaded`;
+  } catch(e) { zone.textContent = 'Could not read file. Try .txt'; }
+}
+
+function submitReferral() {
+  const yourName = document.getElementById('ref-your-name').value.trim();
+  const yourEmail = document.getElementById('ref-your-email').value.trim();
+  const fn = document.getElementById('ref-cand-fname').value.trim();
+  const ln = document.getElementById('ref-cand-lname').value.trim();
+  const email = document.getElementById('ref-cand-email-input').value.trim();
+  if (!yourName || !yourEmail || !fn || !ln || !email) { showToast('Please fill in all required fields', 'error'); return; }
+
+  const refs = getReferrals();
+  const ref = {
+    id: DB.id(), roleId: refRoleId,
+    roleName: getRoles().find(r => r.id === refRoleId)?.title || '',
+    referrerName: yourName, referrerEmail: yourEmail,
+    candidateFirstName: fn, candidateLastName: ln, candidateEmail: email,
+    candidatePhone: document.getElementById('ref-cand-phone').value.trim(),
+    relationship: document.getElementById('ref-relationship').value.trim(),
+    cv: refCVData, date: new Date().toISOString(),
+    status: 'New', convertedToCandidateId: null,
+  };
+  refs.push(ref);
+  saveReferrals(refs);
+  logActivity(`New referral: <strong>${fn} ${ln}</strong> for <strong>${ref.roleName}</strong> by ${yourName}`);
+  closeModal('modal-referral');
+  showToast(`Referral submitted — thank you, ${yourName}!`);
+  document.querySelectorAll('#modal-referral input, #modal-referral textarea').forEach(el => el.value = '');
+  updateBadges();
+}
+
+// ══════════════════════════════════════════════
+// RECRUITER ASSIGNMENT
+// ══════════════════════════════════════════════
+function populateRecruiterSelect() {
+  const recruiters = getRecruiters();
+  const sel = document.getElementById('recruiter-assign-select');
+  sel.innerHTML = '<option value="">Unassigned</option>' + recruiters.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
+  const role = getRoles().find(r => r.id === currentRoleId);
+  if (role?.recruiterId) sel.value = role.recruiterId;
+}
+
+function assignRecruiter(recruiterId) {
+  const roles = getRoles();
+  const role = roles.find(r => r.id === currentRoleId);
+  if (!role) return;
+  const recruiter = getRecruiters().find(r => r.id === recruiterId);
+  role.recruiterId = recruiterId;
+  role.recruiterName = recruiter?.name || '';
+  saveRoles(roles);
+  logActivity(`<strong>${role.title}</strong> assigned to <strong>${recruiter?.name || 'unassigned'}</strong>`);
+  showToast(`Assigned to ${recruiter?.name || 'unassigned'}`);
+  renderRolesTable();
+}
+
+// ══════════════════════════════════════════════
+// PUBLISH TOGGLE
+// ══════════════════════════════════════════════
+function togglePublish(val) {
+  const roles = getRoles();
+  const role = roles.find(r => r.id === currentRoleId);
+  if (!role) return;
+  role.publishedInternal = val;
+  saveRoles(roles);
+  showToast(val ? 'Published to referral page' : 'Removed from referral page');
+  logActivity(`<strong>${role.title}</strong> ${val ? 'published to' : 'removed from'} internal referral page`);
+  updateBadges();
+}
+
+// ══════════════════════════════════════════════
+// ROLES
+// ══════════════════════════════════════════════
+const ROLE_STATUSES = ['Pending Approval','Open','Draft','On Hold','Closed - Hired','Closed - Cancelled'];
+const PIPELINE_STAGES = ['New Applicant','Screening','Recruiter Screen','HM Interview','Task / Case Study','CXO Interview','Founder Interview','Offered','Hired','Rejected'];
+const STAGE_COLORS_HEX = { 'New Applicant':'#9a9690','Screening':'#c9a227','Recruiter Screen':'#1a3f7a','HM Interview':'#5a2878','Task / Case Study':'#0d6b6b','CXO Interview':'#b83232','Founder Interview':'#b85a1a','Offered':'#1e6b47','Hired':'#1e6b47','Rejected':'#ccc' };
+
+function roleStatusClass(s) {
+  if (s === 'Pending Approval') return 'badge-pending';
+  if (s === 'Open') return 'badge-open';
+  if (s === 'Draft') return 'badge-draft';
+  if (s === 'On Hold') return 'badge-hold';
+  if (s === 'Closed - Hired') return 'badge-closed-h';
+  if (s === 'Closed - Cancelled') return 'badge-closed-c';
+  return 'badge-draft';
+}
+
+function calculateDaysOpen(role) {
+  const hist = role.statusHistory || [];
+  const opened = hist.find(h => h.to === 'Open');
+  if (!opened) return 0;
+  const closed = hist.find(h => h.to && h.to.startsWith('Closed'));
+  const end = closed ? new Date(closed.date) : new Date();
+  return Math.max(0, Math.floor((end - new Date(opened.date)) / 86400000));
+}
+
+function calculateDaysOnHold(role) {
+  if (!role.statusHistory) return 0;
+  let total = 0; let holdStart = null;
+  role.statusHistory.forEach(h => {
+    if (h.to === 'On Hold') holdStart = new Date(h.date);
+    else if (holdStart && h.from === 'On Hold') { total += Math.floor((new Date(h.date) - holdStart) / 86400000); holdStart = null; }
+  });
+  if (holdStart) total += Math.floor((new Date() - holdStart) / 86400000);
+  return total;
+}
+
+function saveRole() {
+  const title = document.getElementById('m-role-title').value.trim();
+  const fnId = document.getElementById('m-role-function').value;
+  const fn = fnById(fnId);
+  const dept = document.getElementById('m-role-dept').value;
+  if (!title || !fnId) { showToast('Title and function required', 'error'); return; }
+  if (fnId === 'hq' && !dept) { showToast('Department required for HQ roles', 'error'); return; }
+  let subFunction = null;
+  if (fn && fn.subs) {
+    subFunction = document.getElementById('m-role-subfunction').value;
+    if (!subFunction) { showToast('Sub-function required for retail roles', 'error'); return; }
+  }
+  const roles = getRoles();
+  const status = document.getElementById('m-role-status').value;
+  const role = {
+    id: DB.id(), title,
+    function: fnId, subFunction,
+    dept: fnId === 'hq' ? dept : (dept || ''),
+    hm: document.getElementById('m-role-hm').value.trim(),
+    reportsTo: document.getElementById('m-role-reports').value.trim(),
+    seniority: document.getElementById('m-role-seniority').value,
+    priority: document.getElementById('m-role-priority').value,
+    location: document.getElementById('m-role-location').value.trim(),
+    salary: document.getElementById('m-role-salary').value.trim(),
+    status, targetStart: document.getElementById('m-role-start').value.trim(),
+    notes: document.getElementById('m-role-notes').value.trim(),
+    dateOpened: new Date().toISOString().split('T')[0],
+    dateOpenedISO: new Date().toISOString(),
+    statusHistory: [{ from: null, to: status, date: new Date().toISOString() }],
+    publishedInternal: false, recruiterId: '', recruiterName: '',
+    jd: '', interviewPack: '',
+  };
+  roles.push(role);
+  saveRoles(roles);
+  logActivity(`New role created: <strong>${title}</strong> (${fn.label}${subFunction?' · '+subFunction:''})`);
+  closeModal('modal-add-role');
+  clearModalFields('modal-add-role');
+  document.getElementById('m-role-subfn-field').style.display = 'none';
+  document.getElementById('m-role-dept-field').style.display = '';
+  showToast(`"${title}" created`);
+  updateBadges();
+  if (currentPage === 'roles') renderRolesPage();
+  if (currentPage === 'dashboard') renderDashboard();
+}
+
+function changeRoleStatus(newStatus) {
+  const roles = getRoles();
+  const role = roles.find(r => r.id === currentRoleId);
+  if (!role || role.status === newStatus) return;
+  const old = role.status;
+  role.status = newStatus;
+  role.statusHistory = role.statusHistory || [];
+  role.statusHistory.push({ from: old, to: newStatus, date: new Date().toISOString() });
+  if (newStatus.startsWith('Closed')) { role.dateClosedISO = new Date().toISOString(); role.publishedInternal = false; }
+  saveRoles(roles);
+  logActivity(`<strong>${role.title}</strong>: ${old} → ${newStatus}`);
+  showToast(`Status → ${newStatus}`);
+  openRoleDetail(currentRoleId);
+}
+
+function openRoleDetail(id) {
+  currentRoleId = id;
+  const role = getRoles().find(r => r.id === id);
+  if (!role) return;
+  document.getElementById('rd-title').textContent = role.title;
+  document.getElementById('rd-meta').innerHTML = `
+    <span class="badge ${roleStatusClass(role.status)}">${role.status}</span>
+    <span class="fn-tag"><span class="fn-dot ${fnById(role.function)?.cls||''}"></span>${fnLabel(role.function)}${role.subFunction?` <span class="fn-tag-slash">/</span> <span class="fn-tag-sub">${role.subFunction}</span>`:''}</span>
+    ${role.dept?`<span>${role.dept}</span> · `:''}<span>${role.seniority}</span> · <span>${role.location || 'Dubai, UAE'}</span>
+    ${role.recruiterName ? `· <span>Recruiter: <strong>${role.recruiterName}</strong></span>` : ''}
+    · <span>${calculateDaysOpen(role)}d open</span>
+  `;
+  const sel = document.getElementById('rd-status-select');
+  sel.innerHTML = ROLE_STATUSES.map(s => `<option value="${s}"${s===role.status?' selected':''}>${s}</option>`).join('');
+  document.getElementById('publish-toggle').checked = !!role.publishedInternal;
+  populateRecruiterSelect();
+  // Overview
+  document.getElementById('rd-overview-grid').innerHTML = `
+    <div class="field"><div class="field-label">Function</div><div class="info-val">${fnLabel(role.function)}</div></div>
+    <div class="field"><div class="field-label">Sub-function</div><div class="info-val">${role.subFunction || '—'}</div></div>
+    <div class="field"><div class="field-label">Department</div><div class="info-val">${role.dept || '—'}</div></div>
+    <div class="field"><div class="field-label">Hiring Manager</div><div class="info-val">${role.hm || '—'}</div></div>
+    <div class="field"><div class="field-label">Reports To</div><div class="info-val">${role.reportsTo || '—'}</div></div>
+    <div class="field"><div class="field-label">Seniority</div><div class="info-val">${role.seniority}</div></div>
+    <div class="field"><div class="field-label">Priority</div><div class="info-val">${role.priority}</div></div>
+    <div class="field"><div class="field-label">Location</div><div class="info-val">${role.location || 'Dubai, UAE'}</div></div>
+    <div class="field"><div class="field-label">Salary Range</div><div class="info-val">${role.salary || '—'}</div></div>
+    <div class="field"><div class="field-label">Target Start</div><div class="info-val">${role.targetStart || '—'}</div></div>
+    <div class="field"><div class="field-label">Days Open</div><div class="info-val">${calculateDaysOpen(role)} days</div></div>
+    <div class="field"><div class="field-label">Days On Hold</div><div class="info-val">${calculateDaysOnHold(role)} days</div></div>
+    <div class="field"><div class="field-label">Assigned Recruiter</div><div class="info-val">${role.recruiterName || '—'}</div></div>
+    <div class="field"><div class="field-label">Published Internally</div><div class="info-val">${role.publishedInternal ? '✓ Yes' : '✗ No'}</div></div>
+    ${role.notes ? `<div class="field" style="grid-column:1/-1"><div class="field-label">Notes</div><div class="info-val text-muted">${role.notes}</div></div>` : ''}
+  `;
+  renderRoleKanban(id);
+  // JD
+  document.getElementById('rd-jd-content').innerHTML = role.jd
+    ? `<div class="gen-output">${role.jd}</div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="copyText('${btoa(unescape(encodeURIComponent(role.jd))).replace(/'/g,'')}')" >Copy</button><button class="btn btn-primary btn-sm" onclick="prefillAndGoJD()">Regenerate</button></div>`
+    : `<div class="empty"><div class="empty-icon">✦</div><div class="empty-title">No JD yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="prefillAndGoJD()">Generate JD →</button>`;
+  // Interview Pack
+  document.getElementById('rd-interview-content').innerHTML = role.interviewPack
+    ? `<div class="gen-output">${role.interviewPack}</div><div class="gen-actions"><button class="btn btn-ghost btn-sm" onclick="prefillAndGoInterview()">Regenerate</button></div>`
+    : `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No interview pack yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="prefillAndGoInterview()">Generate Pack →</button>`;
+  renderRoleMetrics(role);
+  renderRoleHistory(role);
+  // Reset tabs
+  document.querySelectorAll('#page-role-detail .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-role-detail .tab-panel').forEach(t => t.classList.remove('active'));
+  document.querySelector('#page-role-detail .tab').classList.add('active');
+  document.getElementById('role-tab-overview').classList.add('active');
+  nav('role-detail');
+}
+
+function renderRoleKanban(roleId) {
+  const apps = getApplications().filter(a => a.roleId === roleId);
+  const cands = getCandidates();
+  document.getElementById('rd-kanban').innerHTML = `<div class="kanban">${PIPELINE_STAGES.map(stage => {
+    const sApps = apps.filter(a => a.stage === stage);
+    return `<div class="kanban-col">
+      <div class="kanban-col-header"><div class="kanban-col-name" style="color:${STAGE_COLORS_HEX[stage]}">${stage}</div><div class="kanban-col-count">${sApps.length}</div></div>
+      <div class="kanban-cards">${sApps.map(app => {
+        const c = cands.find(x => x.id === app.candidateId); if (!c) return '';
+        const days = Math.floor((Date.now() - new Date(app.stageUpdated)) / 86400000);
+        return `<div class="kanban-card" onclick="openCandidateDetail('${c.id}')">
+          <div class="kc-name">${c.firstName} ${c.lastName}</div>
+          <div class="kc-role">${c.currentTitle || c.source}</div>
+          <div class="kc-meta"><span class="kc-days">${days}d in stage</span></div>
+          <div class="kc-actions">
+            <button class="kc-btn" onclick="event.stopPropagation();moveStage('${app.id}')">Advance →</button>
+            <button class="kc-btn reject" onclick="event.stopPropagation();rejectApp('${app.id}')">Reject</button>
+          </div>
+        </div>`;
+      }).join('') || `<div style="padding:10px 8px;font-size:11px;color:var(--muted);text-align:center">Empty</div>`}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderRoleMetrics(role) {
+  const apps = getApplications().filter(a => a.roleId === role.id);
+  const total = apps.length;
+  const hired = apps.filter(a => a.stage === 'Hired').length;
+  const offered = apps.filter(a => ['Offered','Hired'].includes(a.stage)).length;
+  const inProcess = apps.filter(a => !['Hired','Rejected'].includes(a.stage)).length;
+  document.getElementById('rd-metrics-content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card gold"><div class="stat-label">Total Candidates</div><div class="stat-num">${total}</div></div>
+      <div class="stat-card blue"><div class="stat-label">In Process</div><div class="stat-num">${inProcess}</div></div>
+      <div class="stat-card red"><div class="stat-label">Offered</div><div class="stat-num">${offered}</div></div>
+      <div class="stat-card green"><div class="stat-label">Hired</div><div class="stat-num">${hired}</div></div>
+    </div>
+    <div class="chart-card mt-20">
+      <div class="chart-title">Pipeline Funnel — ${role.title}</div>
+      <div class="chart-sub">Candidates per stage</div>
+      ${PIPELINE_STAGES.filter(s=>s!=='Rejected').map(s => {
+        const c = apps.filter(a => a.stage === s || (a.stageHistory||[]).some(h=>h.stage===s)).length;
+        const pct = total ? (c/total)*100 : 0;
+        return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${STAGE_COLORS_HEX[s]}"></div></div><div class="bar-val">${c}</div></div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderRoleHistory(role) {
+  const hist = (role.statusHistory || []).slice().reverse();
+  document.getElementById('rd-history-content').innerHTML = hist.length ? hist.map(h => `
+    <div class="activity-item">
+      <div class="act-dot"></div>
+      <div><div class="act-text">Status: <strong>${h.from || 'Created'}</strong> → <strong>${h.to}</strong></div>
+      <div class="act-time">${new Date(h.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div>
+    </div>
+  `).join('') : `<div class="empty"><div class="empty-title">No history yet</div></div>`;
+}
+
+function moveStage(appId) {
+  const apps = getApplications();
+  const app = apps.find(a => a.id === appId);
+  if (!app) return;
+  const idx = PIPELINE_STAGES.indexOf(app.stage);
+  if (idx < PIPELINE_STAGES.length - 2) {
+    app.stage = PIPELINE_STAGES[idx + 1];
+    app.stageUpdated = new Date().toISOString();
+    app.stageHistory = app.stageHistory || [];
+    app.stageHistory.push({ stage: app.stage, date: new Date().toISOString() });
+    saveApplications(apps);
+    const c = getCandidates().find(x => x.id === app.candidateId);
+    logActivity(`<strong>${c?.firstName} ${c?.lastName}</strong> → <strong>${app.stage}</strong>`);
+    showToast(`Moved to ${app.stage}`);
+    if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+    if (currentPage === 'pipeline') renderKanban();
+  }
+}
+
+function rejectApp(appId) {
+  if (!confirm('Reject this candidate?')) return;
+  const apps = getApplications();
+  const app = apps.find(a => a.id === appId);
+  if (!app) return;
+  app.stage = 'Rejected'; app.status = 'Rejected';
+  app.stageUpdated = new Date().toISOString();
+  saveApplications(apps);
+  if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+  if (currentPage === 'pipeline') renderKanban();
+  showToast('Candidate rejected');
+}
+
+function openAddCandidateToRole() {
+  openModal('modal-add-candidate');
+  populateCandidateRoleDropdown();
+  setTimeout(() => { if (currentRoleId) document.getElementById('m-cand-role').value = currentRoleId; }, 50);
+}
+
+function openRoleTools() { prefillAndGoJD(); }
+
+function prefillAndGoJD() {
+  const role = getRoles().find(r => r.id === currentRoleId);
+  if (!role) return;
+  document.getElementById('t-jd-title').value = role.title;
+  document.getElementById('t-jd-dept').value = role.dept || fnLabel(role.function);
+  document.getElementById('t-jd-reports').value = role.reportsTo || '';
+  nav('tool-jd');
+}
+
+function prefillAndGoInterview() {
+  const role = getRoles().find(r => r.id === currentRoleId);
+  if (!role) return;
+  document.getElementById('t-ip-title').value = role.title;
+  document.getElementById('t-ip-jd').value = role.jd || '';
+  nav('tool-interview');
+}
+
+// ══════════════════════════════════════════════
+// CANDIDATES
+// ══════════════════════════════════════════════
+let pendingCV = null;
+
+async function handleCVUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const zone = document.getElementById('cv-upload-zone');
+  zone.textContent = `Reading ${file.name}...`;
+  const ext = file.name.split('.').pop().toLowerCase();
+  try {
+    let text = '';
+    if (ext === 'txt') text = await file.text();
+    else if (ext === 'pdf') {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      const pdfjs = window['pdfjs-dist/build/pdf'];
+      pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+      for (let i = 1; i <= pdf.numPages; i++) { const p = await pdf.getPage(i); const c = await p.getTextContent(); text += c.items.map(s => s.str).join(' ') + '\n'; }
+    } else if (['docx','doc'].includes(ext)) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
+      const r = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+      text = r.value;
+    }
+    pendingCV = { name: file.name, text };
+    zone.classList.add('uploaded');
+    zone.textContent = `✓ ${file.name}`;
+    document.getElementById('m-cand-notes').value = text.slice(0, 3000);
+  } catch(e) { zone.textContent = '✕ Could not read file. Try .txt'; }
+}
+
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    if (document.querySelector(`script[src="${src}"]`)) return res();
+    const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
+  });
+}
+
+function populateCandidateRoleDropdown() {
+  const sel = document.getElementById('m-cand-role');
+  const roles = getRoles().filter(r => ['Open','Draft','Pending Approval'].includes(r.status));
+  sel.innerHTML = '<option value="">— No role yet —</option>' + roles.map(r => `<option value="${r.id}">${r.title}</option>`).join('');
+}
+
+function populateInterviewCandidates() {
+  const sel = document.getElementById('m-int-candidate');
+  const cands = getCandidates();
+  sel.innerHTML = '<option value="">Select candidate</option>' + cands.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+  if (currentCandidateId) sel.value = currentCandidateId;
+}
+
+function saveCandidate() {
+  const fn = document.getElementById('m-cand-fname').value.trim();
+  const ln = document.getElementById('m-cand-lname').value.trim();
+  const email = document.getElementById('m-cand-email').value.trim();
+  if (!fn || !ln || !email) { showToast('Name and email required', 'error'); return; }
+  const cands = getCandidates();
+  const cand = {
+    id: DB.id(), firstName: fn, lastName: ln, email,
+    phone: document.getElementById('m-cand-phone').value.trim(),
+    currentTitle: document.getElementById('m-cand-title').value.trim(),
+    currentCompany: document.getElementById('m-cand-company').value.trim(),
+    linkedin: document.getElementById('m-cand-linkedin').value.trim(),
+    source: document.getElementById('m-cand-source').value,
+    notes: document.getElementById('m-cand-notes').value.trim(),
+    cv: pendingCV, dateAdded: new Date().toISOString().split('T')[0],
+  };
+  cands.push(cand); saveCandidates(cands); pendingCV = null;
+  const roleId = document.getElementById('m-cand-role').value;
+  const stage = document.getElementById('m-cand-stage').value;
+  if (roleId) {
+    const apps = getApplications();
+    apps.push({ id: DB.id(), candidateId: cand.id, roleId, stage, stageUpdated: new Date().toISOString(), stageHistory: [{ stage, date: new Date().toISOString() }], status: 'Active', dateApplied: new Date().toISOString() });
+    saveApplications(apps);
+    const role = getRoles().find(r => r.id === roleId);
+    logActivity(`<strong>${fn} ${ln}</strong> added to <strong>${role?.title}</strong>`);
+  } else { logActivity(`Candidate added: <strong>${fn} ${ln}</strong>`); }
+  closeModal('modal-add-candidate'); clearModalFields('modal-add-candidate');
+  document.getElementById('cv-upload-zone').classList.remove('uploaded');
+  document.getElementById('cv-upload-zone').textContent = '📄 Click to upload CV (PDF / DOCX / TXT)';
+  showToast(`${fn} ${ln} added`); updateBadges();
+  if (currentPage === 'candidates') renderCandidatesTable();
+  if (currentPage === 'role-detail') renderRoleKanban(currentRoleId);
+  if (currentPage === 'dashboard') renderDashboard();
+}
+
+function openCandidateDetail(id) {
+  currentCandidateId = id;
+  const cand = getCandidates().find(c => c.id === id); if (!cand) return;
+  const apps = getApplications().filter(a => a.candidateId === id);
+  const roles = getRoles();
+  document.getElementById('cd-name').textContent = `${cand.firstName} ${cand.lastName}`;
+  const lastApp = apps[apps.length-1];
+  const appRole = lastApp ? roles.find(r => r.id === lastApp.roleId) : null;
+  document.getElementById('cd-meta').innerHTML = `
+    ${cand.currentTitle ? `<span>${cand.currentTitle}</span>` : ''}
+    ${cand.currentCompany ? `· <span>${cand.currentCompany}</span>` : ''}
+    · <span>${cand.email}</span>
+    ${appRole ? `· <span class="badge badge-active">${lastApp.stage}</span>` : ''}
+  `;
+  document.getElementById('cd-overview-grid').innerHTML = `
+    <div class="field"><div class="field-label">Email</div><div class="info-val">${cand.email}</div></div>
+    <div class="field"><div class="field-label">Phone</div><div class="info-val">${cand.phone || '—'}</div></div>
+    <div class="field"><div class="field-label">Current Title</div><div class="info-val">${cand.currentTitle || '—'}</div></div>
+    <div class="field"><div class="field-label">Current Company</div><div class="info-val">${cand.currentCompany || '—'}</div></div>
+    <div class="field"><div class="field-label">Source</div><div class="info-val">${cand.source}</div></div>
+    <div class="field"><div class="field-label">Date Added</div><div class="info-val">${cand.dateAdded}</div></div>
+    ${cand.linkedin ? `<div class="field" style="grid-column:1/-1"><div class="field-label">LinkedIn</div><div class="info-val"><a href="${cand.linkedin}" target="_blank" style="color:var(--blue)">${cand.linkedin}</a></div></div>` : ''}
+    ${apps.length ? `<div class="field" style="grid-column:1/-1"><div class="field-label">Applied To</div><div class="info-val">${apps.map(a=>roles.find(r=>r.id===a.roleId)?.title).filter(Boolean).join(', ')}</div></div>` : ''}
+    ${cand.cv ? `<div class="field" style="grid-column:1/-1"><div class="field-label">CV</div><div class="info-val">📄 ${cand.cv.name}</div></div>` : ''}
+    ${cand.notes ? `<div class="field" style="grid-column:1/-1"><div class="field-label">Notes / CV Summary</div><div class="info-val text-muted" style="font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:200px;overflow-y:auto">${cand.notes}</div></div>` : ''}
+  `;
+  renderCandidateInterviews(id); renderCandidateComms(id); renderCandidateScorecards(id);
+  document.querySelectorAll('#page-candidate-detail .tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-candidate-detail .tab-panel').forEach(t => t.classList.remove('active'));
+  document.querySelector('#page-candidate-detail .tab').classList.add('active');
+  document.getElementById('candidate-tab-overview').classList.add('active');
+  nav('candidate-detail');
+}
+
+function renderCandidateInterviews(cid) {
+  const ints = getInterviews().filter(i => i.candidateId === cid);
+  const el = document.getElementById('cd-interviews-list');
+  el.innerHTML = ints.length ? ints.map(i => `
+    <div class="interview-card">
+      <div><div class="interview-title">${i.stage} — ${i.interviewerName}</div><div class="interview-meta">${i.date} ${i.time} · ${i.format} · ${i.duration}min</div></div>
+      <span class="badge badge-active">Scheduled</span>
+    </div>
+  `).join('') + `<button class="btn btn-ghost btn-sm mt-12" onclick="openScheduleInterview()">+ Schedule Another</button>`
+  : `<div class="empty"><div class="empty-icon">▣</div><div class="empty-title">No interviews yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openScheduleInterview()">+ Schedule Interview</button>`;
+}
+
+function renderCandidateComms(cid) {
+  const comms = getComms().filter(c => c.candidateId === cid);
+  const el = document.getElementById('cd-comms-list');
+  el.innerHTML = comms.length ? comms.map(c => `
+    <div class="comms-item"><div class="flex justify-between items-center"><div class="comms-type">${c.type}</div><span class="text-muted text-sm">${c.date}</span></div>
+    <div class="comms-subject">${c.subject}</div><div class="comms-preview">${c.body?.slice(0,140)}...</div></div>
+  `).join('')
+  : `<div class="empty"><div class="empty-icon">✉</div><div class="empty-title">No comms yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openCandidateComms()">Send First Email →</button>`;
+}
+
+function renderCandidateScorecards(cid) {
+  const scs = getScorecards().filter(s => s.candidateId === cid);
+  const el = document.getElementById('cd-scorecards-list');
+  el.innerHTML = scs.length ? scs.map(sc => `
+    <div class="scorecard-card">
+      <div class="scorecard-card-header">
+        <div><strong>${sc.stage}</strong> — ${sc.interviewer}</div>
+        <span class="badge ${['Strong Hire','Hire'].includes(sc.recommendation)?'badge-hired':'badge-rejected'}">${sc.recommendation}</span>
+      </div>
+      <div class="text-muted text-sm">${sc.date}</div>
+      ${sc.aiSummary ? `<div style="font-size:12px;color:var(--mid);line-height:1.6;margin-top:8px;white-space:pre-wrap">${sc.aiSummary}</div>` : ''}
+    </div>
+  `).join('')
+  : `<div class="empty"><div class="empty-icon">◉</div><div class="empty-title">No scorecards yet</div></div><button class="btn btn-primary btn-sm mt-12" onclick="openScorecard()">Submit Scorecard →</button>`;
+}
+
+function openCandidateComms() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) { document.getElementById('t-cm-name').value = cand.firstName; document.getElementById('t-cm-email').value = cand.email; document.getElementById('t-cm-role').value = role?.title || ''; }
+  nav('tool-comms');
+}
+
+function openScorecard() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) {
+    document.getElementById('t-sc-cand').value = `${cand.firstName} ${cand.lastName}`;
+    document.getElementById('t-sc-role').value = role?.title || '';
+    if (cand.notes || cand.cv) { document.getElementById('sc-cv-banner').style.display = 'block'; document.getElementById('sc-cv-content').textContent = cand.notes || cand.cv?.text?.slice(0,1500) || ''; }
+    else { document.getElementById('sc-cv-banner').style.display = 'none'; }
+  }
+  nav('tool-scorecard');
+}
+
+function openRefCheck() {
+  const cand = getCandidates().find(c => c.id === currentCandidateId);
+  const apps = getApplications().filter(a => a.candidateId === currentCandidateId);
+  const role = apps.length ? getRoles().find(r => r.id === apps[apps.length-1].roleId) : null;
+  if (cand) { document.getElementById('t-rc-cand').value = `${cand.firstName} ${cand.lastName}`; document.getElementById('t-rc-cand-email').value = cand.email; document.getElementById('t-rc-role').value = role?.title || ''; }
+  nav('tool-refcheck');
+}
+
+function openScheduleInterview() {
+  populateInterviewCandidates();
+  openModal('modal-schedule-interview');
+}
+
+// ══════════════════════════════════════════════
+// TABLES
+// ══════════════════════════════════════════════
+function onRolesFnClick(fn) {
+  rolesFnFilter = fn;
+  rolesSubFilter = null;
+  renderFnBar('roles-fn-bar', rolesFnFilter, onRolesFnClick);
+  renderRolesSubBar();
+  renderRolesTable();
+}
+function renderRolesPage() {
+  renderFnBar('roles-fn-bar', rolesFnFilter, onRolesFnClick);
+  renderRolesSubBar();
+  renderRolesTable();
+}
+
+function renderRolesTable() {
+  let roles = getRoles();
+  if (rolesFnFilter !== 'all') roles = roles.filter(r => r.function === rolesFnFilter);
+  if (rolesSubFilter) roles = roles.filter(r => r.subFunction === rolesSubFilter);
+  document.getElementById('roles-empty').style.display = roles.length ? 'none' : 'block';
+  const apps = getApplications();
+  document.getElementById('roles-tbody').innerHTML = roles.map(r => {
+    const count = apps.filter(a => a.roleId === r.id).length;
+    const pClass = r.priority === 'Critical' ? 'p-critical' : r.priority === 'High' ? 'p-high' : 'p-normal';
+    const fnCls = fnById(r.function)?.cls || '';
+    return `<tr onclick="openRoleDetail('${r.id}')">
+      <td><strong>${r.title}</strong></td>
+      <td><span class="fn-tag"><span class="fn-dot ${fnCls}"></span>${fnLabel(r.function)}${r.subFunction?` <span class="fn-tag-slash">/</span> <span class="fn-tag-sub">${r.subFunction}</span>`:''}</span></td>
+      <td>${r.dept || '<span class="text-muted text-sm">—</span>'}</td>
+      <td>${r.recruiterName ? `<span style="font-size:12px">${r.recruiterName}</span>` : `<span class="text-muted text-sm">Unassigned</span>`}</td>
+      <td><span class="p-dot ${pClass}"></span>${r.priority}</td>
+      <td><span class="badge ${roleStatusClass(r.status)}">${r.status}</span></td>
+      <td>${r.publishedInternal ? `<span class="badge badge-published">Published</span>` : `<span class="text-muted text-sm">—</span>`}</td>
+      <td>${calculateDaysOpen(r)}d</td>
+      <td>${count}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openRoleDetail('${r.id}')">Open →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCandidatesTable() {
+  const cands = getCandidates();
+  document.getElementById('candidates-empty').style.display = cands.length ? 'none' : 'block';
+  const apps = getApplications(); const roles = getRoles();
+  document.getElementById('candidates-tbody').innerHTML = cands.map(c => {
+    const app = apps.filter(a => a.candidateId === c.id).pop();
+    const role = app ? roles.find(r => r.id === app.roleId) : null;
+    const sClass = app ? (app.stage==='Offered'?'badge-offer':app.stage==='Hired'?'badge-hired':app.stage==='Rejected'?'badge-rejected':'badge-active') : 'badge-draft';
+    return `<tr onclick="openCandidateDetail('${c.id}')">
+      <td><strong>${c.firstName} ${c.lastName}</strong><div class="text-muted text-sm">${c.email}</div></td>
+      <td>${c.currentTitle ? `${c.currentTitle}${c.currentCompany ? ' · '+c.currentCompany : ''}` : '—'}</td>
+      <td class="text-muted text-sm">${c.source}</td>
+      <td>${role ? role.title : '—'}</td>
+      <td>${app ? `<span class="badge ${sClass}">${app.stage}</span>` : '—'}</td>
+      <td>${c.cv ? '📄' : '—'}</td>
+      <td class="text-muted text-sm">${c.dateAdded}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openCandidateDetail('${c.id}')">View →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderInterviewsTable() {
+  const ints = getInterviews();
+  document.getElementById('interviews-empty').style.display = ints.length ? 'none' : 'block';
+  const scs = getScorecards();
+  document.getElementById('interviews-tbody').innerHTML = ints.map(i => `
+    <tr onclick="openCandidateDetail('${i.candidateId}')">
+      <td><strong>${i.candidateName}</strong></td>
+      <td>${i.roleTitle}</td>
+      <td><span class="badge badge-active">${i.stage}</span></td>
+      <td>${i.date} ${i.time}</td>
+      <td>${i.interviewerName}</td>
+      <td class="text-muted text-sm">${i.format}</td>
+      <td>${scs.find(s=>s.applicationId===i.applicationId&&s.stage===i.stage) ? `<span class="badge badge-hired">Submitted</span>` : `<span class="badge badge-pending">Pending</span>`}</td>
+    </tr>
+  `).join('');
+}
+
+function renderReferralsTable() {
+  const refs = getReferrals();
+  document.getElementById('referrals-empty').style.display = refs.length ? 'none' : 'block';
+  document.getElementById('referrals-tbody').innerHTML = refs.map(r => `
+    <tr>
+      <td><strong>${r.candidateFirstName} ${r.candidateLastName}</strong><div class="text-muted text-sm">${r.candidateEmail}</div></td>
+      <td>${r.roleName}</td>
+      <td>${r.referrerName}<div class="text-muted text-sm">${r.referrerEmail}</div></td>
+      <td class="text-muted text-sm">${new Date(r.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</td>
+      <td>${r.cv ? '📄 CV' : '—'}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="convertReferralToCandidate('${r.id}')">Add to Pipeline</button></td>
+    </tr>
+  `).join('');
+}
+
+function convertReferralToCandidate(refId) {
+  const refs = getReferrals();
+  const ref = refs.find(r => r.id === refId); if (!ref) return;
+  const cands = getCandidates();
+  const cand = {
+    id: DB.id(), firstName: ref.candidateFirstName, lastName: ref.candidateLastName,
+    email: ref.candidateEmail, phone: ref.candidatePhone || '',
+    currentTitle: '', currentCompany: '', linkedin: '',
+    source: 'Referral', notes: ref.relationship || '', cv: ref.cv,
+    dateAdded: new Date().toISOString().split('T')[0],
+  };
+  cands.push(cand); saveCandidates(cands);
+  if (ref.roleId) {
+    const apps = getApplications();
+    apps.push({ id: DB.id(), candidateId: cand.id, roleId: ref.roleId, stage: 'New Applicant', stageUpdated: new Date().toISOString(), stageHistory: [{ stage: 'New Applicant', date: new Date().toISOString() }], status: 'Active', dateApplied: new Date().toISOString() });
+    saveApplications(apps);
+  }
+  ref.convertedToCandidateId = cand.id;
+  saveReferrals(refs);
+  logActivity(`Referral converted: <strong>${cand.firstName} ${cand.lastName}</strong> added to pipeline`);
+  showToast(`${cand.firstName} ${cand.lastName} added to pipeline`);
+  renderReferralsTable(); updateBadges();
+}
+
+// ══════════════════════════════════════════════
+// KANBAN (global)
+// ══════════════════════════════════════════════
+function renderKanban() {
+  const apps = getApplications(); const cands = getCandidates(); const roles = getRoles();
+  document.getElementById('kanban-board').innerHTML = PIPELINE_STAGES.filter(s=>s!=='Rejected').map(stage => {
+    const sApps = apps.filter(a => a.stage === stage);
+    return `<div class="kanban-col">
+      <div class="kanban-col-header"><div class="kanban-col-name" style="color:${STAGE_COLORS_HEX[stage]}">${stage}</div><div class="kanban-col-count">${sApps.length}</div></div>
+      <div class="kanban-cards">${sApps.map(app => {
+        const c = cands.find(x => x.id === app.candidateId); const r = roles.find(x => x.id === app.roleId); if (!c) return '';
+        const days = Math.floor((Date.now()-new Date(app.stageUpdated))/86400000);
+        return `<div class="kanban-card" onclick="openCandidateDetail('${c.id}')">
+          <div class="kc-name">${c.firstName} ${c.lastName}</div>
+          <div class="kc-role">${r?.title||'—'}</div>
+          <div class="kc-meta"><span class="kc-days">${days}d in stage</span></div>
+        </div>`;
+      }).join('')||`<div style="padding:10px 8px;font-size:11px;color:var(--muted);text-align:center">Empty</div>`}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard() {
+  const roles = getRoles(); const apps = getApplications(); const scs = getScorecards();
+  document.getElementById('stat-open').textContent = roles.filter(r=>r.status==='Open').length;
+  document.getElementById('stat-candidates').textContent = apps.filter(a=>!['Hired','Rejected'].includes(a.stage)).length;
+  document.getElementById('stat-hired').textContent = apps.filter(a=>a.stage==='Hired').length;
+  document.getElementById('stat-feedback').textContent = apps.filter(a=>a.stage.includes('Interview')&&!scs.find(s=>s.applicationId===a.id)).length;
+  renderFunctionBreakdown();
+  const openRoles = roles.filter(r=>r.status==='Open').slice(0,6);
+  document.getElementById('dash-roles-list').innerHTML = openRoles.length ? openRoles.map(r => {
+    const count = apps.filter(a=>a.roleId===r.id).length;
+    const pClass = r.priority==='Critical'?'p-critical':r.priority==='High'?'p-high':'p-normal';
+    return `<div class="activity-item" style="cursor:pointer" onclick="openRoleDetail('${r.id}')">
+      <div class="p-dot ${pClass}" style="margin-top:4px"></div>
+      <div><div style="font-size:13px;font-weight:600">${r.title}</div>
+      <div class="text-muted text-sm">${fnLabel(r.function)}${r.subFunction?' · '+r.subFunction:''} · ${count} candidates · ${calculateDaysOpen(r)}d open${r.recruiterName?' · '+r.recruiterName:''}</div></div>
+    </div>`;
+  }).join('') : `<div class="empty"><div class="empty-icon">◻</div><div class="empty-title">No open roles</div></div>`;
+  const acts = getActivity();
+  document.getElementById('activity-feed').innerHTML = acts.length ? acts.slice(0,8).map(a => `
+    <div class="activity-item"><div class="act-dot"></div>
+    <div><div class="act-text">${a.text}</div><div class="act-time">${new Date(a.time).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div></div>
+    </div>
+  `).join('') : `<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">No activity yet</div></div>`;
+}
+
+// ══════════════════════════════════════════════
+// REPORTING
+// ══════════════════════════════════════════════
+function renderReporting() {
+  renderFnBar('report-fn-bar', reportFnFilter, (fn) => {
+    reportFnFilter = fn;
+    renderReporting();
+  });
+  const allRoles = getRoles();
+  const roles = reportFnFilter === 'all' ? allRoles : allRoles.filter(r => r.function === reportFnFilter);
+  const apps = getApplications().filter(a => roles.some(r => r.id === a.roleId) || reportFnFilter === 'all');
+  const cands = getCandidates();
+  const closedRoles = roles.filter(r=>r.status==='Closed - Hired');
+  const tthVals = closedRoles.map(r=>calculateDaysOpen(r)).filter(d=>d>0);
+  const avgTTH = tthVals.length ? Math.round(tthVals.reduce((a,b)=>a+b,0)/tthVals.length) : null;
+  document.getElementById('m-tth').textContent = avgTTH ? avgTTH+'d' : '—';
+  document.getElementById('m-vacancies').textContent = roles.length;
+  document.getElementById('m-hired').textContent = apps.filter(a=>a.stage==='Hired').length;
+  const offers = apps.filter(a=>['Offered','Hired'].includes(a.stage)).length;
+  const hired = apps.filter(a=>a.stage==='Hired').length;
+  document.getElementById('m-oar').textContent = offers > 0 ? Math.round((hired/offers)*100)+'%' : '—';
+
+  // Time-to-Hire by Function
+  const tthByFn = FUNCTIONS.map(f => {
+    const cr = allRoles.filter(r => r.function === f.id && r.status === 'Closed - Hired');
+    const vals = cr.map(r => calculateDaysOpen(r)).filter(d => d > 0);
+    return { ...f, days: vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : 0, n: vals.length };
+  });
+  const maxTTH = Math.max(1, ...tthByFn.map(x => x.days));
+  document.getElementById('chart-tth-function').innerHTML = tthByFn.map(x =>
+    `<div class="bar-row"><div class="bar-label"><span class="fn-dot ${x.cls}" style="display:inline-block;margin-right:6px"></span>${x.label}</div><div class="bar-track"><div class="bar-fill" style="width:${(x.days/maxTTH)*100}%;background:var(--accent)"></div></div><div class="bar-val">${x.days?x.days+'d':'—'}</div></div>`
+  ).join('');
+
+  // Retail KSA by Region
+  const ksaRoles = allRoles.filter(r => r.function === 'retail_ksa');
+  const ksaSubs = fnById('retail_ksa').subs;
+  const maxKsa = Math.max(1, ...ksaSubs.map(s => ksaRoles.filter(r => r.subFunction===s && r.status==='Open').length));
+  document.getElementById('chart-ksa-region').innerHTML = ksaSubs.map(s => {
+    const n = ksaRoles.filter(r => r.subFunction===s && r.status==='Open').length;
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(n/maxKsa)*100}%;background:var(--green)"></div></div><div class="bar-val">${n}</div></div>`;
+  }).join('') || '<div class="text-muted text-sm" style="padding:8px">No KSA roles yet</div>';
+
+  // Retail GCC by Country
+  const gccRoles = allRoles.filter(r => r.function === 'retail_gcc');
+  const gccSubs = fnById('retail_gcc').subs;
+  const maxGcc = Math.max(1, ...gccSubs.map(s => gccRoles.filter(r => r.subFunction===s && r.status==='Open').length));
+  document.getElementById('chart-gcc-country').innerHTML = gccSubs.map(s => {
+    const n = gccRoles.filter(r => r.subFunction===s && r.status==='Open').length;
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(n/maxGcc)*100}%;background:var(--blue)"></div></div><div class="bar-val">${n}</div></div>`;
+  }).join('') || '<div class="text-muted text-sm" style="padding:8px">No GCC roles yet</div>';
+
+  // Status chart
+  const statuses = ['Pending Approval','Open','Draft','On Hold','Closed - Hired','Closed - Cancelled'];
+  const sCols = { 'Open':STAGE_COLORS_HEX['New Applicant'],'Pending Approval':'#c9a227','Draft':'#9a9690','On Hold':'#b85a1a','Closed - Hired':'#1a3f7a','Closed - Cancelled':'#ccc' };
+  const maxS = Math.max(1,...statuses.map(s=>roles.filter(r=>r.status===s).length));
+  document.getElementById('chart-status').innerHTML = statuses.map(s => {
+    const c = roles.filter(r=>r.status===s).length;
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/maxS)*100}%;background:${sCols[s]||'#ccc'}"></div></div><div class="bar-val">${c}</div></div>`;
+  }).join('');
+  // Sources
+  const srcC = {}; const srcH = {};
+  apps.forEach(a => { const c = cands.find(x=>x.id===a.candidateId); if(!c) return; srcC[c.source]=(srcC[c.source]||0)+1; if(a.stage==='Hired') srcH[c.source]=(srcH[c.source]||0)+1; });
+  const maxSrc = Math.max(1,...Object.values(srcC));
+  document.getElementById('chart-sources').innerHTML = Object.entries(srcC).map(([k,v]) => {
+    const h = srcH[k]||0;
+    return `<div class="bar-row"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxSrc)*100}%;background:var(--blue-bg);border:1px solid var(--blue)"></div></div><div class="bar-val text-sm" style="color:var(--green);font-weight:700">${h}✓ / ${v}</div></div>`;
+  }).join('') || '<div class="text-muted text-sm" style="padding:8px">No data yet</div>';
+  // Funnel
+  const stageCounts = {}; PIPELINE_STAGES.forEach(s=>stageCounts[s]=0);
+  apps.forEach(a => { const sh = new Set((a.stageHistory||[]).map(h=>h.stage)); if(a.stage) sh.add(a.stage); sh.forEach(s=>{ if(stageCounts[s]!==undefined) stageCounts[s]++; }); });
+  const maxF = Math.max(1,...Object.values(stageCounts));
+  document.getElementById('chart-funnel').innerHTML = PIPELINE_STAGES.filter(s=>s!=='Rejected').map(s => {
+    const c = stageCounts[s];
+    return `<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/maxF)*100}%;background:${STAGE_COLORS_HEX[s]}"></div></div><div class="bar-val">${c}</div></div>`;
+  }).join('');
+  // Offer outcomes
+  const off = apps.filter(a=>['Offered','Hired'].includes(a.stage)).length;
+  const acc = apps.filter(a=>a.stage==='Hired').length;
+  const dec = apps.filter(a=>a.rejectReason==='declined offer').length;
+  const drop = apps.filter(a=>a.rejectReason==='dropped out').length;
+  const pend = Math.max(0, off - acc - dec - drop);
+  const totO = Math.max(1, off);
+  document.getElementById('chart-offers').innerHTML = [['Accepted',acc,'#1e6b47'],['Pending',pend,'#1a3f7a'],['Declined',dec,'#b83232'],['Dropped Out',drop,'#b85a1a']].map(([l,c,col]) =>
+    `<div class="bar-row"><div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/totO)*100}%;background:${col}"></div></div><div class="bar-val">${c}</div></div>`
+  ).join('');
+  // Aging
+  const openRoles = roles.filter(r=>r.status==='Open').sort((a,b)=>calculateDaysOpen(b)-calculateDaysOpen(a)).slice(0,8);
+  const maxAge = Math.max(1,...openRoles.map(r=>calculateDaysOpen(r)));
+  document.getElementById('chart-aging').innerHTML = openRoles.length ? openRoles.map(r => {
+    const d = calculateDaysOpen(r);
+    const col = d>45?'#b83232':d>21?'#b85a1a':'#1e6b47';
+    return `<div class="bar-row"><div class="bar-label" style="font-size:11px">${r.title.slice(0,20)}${r.title.length>20?'…':''}</div><div class="bar-track"><div class="bar-fill" style="width:${(d/maxAge)*100}%;background:${col}"></div></div><div class="bar-val">${d}d</div></div>`;
+  }).join('') : '<div class="text-muted text-sm" style="padding:8px">No open roles</div>';
+}
+
+// ══════════════════════════════════════════════
+// BADGES
+// ══════════════════════════════════════════════
+function updateBadges() {
+  document.getElementById('nb-roles').textContent = getRoles().filter(r=>r.status==='Open').length;
+  document.getElementById('nb-candidates').textContent = getCandidates().length;
+  document.getElementById('nb-pipeline').textContent = getApplications().filter(a=>!['Hired','Rejected'].includes(a.stage)).length;
+  document.getElementById('nb-interviews').textContent = getInterviews().filter(i=>new Date(i.date)>=new Date(new Date().toDateString())).length;
+  document.getElementById('nb-referrals').textContent = getReferrals().filter(r=>!r.convertedToCandidateId).length;
+}
+
+// ══════════════════════════════════════════════
+// INTERVIEW SCHEDULING
+// ══════════════════════════════════════════════
+function scheduleInterview() {
+  const candId = document.getElementById('m-int-candidate').value;
+  const intName = document.getElementById('m-int-int-name').value.trim();
+  const intEmail = document.getElementById('m-int-int-email').value.trim();
+  const date = document.getElementById('m-int-date').value;
+  const time = document.getElementById('m-int-time').value;
+  if (!candId || !intName || !intEmail || !date || !time) { showToast('Fill all required fields', 'error'); return; }
+  const cand = getCandidates().find(c=>c.id===candId);
+  const apps = getApplications().filter(a=>a.candidateId===candId);
+  const role = apps.length ? getRoles().find(r=>r.id===apps[apps.length-1].roleId) : null;
+  const stage = document.getElementById('m-int-stage').value;
+  const duration = document.getElementById('m-int-duration').value || '45';
+  const format = document.getElementById('m-int-format').value;
+  const link = document.getElementById('m-int-link').value.trim();
+  const recruiterEmail = document.getElementById('m-int-recruiter').value.trim();
+  const interview = {
+    id: DB.id(), candidateId: candId, candidateName: cand?`${cand.firstName} ${cand.lastName}`:'',
+    candidateEmail: cand?.email, applicationId: apps[apps.length-1]?.id,
+    roleId: role?.id, roleTitle: role?.title||'', stage, interviewerName: intName,
+    interviewerEmail: intEmail, recruiterEmail, date, time, duration, format, link,
+    status: 'Scheduled', scorecardUrl: `${window.location.href}#scorecard-${apps[apps.length-1]?.id||''}`,
+    cvAttached: !!cand?.cv, createdAt: new Date().toISOString(),
+  };
+  const ints = getInterviews(); ints.push(interview); saveInterviews(ints);
+  // Build Google Calendar URLs
+  const dtStr = `${date}T${time}`;
+  const start = new Date(dtStr).toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const end = new Date(new Date(dtStr).getTime()+parseInt(duration)*60000).toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  const candBody = `Interview for ${role?.title||'role'} at Eyewa\n\n${link||format}`;
+  const internalBody = `Interview with ${cand?.firstName} ${cand?.lastName} — ${role?.title||'role'}\nStage: ${stage}\n\n📋 Scorecard: ${interview.scorecardUrl}\n${cand?.cv?'📄 Candidate CV linked from scorecard\n':''}\n${link||format}`;
+  const candURL = `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(`Interview with Eyewa — ${role?.title||''}`)}&dates=${start}/${end}&details=${encodeURIComponent(candBody)}&add=${encodeURIComponent(cand?.email||'')}&location=${encodeURIComponent(link||format)}`;
+  const internalURL = `https://calendar.google.com/calendar/u/0/r/eventedit?text=${encodeURIComponent(`Interview: ${cand?.firstName} ${cand?.lastName} — ${role?.title||''}`)}&dates=${start}/${end}&details=${encodeURIComponent(internalBody)}&add=${encodeURIComponent(`${intEmail},${recruiterEmail}`)}&location=${encodeURIComponent(link||format)}`;
+  closeModal('modal-schedule-interview');
+  logActivity(`Interview scheduled: <strong>${cand?.firstName} ${cand?.lastName}</strong> — ${stage} on ${date}`);
+  showToast('Interview scheduled — opening Google Calendar');
+  updateBadges();
+  window.open(candURL, '_blank');
+  setTimeout(()=>window.open(internalURL, '_blank'), 600);
+  if (currentPage==='interviews') renderInterviewsTable();
+  if (currentPage==='candidate-detail') renderCandidateInterviews(currentCandidateId);
+}
+
+// ══════════════════════════════════════════════
+// AI GENERATORS
+// ══════════════════════════════════════════════
+const PROXY = 'https://api.anthropic.com/v1/messages';
+
+async function callClaude(prompt, maxTokens=2000) {
+  const res = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json','x-api-key':'','anthropic-version':'2023-06-01' },
+    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens: maxTokens, messages:[{ role:'user', content: prompt }] })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(b=>b.text||'').join('');
+}
+
+async function runJDGenerator() {
+  const title = document.getElementById('t-jd-title').value.trim();
+  const resp = document.getElementById('t-jd-resp').value.trim();
+  const req = document.getElementById('t-jd-req').value.trim();
+  if (!title||!resp||!req) { showToast('Fill title, responsibilities, requirements','error'); return; }
+  showLoading('Writing JD...');
+  try {
+    const text = await callClaude(`You are an Eyewa employer brand copywriter. Write a complete job description.
+ROLE: ${title} | DEPT: ${document.getElementById('t-jd-dept').value} | REPORTS TO: ${document.getElementById('t-jd-reports').value} | LEVEL: ${document.getElementById('t-jd-level').value} | TONE: ${document.getElementById('t-jd-tone').value}
+RESPONSIBILITIES: ${resp}
+REQUIREMENTS: ${req}
+
+Format:
+ABOUT EYEWA
+[Use: "Eyewa is the Middle East's leading eyewear destination, offering the widest selection of eyeglasses, sunglasses, and contact lenses across the GCC. Founded in 2017, we've grown from a digital-first startup to a multi-channel retailer with over 100 stores and millions of customers served."]
+
+OVERVIEW
+[2-3 compelling sentences]
+
+WHAT YOU'LL DO
+[7-8 bullets starting with action verbs]
+
+WHAT WE'RE LOOKING FOR
+[6-7 bullets]
+
+WHAT WE OFFER
+[5-6 bullets]`);
+    document.getElementById('jd-output-text').textContent = text;
+    document.getElementById('jd-tool-output').style.display = 'block';
+    if (currentRoleId) { const roles=getRoles(); const role=roles.find(r=>r.id===currentRoleId); if(role){role.jd=text;saveRoles(roles);} }
+    logActivity(`JD generated: <strong>${title}</strong>`);
+  } catch(e) { showToast(e.message,'error'); }
+  hideLoading();
+}
+
+async function runInterviewPack() {
+  const title = document.getElementById('t-ip-title').value.trim();
+  const jd = document.getElementById('t-ip-jd').value.trim();
+  if (!title||!jd) { showToast('Fill role and JD','error'); return; }
+  showLoading('Building interview pack...');
+  try {
+    const text = await callClaude(`Generate a complete interview pack for Eyewa.
+ROLE: ${title} | LEVEL: ${document.getElementById('t-ip-level').value}
+STAGES: ${document.getElementById('t-ip-stages').value}
+COMPETENCIES: ${document.getElementById('t-ip-comps').value||'Derive from JD'}
+JD: ${jd}
+
+For each stage: name, purpose, 3-4 competency sections each with main question (behavioural), follow-up probe, red flag. Include scorecard template with 1-5 scale and "what great looks like".`,3000);
+    document.getElementById('interview-output-text').textContent = text;
+    document.getElementById('interview-tool-output').style.display = 'block';
+    if (currentRoleId) { const roles=getRoles(); const role=roles.find(r=>r.id===currentRoleId); if(role){role.interviewPack=text;saveRoles(roles);} }
+    logActivity(`Interview pack: <strong>${title}</strong>`);
+  } catch(e) { showToast(e.message,'error'); }
+  hideLoading();
+}
+
+async function runCommsGenerator() {
+  const name = document.getElementById('t-cm-name').value.trim();
+  const role = document.getElementById('t-cm-role').value.trim();
+  const type = document.getElementById('t-cm-type').value;
+  const sender = document.getElementById('t-cm-sender').value.trim();
+  if (!name||!role) { showToast('Name and role required','error'); return; }
+  showLoading('Writing email...');
+  try {
+    const text = await callClaude(`You are ${sender}, TA at Eyewa. Write a warm professional candidate email. Never "I hope this email finds you well".
+EMAIL TYPE: ${type} | CANDIDATE: ${name} | ROLE: ${role}
+CONTEXT: ${document.getElementById('t-cm-context').value||'None'}
+SENDER: ${sender}, Talent Acquisition, Eyewa
+Return ONLY valid JSON: {"subject":"...","body":"..."}`,800);
+    const parsed = JSON.parse(text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());
+    document.getElementById('comms-output-subject').textContent = parsed.subject;
+    document.getElementById('comms-output-body').textContent = parsed.body;
+    document.getElementById('comms-tool-output').style.display = 'block';
+    if (currentCandidateId) {
+      const apps = getApplications().filter(a=>a.candidateId===currentCandidateId);
+      const comms = getComms();
+      comms.push({ id:DB.id(), candidateId:currentCandidateId, applicationId:apps[apps.length-1]?.id, type, subject:parsed.subject, body:parsed.body, date:new Date().toLocaleDateString('en-GB'), sender });
+      saveComms(comms);
+      logActivity(`Email to <strong>${name}</strong>: ${type}`);
+    }
+  } catch(e) { showToast(e.message,'error'); }
+  hideLoading();
+}
+
+function openMailFromComms() {
+  const to = document.getElementById('t-cm-email').value.trim();
+  const subject = document.getElementById('comms-output-subject').textContent;
+  const body = document.getElementById('comms-output-body').textContent;
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+async function runScorecardSummary() {
+  const cand = document.getElementById('t-sc-cand').value.trim();
+  const role = document.getElementById('t-sc-role').value.trim();
+  const comps = document.getElementById('t-sc-comps').value.trim();
+  if (!cand||!role||!comps) { showToast('Fill candidate, role, scores','error'); return; }
+  showLoading('Generating summary...');
+  try {
+    const text = await callClaude(`Senior TA at Eyewa. Summarise interview scorecard clearly.
+CANDIDATE: ${cand} | ROLE: ${role} | STAGE: ${document.getElementById('t-sc-stage').value} | INTERVIEWER: ${document.getElementById('t-sc-interviewer').value}
+RECOMMENDATION: ${document.getElementById('t-sc-rec').value}
+SCORES: ${comps}
+NOTES: ${document.getElementById('t-sc-notes').value||'None'}
+
+Output:
+1. HEADLINE: One sentence verdict
+2. STRENGTHS: 2-3 specific strengths
+3. RISKS / GAPS: 1-2 honest concerns or "None identified"
+4. RECOMMENDATION: Clear rationale in 2-3 sentences
+
+Be specific. This is for the hiring manager.`);
+    document.getElementById('scorecard-output-text').textContent = text;
+    document.getElementById('scorecard-tool-output').style.display = 'block';
+    logActivity(`Scorecard summary: <strong>${cand}</strong>`);
+  } catch(e) { showToast(e.message,'error'); }
+  hideLoading();
+}
+
+function saveScorecard() {
+  const cand = document.getElementById('t-sc-cand').value.trim();
+  const role = document.getElementById('t-sc-role').value.trim();
+  if (!cand||!role) { showToast('Fill candidate and role','error'); return; }
+  const apps = currentCandidateId ? getApplications().filter(a=>a.candidateId===currentCandidateId) : [];
+  const scs = getScorecards();
+  scs.push({ id:DB.id(), candidateId:currentCandidateId, applicationId:apps[apps.length-1]?.id, stage:document.getElementById('t-sc-stage').value, interviewer:document.getElementById('t-sc-interviewer').value, competencies:document.getElementById('t-sc-comps').value, notes:document.getElementById('t-sc-notes').value, recommendation:document.getElementById('t-sc-rec').value, aiSummary:document.getElementById('scorecard-output-text').textContent, date:new Date().toLocaleDateString('en-GB') });
+  saveScorecards(scs);
+  showToast('Scorecard saved');
+  logActivity(`Scorecard saved: <strong>${cand}</strong>`);
+}
+
+async function runRefCheck() {
+  const cand = document.getElementById('t-rc-cand').value.trim();
+  const role = document.getElementById('t-rc-role').value.trim();
+  const sender = document.getElementById('t-rc-sender').value.trim();
+  if (!cand||!role) { showToast('Candidate and role required','error'); return; }
+  showLoading('Generating reference emails...');
+  try {
+    const text = await callClaude(`Eyewa TA. Generate two reference check emails.
+CANDIDATE: ${cand} | ROLE: ${role}
+REFEREE 1: ${document.getElementById('t-rc-ref1-name').value||'Reference 1'}
+REFEREE 2: ${document.getElementById('t-rc-ref2-name').value||'Reference 2'}
+PROBE: ${document.getElementById('t-rc-probe').value||'General performance, working style, strengths and development areas'}
+SENDER: ${sender}, TA, Eyewa
+Return ONLY valid JSON: {"candEmail":{"subject":"...","body":"..."},"refEmail":{"subject":"...","body":"..."}}`,1200);
+    const parsed = JSON.parse(text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());
+    document.getElementById('ref-cand-subject').textContent = parsed.candEmail.subject;
+    document.getElementById('ref-cand-body').textContent = parsed.candEmail.body;
+    document.getElementById('ref-ref-subject').textContent = parsed.refEmail.subject;
+    document.getElementById('ref-ref-body').textContent = parsed.refEmail.body;
+    document.getElementById('ref-cand-email-val').value = document.getElementById('t-rc-cand-email').value.trim();
+    document.getElementById('ref1-email-val').value = document.getElementById('t-rc-ref1-email').value.trim();
+    document.getElementById('refcheck-tool-output').style.display = 'block';
+  } catch(e) { showToast(e.message,'error'); }
+  hideLoading();
+}
+
+function openMailRef(emailFieldId, subjectId, bodyId) {
+  const to = document.getElementById(emailFieldId)?.value || '';
+  const subject = document.getElementById(subjectId).textContent;
+  const body = document.getElementById(bodyId).textContent;
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function copyRefEmails() {
+  const s1=document.getElementById('ref-cand-subject').textContent;
+  const b1=document.getElementById('ref-cand-body').textContent;
+  const s2=document.getElementById('ref-ref-subject').textContent;
+  const b2=document.getElementById('ref-ref-body').textContent;
+  navigator.clipboard.writeText(`EMAIL 1 — TO CANDIDATE\nSubject: ${s1}\n\n${b1}\n\n---\n\nEMAIL 2 — TO REFEREE\nSubject: ${s2}\n\n${b2}`);
+  showToast('Both emails copied');
+}
+
+// ══════════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════════
+function openModal(id) {
+  if (id==='modal-add-candidate') populateCandidateRoleDropdown();
+  if (id==='modal-schedule-interview') populateInterviewCandidates();
+  if (id==='modal-add-role') onModalFunctionChange();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+
+function switchTab(ctx, tab, el) {
+  const pre = ctx==='role'?'role-tab-':'candidate-tab-';
+  const pid = `page-${ctx}-detail`;
+  document.querySelectorAll(`#${pid} .tab`).forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll(`#${pid} .tab-panel`).forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`${pre}${tab}`)?.classList.add('active');
+}
+
+function filterTable(id, q) {
+  q = q.toLowerCase();
+  document.querySelectorAll(`#${id} tbody tr`).forEach(tr => { tr.style.display = tr.textContent.toLowerCase().includes(q)?'':'none'; });
+}
+
+function copyGen(id) { navigator.clipboard.writeText(document.getElementById(id).textContent); showToast('Copied'); }
+function copyText(b64) { try { navigator.clipboard.writeText(decodeURIComponent(escape(atob(b64)))); showToast('Copied'); } catch(e) {} }
+function clearTool(t) { document.querySelectorAll(`#page-tool-${t} input, #page-tool-${t} textarea`).forEach(el=>{ if(!['t-cm-sender','t-cm-senderemail','t-rc-sender'].includes(el.id)) el.value=''; }); }
+function clearModalFields(id) { document.querySelectorAll(`#${id} input, #${id} textarea`).forEach(el=>{ if(!['m-role-location'].includes(el.id)&&el.type!=='file') el.value=''; }); }
+function showLoading(sub) { document.getElementById('loading').classList.add('on'); document.getElementById('loading-sub').textContent=sub||''; }
+function hideLoading() { document.getElementById('loading').classList.remove('on'); }
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.className=`toast${type==='error'?' error':''}`;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// INIT
+seedRecruiters();
+backfillFunctions();
+renderDashboard();
+updateBadges();
+</script>
+</body>
+</html>
